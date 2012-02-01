@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/selector_tab"
+	android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<!-- セパレータ -->
+	<FrameLayout
+		android:id="@+id/tab_item_separator"
+		android:background="#222222"
+		android:layout_width="1dp"
+		android:layout_height="fill_parent" />
+
+	<!-- タブ -->
+	<LinearLayout
+		android:orientation="vertical"
+		android:gravity="center"
+		android:padding="8dp"
+		android:layout_weight="1"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+		<!-- アイコン -->
+		<ImageView
+			android:id="@+id/tab_item_icon"
+			android:layout_marginBottom="4dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+		<!-- テキスト -->
+		<TextView
+			android:id="@+id/tab_item_text"
+			android:textColor="#FFFFFF"
+			android:textStyle="bold"
+			android:textSize="12dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+	</LinearLayout>
+</LinearLayout>
+
+
+
+
+

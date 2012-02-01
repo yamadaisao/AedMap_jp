@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AEDマップ.jp</string>
+    <string name="map_api_key">0MMOEhZjjditqYMOnN5bwp_kApvCgcXNmM8j-Ow</string>
+    <string name="tab_map">AEDマップ</string>
+    <string name="tab_list">AEDリスト</string>
+    <string name="current_location">現在地</string>
+    <string name="button_my_location">現在地</string>
+    <string name="button_search_address">住所検索</string>
+    <string name="buttion_gps_setting">GPS設定</string>
+    <string name="label_location">現在地：</string>
+    <string name="text_location">住所を表示</string>
+    <string name="http_server_error">サーバーでエラーが発生しました</string>
+    <string name="http_syntax_error">URLに誤りがあります</string>
+    <string name="http_unknown_host">サーバが見つかりません</string>
+    <string name="http_network_error">ネットワークエラーが発生しました</string>
+    <string name="http_unkown_error">不明なエラーが発生しました</string>
+    <string name="http_illegal_state">URLのサーバ記述がありません</string>
+    <string name="http_parse_error">データの解析に失敗しました</string>
+        
+</resources>

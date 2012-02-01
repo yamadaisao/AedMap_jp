@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<project name="eval_jar" default="v4-jar" basedir="." >
+	<property name="base_dir" location="C:\Program Files (x86)\Android\android-sdk\extras\android\support"/>
+	<property name="maps_dir" location="C:\workspace\android-support-v4-googlemaps"/>
+	<target name="v4-jar">
+		<jar  jarfile="..\lib-src\android-support-v4-source.jar" >
+			<fileset dir="${base_dir}\v4\src\java" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\eclair" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\froyo" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\gingerbread" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\honeycomb" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\honeycomb_mr2" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\ics" includes="**/*.java" />
+		</jar>
+	</target>
+	<target name="v13-jar">
+		<jar  jarfile="..\lib-src\android-support-v13-source.jar" >
+			<fileset dir="${base_dir}\v4\src\java" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\eclair" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\froyo" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\gingerbread" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\honeycomb" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\honeycomb_mr2" includes="**/*.java" />
+			<fileset dir="${base_dir}\v4\src\ics" includes="**/*.java" />
+			<fileset dir="${base_dir}\v13\src\java" includes="**/*.java" />
+			<fileset dir="${base_dir}\v13\src\ics" includes="**/*.java" />
+			<fileset dir="${base_dir}\v13\src\ics-mr1" includes="**/*.java" />
+		</jar>
+	</target>
+	<target name="v4-maps-jar">
+		<jar  jarfile="..\lib-src\android-support-v4-r6-googlemaps-source.jar" >
+			<fileset dir="${maps_dir}\v4\java" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\eclair" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\froyo" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\gingerbread" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\honeycomb" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\honeycomb_mr2" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\ics" includes="**/*.java" />
+		</jar>
+	</target>
+	<target name="v13-maps-jar">
+		<jar  jarfile="..\lib-src\android-support-v13-r6-googlemaps-source.jar" >
+			<fileset dir="${maps_dir}\v4\java" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\eclair" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\froyo" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\gingerbread" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\honeycomb" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\honeycomb_mr2" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v4\ics" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v13\java" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v13\ics" includes="**/*.java" />
+			<fileset dir="${maps_dir}\v13\ics-mr1" includes="**/*.java" />
+		</jar>
+	</target>
+</project>
