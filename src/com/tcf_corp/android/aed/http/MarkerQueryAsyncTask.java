@@ -52,13 +52,13 @@ public class MarkerQueryAsyncTask extends
 			Locale locale = Locale.getDefault();
 			get.addHeader("accept-language", locale.getLanguage());
 
-			LogUtil.d(TAG, "connect to '" + url + "'");
+			LogUtil.v(TAG, "connect to '" + url + "'");
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			response = httpClient.execute(get);
-			LogUtil.d(TAG, "execute");
+			LogUtil.v(TAG, "execute");
 
 			int status = response.getStatusLine().getStatusCode();
-			LogUtil.d(TAG, "status:" + status);
+			LogUtil.v(TAG, "status:" + status);
 			switch (status) {
 			case HttpStatus.SC_OK:
 				InputStream is = response.getEntity().getContent();
@@ -111,11 +111,6 @@ public class MarkerQueryAsyncTask extends
 						}
 						break;
 					case XmlPullParser.END_TAG:
-						if ("marker".equals(xmlPullParser.getName())) {
-
-						} else if ("markers".equals(xmlPullParser.getName())) {
-
-						}
 						break;
 					case XmlPullParser.START_DOCUMENT:
 					case XmlPullParser.END_DOCUMENT:

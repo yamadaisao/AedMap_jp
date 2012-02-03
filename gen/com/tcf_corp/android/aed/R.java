@@ -22,14 +22,16 @@ public final class R {
         public static final int ic_wifi_on=0x7f020008;
         public static final int icon_pin=0x7f020009;
         public static final int selector_tab=0x7f02000a;
-        public static final int shape_tab_item=0x7f02000b;
-        public static final int shape_tab_item_active=0x7f02000c;
+        public static final int shape_border=0x7f02000b;
+        public static final int shape_tab_item=0x7f02000c;
+        public static final int shape_tab_item_active=0x7f02000d;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f040003;
-        public static final int balloon_close=0x7f040001;
-        public static final int balloon_inner_layout=0x7f040000;
+        public static final int balloon_item_able=0x7f040014;
         public static final int balloon_item_snippet=0x7f040013;
+        public static final int balloon_item_spl=0x7f040016;
+        public static final int balloon_item_src=0x7f040015;
         public static final int balloon_item_title=0x7f040012;
         public static final int balloon_main_layout=0x7f040011;
         public static final int button_gps=0x7f040009;
@@ -42,18 +44,20 @@ public final class R {
         public static final int linearLayout2=0x7f04000e;
         public static final int linearLayout3=0x7f04000c;
         public static final int linearLayout4=0x7f040008;
+        public static final int location_balloon_close=0x7f040001;
+        public static final int location_balloon_inner_layout=0x7f040000;
         public static final int mapview=0x7f040005;
         public static final int relativeLayout1=0x7f040006;
-        public static final int tab_item_icon=0x7f040015;
-        public static final int tab_item_separator=0x7f040014;
-        public static final int tab_item_text=0x7f040016;
+        public static final int tab_item_icon=0x7f040018;
+        public static final int tab_item_separator=0x7f040017;
+        public static final int tab_item_text=0x7f040019;
         public static final int textView1=0x7f040002;
         public static final int text_address=0x7f04000d;
     }
     public static final class layout {
         public static final int aed_list=0x7f030000;
         public static final int aed_map=0x7f030001;
-        public static final int balloon_overlay=0x7f030002;
+        public static final int location_balloon_overlay=0x7f030002;
         public static final int main=0x7f030003;
         public static final int tab_item=0x7f030004;
     }
