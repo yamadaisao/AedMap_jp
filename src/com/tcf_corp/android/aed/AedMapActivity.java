@@ -53,8 +53,6 @@ public class AedMapActivity extends MapActivity {
 	ToggleButton wifiButton;
 	private WifiManager wifi;
 
-	// private Button button;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -312,8 +310,8 @@ public class AedMapActivity extends MapActivity {
 		AsyncTaskCallback<List<MarkerItem>> callback = new AsyncTaskCallback<List<MarkerItem>>() {
 
 			@Override
-			public void onSuccess(List<MarkerItem> narkerList) {
-				aedOverlay.setMarkerList(narkerList);
+			public void onSuccess(List<MarkerItem> markerList) {
+				aedOverlay.setMarkerList(markerList);
 			}
 
 			@Override
