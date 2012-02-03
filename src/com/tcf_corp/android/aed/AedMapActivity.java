@@ -38,7 +38,7 @@ public class AedMapActivity extends MapActivity {
 
 	private static final String SAVE_ZOOM_LEVEL = "zoom_level";
 
-	// private final Context context = this;
+	private final Context context = getApplicationContext();
 	private MapController mapController;
 	private CustomMapView mapView;
 	private MyLocationOverlay myLocationOverlay;
@@ -189,23 +189,18 @@ public class AedMapActivity extends MapActivity {
 			public void run() {
 				GeoPoint gp = myLocationOverlay.getMyLocation();
 				moveToCurrent(gp);
-				// getMarkers(gp.getLatitudeE6(), gp.getLongitudeE6());
 			}
 		});
 		// LocationManagerからのLocation update取得
 		myLocationOverlay.enableMyLocation();
 
 		// OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
-		// mMyItemizedOverlay = new
-		// MyItemizedOverlay(getResources().getDrawable(
-		// R.drawable.ic_aed), this);
 		Drawable aedMarker = getResources().getDrawable(R.drawable.ic_aed);
 		aedOverlay = new AedOverlay(aedMarker, mapView);
 
 		// overlayのlistにMyLocationOverlayを登録
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.add(myLocationOverlay);
-		// overlays.add(mMyItemizedOverlay);
 		overlays.add(aedOverlay);
 	}
 
@@ -216,7 +211,6 @@ public class AedMapActivity extends MapActivity {
 		// overlayのlistからMyLocationOverlayを削除
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.remove(myLocationOverlay);
-		// overlays.remove(mMyItemizedOverlay);
 		overlays.remove(aedOverlay);
 	}
 
@@ -255,7 +249,7 @@ public class AedMapActivity extends MapActivity {
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		lm.removeUpdates(requestLocation);
 		if (DEBUG) {
-			Toast.makeText(this, "Remove update", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "Remove update", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -278,6 +272,11 @@ public class AedMapActivity extends MapActivity {
 				+ ",longitude:" + geoPoint.getLongitudeE6() / 1E6);
 	}
 
+	/**
+	 * 現在地の精度にあわせてZoom Levelを変更します.
+	 * 
+	 * @param accuracy
+	 */
 	private void setZoomLevel(float accuracy) {
 		LogUtil.d(TAG,
 				"accuracy=" + accuracy + ",zoom=" + mapView.getZoomLevel());
