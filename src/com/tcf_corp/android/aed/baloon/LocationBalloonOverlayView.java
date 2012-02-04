@@ -17,6 +17,7 @@ import com.tcf_corp.android.aed.http.MarkerItem;
  * A view representing a MapView marker information balloon.
  * 
  * @author Jeff Gilfelt
+ * @author yamada
  * 
  */
 public class LocationBalloonOverlayView<Item extends MarkerItem> extends
@@ -110,35 +111,35 @@ public class LocationBalloonOverlayView<Item extends MarkerItem> extends
 			title.setText(item.getTitle());
 		} else {
 			title.setText("");
-			title.setVisibility(INVISIBLE);
+			title.setVisibility(GONE);
 		}
 		if (item.getSnippet() != null) {
 			snippet.setVisibility(VISIBLE);
 			snippet.setText(item.getSnippet());
 		} else {
 			snippet.setText("");
-			snippet.setVisibility(INVISIBLE);
+			snippet.setVisibility(GONE);
 		}
 		if (item.able != null) {
 			able.setVisibility(VISIBLE);
 			able.setText(item.able);
 		} else {
 			able.setText("");
-			able.setVisibility(INVISIBLE);
+			able.setVisibility(GONE);
 		}
 		if (item.src != null) {
 			src.setVisibility(VISIBLE);
 			src.setText(item.src);
 		} else {
 			src.setText("");
-			src.setVisibility(INVISIBLE);
+			src.setVisibility(GONE);
 		}
 		if (item.spl != null) {
 			spl.setVisibility(VISIBLE);
 			spl.setText(item.spl);
 		} else {
 			spl.setText("");
-			spl.setVisibility(INVISIBLE);
+			spl.setVisibility(GONE);
 		}
 	}
 

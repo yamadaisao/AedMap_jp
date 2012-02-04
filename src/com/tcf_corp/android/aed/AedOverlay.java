@@ -9,6 +9,11 @@ import com.google.android.maps.MapView;
 import com.tcf_corp.android.aed.baloon.LocationBalloonOverlay;
 import com.tcf_corp.android.aed.http.MarkerItem;
 
+/**
+ * AEDアイコンのオーバーレイ
+ * 
+ * @author yamadaisao
+ */
 public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
 
     private static final int DEFAULT_LIMIT = 600;
@@ -16,7 +21,7 @@ public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
 
     public AedOverlay(Drawable defaultMarker, MapView mapView) {
         super(defaultMarker, mapView);
-        // 呼び出しておかないとNullPointer
+        // 呼び出しておかないとNullPointer Exception
         populate();
         // バルーンの位置はだいたいこのくらい
         int mh = defaultMarker.getMinimumHeight();
@@ -37,6 +42,10 @@ public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
             }
         }
         populate();
+    }
+
+    public List<MarkerItem> getMarkerList() {
+        return markerList;
     }
 
     @Override

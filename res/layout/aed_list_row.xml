@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="2dip" android:clickable="true">
+
+    <TextView
+        android:id="@+id/row_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="タイトル"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/row_snippet"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_weight="4"
+            android:text="住所"
+            android:textAppearance="?android:attr/textAppearanceSmall" android:layout_gravity="left|center_vertical"/>
+
+        <TextView
+            android:id="@+id/row_dist"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:text="距離"
+            android:textAppearance="?android:attr/textAppearanceMedium" android:layout_gravity="right|center_vertical" android:layout_marginRight="8dip" android:gravity="right" android:layout_weight="1"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/row_able"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/row_src"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:text="ソース"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/row_spl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:text="特記事項"
+        android:textAppearance="?android:attr/textAppearanceSmall" android:autoLink="phone"/>
+
+</LinearLayout>
