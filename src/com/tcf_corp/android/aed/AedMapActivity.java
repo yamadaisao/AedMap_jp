@@ -131,6 +131,14 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // tab間の共有データの復元
+        SharedData data = SharedData.getInstance();
+        currentGeoPoint = data.getGeoPoint();
+        if (aedOverlay != null) {
+            aedOverlay.setMarkerList(data.getMarkerList());
+        }
+        moveCurrent.setChecked(data.isMoveCurrent());
+
         setOverlays();
         setIntentFilterToReceiver();
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -146,6 +154,7 @@ public class AedMapActivity extends MapActivity {
     protected void onPause() {
         super.onPause();
 
+        // tab間の共有データの保存
         SharedData data = SharedData.getInstance();
         data.setGeoPoint(currentGeoPoint);
         data.setMarkerList(aedOverlay.getMarkerList());
