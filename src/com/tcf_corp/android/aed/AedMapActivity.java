@@ -15,6 +15,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.ToggleButton;
 
 import com.google.android.maps.GeoPoint;
@@ -50,6 +51,7 @@ public class AedMapActivity extends MapActivity {
 
     ToggleButton gpsButton;
     ToggleButton wifiButton;
+    private ProgressBar progress;
     private WifiManager wifi;
 
     @Override
@@ -112,6 +114,9 @@ public class AedMapActivity extends MapActivity {
                 zoomLevel = newZoom;
             }
         });
+        progress = (ProgressBar) findViewById(R.id.progress);
+        progress.setVisibility(View.INVISIBLE);
+        progress.setIndeterminate(true);
     }
 
     @Override
@@ -320,15 +325,18 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onSuccess(List<MarkerItem> markerList) {
+                progress.setVisibility(View.INVISIBLE);
                 aedOverlay.setMarkerList(markerList);
             }
 
             @Override
             public void onFailed(int resId, String... args) {
+                progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onAppFailed(List<MarkerItem> data) {
+                progress.setVisibility(View.INVISIBLE);
             }
         };
         MarkerItemQuery query = new MarkerItemQuery();
@@ -336,6 +344,7 @@ public class AedMapActivity extends MapActivity {
         query.setPoint(geoPoint);
         MarkerQueryAsyncTask task = new MarkerQueryAsyncTask(callback);
         task.execute(query);
+        progress.setVisibility(View.VISIBLE);
     }
 
     public class LocationUpdateReceiver extends BroadcastReceiver {

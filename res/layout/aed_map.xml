@@ -29,7 +29,9 @@
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_center" android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+                android:src="@drawable/ic_center"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -42,13 +44,24 @@
                     android:id="@+id/button_gps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ToggleButton" android:textOn="GPS ON" android:textOff="GPS OFF"/>
+                    android:text="ToggleButton"
+                    android:textOn="GPS ON"
+                    android:textOff="GPS OFF"/>
 
                 <ToggleButton
                     android:id="@+id/button_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ToggleButton" android:textOff="Wi-Fi OFF" android:textOn="Wi-Fi ON"/>
+                    android:text="ToggleButton"
+                    android:textOff="Wi-Fi OFF"
+                    android:textOn="Wi-Fi ON"/>
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true" />
 
             </LinearLayout>
 

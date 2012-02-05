@@ -29,25 +29,26 @@ public final class R {
     public static final class id {
         public static final int LinearLayout1=0x7f040004;
         public static final int aed_list_view=0x7f040002;
-        public static final int balloon_item_able=0x7f04001b;
-        public static final int balloon_item_snippet=0x7f04001a;
-        public static final int balloon_item_spl=0x7f04001d;
-        public static final int balloon_item_src=0x7f04001c;
-        public static final int balloon_item_title=0x7f040019;
-        public static final int balloon_main_layout=0x7f040018;
+        public static final int balloon_item_able=0x7f04001c;
+        public static final int balloon_item_snippet=0x7f04001b;
+        public static final int balloon_item_spl=0x7f04001e;
+        public static final int balloon_item_src=0x7f04001d;
+        public static final int balloon_item_title=0x7f04001a;
+        public static final int balloon_main_layout=0x7f040019;
         public static final int button_gps=0x7f04000f;
-        public static final int button_my_location=0x7f040016;
-        public static final int button_search_address=0x7f040017;
+        public static final int button_my_location=0x7f040017;
+        public static final int button_search_address=0x7f040018;
         public static final int button_wifi=0x7f040010;
         public static final int frameLayout1=0x7f04000a;
         public static final int imageView1=0x7f04000d;
-        public static final int linearLayout1=0x7f040011;
-        public static final int linearLayout2=0x7f040015;
-        public static final int linearLayout3=0x7f040012;
+        public static final int linearLayout1=0x7f040012;
+        public static final int linearLayout2=0x7f040016;
+        public static final int linearLayout3=0x7f040013;
         public static final int linearLayout4=0x7f04000e;
         public static final int location_balloon_close=0x7f040001;
         public static final int location_balloon_inner_layout=0x7f040000;
         public static final int mapview=0x7f04000b;
+        public static final int progress=0x7f040011;
         public static final int relativeLayout1=0x7f04000c;
         public static final int row_able=0x7f040007;
         public static final int row_dist=0x7f040006;
@@ -55,11 +56,11 @@ public final class R {
         public static final int row_spl=0x7f040009;
         public static final int row_src=0x7f040008;
         public static final int row_title=0x7f040003;
-        public static final int tab_item_icon=0x7f04001f;
-        public static final int tab_item_separator=0x7f04001e;
-        public static final int tab_item_text=0x7f040020;
-        public static final int textView1=0x7f040013;
-        public static final int text_address=0x7f040014;
+        public static final int tab_item_icon=0x7f040020;
+        public static final int tab_item_separator=0x7f04001f;
+        public static final int tab_item_text=0x7f040021;
+        public static final int textView1=0x7f040014;
+        public static final int text_address=0x7f040015;
     }
     public static final class layout {
         public static final int aed_list=0x7f030000;
