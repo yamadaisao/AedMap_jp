@@ -1,5 +1,6 @@
 package com.tcf_corp.android.aed;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.app.PendingIntent;
@@ -13,9 +14,12 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.android.maps.GeoPoint;
@@ -53,6 +57,7 @@ public class AedMapActivity extends MapActivity {
     ToggleButton wifiButton;
     private ProgressBar progress;
     private WifiManager wifi;
+    TextView address;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +102,7 @@ public class AedMapActivity extends MapActivity {
                 }
             }
         });
+        address = (TextView) findViewById(R.id.text_address);
 
         mapView.setPanListener(new CustomMapView.PanListener() {
 
@@ -104,6 +110,7 @@ public class AedMapActivity extends MapActivity {
             public void onCenterChange(CustomMapView mapView, GeoPoint newGeoPoint,
                     GeoPoint oldGeoPoint) {
                 getMarkers(newGeoPoint);
+                getAddress(newGeoPoint);
             }
         });
 
@@ -153,6 +160,7 @@ public class AedMapActivity extends MapActivity {
         LogUtil.d(TAG, "isWifiEnabled:" + isWifiEnabled);
         wifiButton.setChecked(isWifiEnabled);
         getMarkers(mapView.getMapCenter());
+        getAddress(mapView.getMapCenter());
     }
 
     @Override
@@ -278,10 +286,12 @@ public class AedMapActivity extends MapActivity {
         if (moveCurrent.isChecked() == true) {
             mapController.animateTo(geoPoint);
         }
-        LogUtil.v(
-                TAG,
-                "latitude:" + geoPoint.getLatitudeE6() / 1E6 + ",longitude:"
-                        + geoPoint.getLongitudeE6() / 1E6);
+        if (DEBUG) {
+            LogUtil.v(
+                    TAG,
+                    "latitude:" + geoPoint.getLatitudeE6() / 1E6 + ",longitude:"
+                            + geoPoint.getLongitudeE6() / 1E6);
+        }
     }
 
     /**
@@ -325,8 +335,8 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onSuccess(List<MarkerItem> markerList) {
-                progress.setVisibility(View.INVISIBLE);
                 aedOverlay.setMarkerList(markerList);
+                progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -339,12 +349,35 @@ public class AedMapActivity extends MapActivity {
                 progress.setVisibility(View.INVISIBLE);
             }
         };
+        progress.setVisibility(View.VISIBLE);
+
         MarkerItemQuery query = new MarkerItemQuery();
         query.setUrl("http://aedm.jp/toxml.php");
         query.setPoint(geoPoint);
         MarkerQueryAsyncTask task = new MarkerQueryAsyncTask(callback);
         task.execute(query);
-        progress.setVisibility(View.VISIBLE);
+    }
+
+    private void getAddress(GeoPoint geoPoint) {
+        // 場所名を文字列で取得する
+        String str_address = null;
+        try {
+            // 住所を取得
+            double latitude = geoPoint.getLatitudeE6() / 1E6;
+            double longitude = geoPoint.getLongitudeE6() / 1E6;
+
+            str_address = GeocodeManager.point2address(latitude, longitude, context);
+        } catch (IOException e) {
+            str_address = "座標情報から住所へのデコードに失敗";
+        }
+
+        // 住所をメッセージに持たせて
+        // ハンドラにUIを書き換えさせる
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putString("str_address", str_address);
+        message.setData(bundle);
+        ui_handler.sendMessage(message);
     }
 
     public class LocationUpdateReceiver extends BroadcastReceiver {
@@ -392,15 +425,15 @@ public class AedMapActivity extends MapActivity {
             // GpsStatus.Listenerで呼ばれる
             switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
-                LogUtil.d(TAG, "GPS_EVENT_STARTED");
+                LogUtil.v(TAG, "GPS_EVENT_STARTED");
                 gpsButton.setChecked(true);
                 break;
             case GpsStatus.GPS_EVENT_STOPPED:
-                LogUtil.d(TAG, "GPS_EVENT_STOPPED");
+                LogUtil.v(TAG, "GPS_EVENT_STOPPED");
                 gpsButton.setChecked(false);
                 break;
             case GpsStatus.GPS_EVENT_FIRST_FIX:
-                LogUtil.d(TAG, "GPS_EVENT_FIRST_FIX");
+                LogUtil.v(TAG, "GPS_EVENT_FIRST_FIX");
                 break;
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 // LocationManager lm = (LocationManager)
@@ -412,5 +445,15 @@ public class AedMapActivity extends MapActivity {
             }
         }
 
+    };
+
+    // ラベルを書き換えるためのハンドラ
+    final Handler ui_handler = new Handler() {
+        // @Override
+        @Override
+        public void handleMessage(Message msg) {
+            String str_address = msg.getData().get("str_address").toString();
+            address.setText(str_address);
+        }
     };
 }

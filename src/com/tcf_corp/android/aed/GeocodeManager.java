@@ -9,32 +9,33 @@ import android.location.Address;
 import android.location.Geocoder;
 
 public class GeocodeManager {
-	// 座標から住所文字列へ変換
-	public static String point2address(double latitude, double longitude,
-			Context context) throws IOException {
-		String address_string = new String();
+    public static final String TAG = GeocodeManager.class.getSimpleName();
 
-		// 変換実行
-		Geocoder coder = new Geocoder(context, Locale.JAPAN);
-		List<Address> list_address = coder.getFromLocation(latitude, longitude,
-				1);
+    // 座標から住所文字列へ変換
+    public static String point2address(double latitude, double longitude, Context context)
+            throws IOException {
+        String address_string = new String();
 
-		if (!list_address.isEmpty()) {
+        // 変換実行
+        Geocoder coder = new Geocoder(context, Locale.JAPAN);
+        List<Address> list_address = coder.getFromLocation(latitude, longitude, 1);
 
-			// 変換成功時は，最初の変換候補を取得
-			Address address = list_address.get(0);
-			StringBuffer sb = new StringBuffer();
+        if (!list_address.isEmpty()) {
 
-			// adressの大区分から小区分までを改行で全結合
-			String s;
-			for (int i = 0; (s = address.getAddressLine(i)) != null; i++) {
-				sb.append(s + "\n");
-			}
+            // 変換成功時は，最初の変換候補を取得
+            Address address = list_address.get(0);
+            StringBuffer sb = new StringBuffer();
 
-			address_string = sb.toString();
-		}
+            // adressの大区分から小区分までを改行で全結合
+            String s;
+            for (int i = 1; (s = address.getAddressLine(i)) != null; i++) {
+                sb.append(s);
+            }
 
-		return address_string;
-	}
+            address_string = sb.toString();
+        }
+
+        return address_string;
+    }
 
 }
