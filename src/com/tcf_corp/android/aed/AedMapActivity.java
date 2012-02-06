@@ -28,8 +28,8 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.tcf_corp.android.aed.http.AsyncTaskCallback;
-import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.aed.http.MarkerItemQuery;
+import com.tcf_corp.android.aed.http.MarkerItemResult;
 import com.tcf_corp.android.aed.http.MarkerQueryAsyncTask;
 import com.tcf_corp.android.map.CustomMapView;
 import com.tcf_corp.android.util.LogUtil;
@@ -50,6 +50,7 @@ public class AedMapActivity extends MapActivity {
     private ToggleButton moveCurrent;
     // 現在のGeoPoint
     private GeoPoint currentGeoPoint;
+    private MarkerItemResult lastResult;
     // private GeoPoint lastGeoPoint;
     private int zoomLevel = 19;
 
@@ -109,7 +110,14 @@ public class AedMapActivity extends MapActivity {
             @Override
             public void onCenterChange(CustomMapView mapView, GeoPoint newGeoPoint,
                     GeoPoint oldGeoPoint) {
-                getMarkers(newGeoPoint);
+                int compLat = newGeoPoint.getLatitudeE6() + Constants.LATITUDE_1E6;
+                int compLng = newGeoPoint.getLongitudeE6() + Constants.LONGITUDE_1E6;
+
+                if (compLat < lastResult.minLatitude1E6 || compLat > lastResult.maxLatitude1E6
+                        || compLng < lastResult.minLongitude1E6
+                        || compLng > lastResult.maxLongitude1E6) {
+                    getMarkers(newGeoPoint);
+                }
                 getAddress(newGeoPoint);
             }
         });
@@ -146,8 +154,8 @@ public class AedMapActivity extends MapActivity {
         // tab間の共有データの復元
         SharedData data = SharedData.getInstance();
         currentGeoPoint = data.getGeoPoint();
-        if (aedOverlay != null) {
-            aedOverlay.setMarkerList(data.getMarkerList());
+        if (data.getLastResult() != null) {
+            aedOverlay.setMarkerList(data.getLastResult().markers);
         }
         moveCurrent.setChecked(data.isMoveCurrent());
 
@@ -170,7 +178,9 @@ public class AedMapActivity extends MapActivity {
         // tab間の共有データの保存
         SharedData data = SharedData.getInstance();
         data.setGeoPoint(currentGeoPoint);
-        data.setMarkerList(aedOverlay.getMarkerList());
+        if (data.getLastResult() != null) {
+            data.getLastResult().markers = aedOverlay.getMarkerList();
+        }
         data.setMoveCurrent(moveCurrent.isChecked());
 
         resetOverlays();
@@ -331,11 +341,12 @@ public class AedMapActivity extends MapActivity {
 
     private void getMarkers(GeoPoint geoPoint) {
         currentGeoPoint = geoPoint;
-        AsyncTaskCallback<List<MarkerItem>> callback = new AsyncTaskCallback<List<MarkerItem>>() {
+        AsyncTaskCallback<MarkerItemResult> callback = new AsyncTaskCallback<MarkerItemResult>() {
 
             @Override
-            public void onSuccess(List<MarkerItem> markerList) {
-                aedOverlay.setMarkerList(markerList);
+            public void onSuccess(MarkerItemResult result) {
+                lastResult = result;
+                aedOverlay.setMarkerList(result.markers);
                 progress.setVisibility(View.INVISIBLE);
             }
 
@@ -345,7 +356,7 @@ public class AedMapActivity extends MapActivity {
             }
 
             @Override
-            public void onAppFailed(List<MarkerItem> data) {
+            public void onAppFailed(MarkerItemResult result) {
                 progress.setVisibility(View.INVISIBLE);
             }
         };

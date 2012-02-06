@@ -3,8 +3,6 @@ package com.tcf_corp.android.aed.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.HttpResponse;
@@ -19,17 +17,18 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.google.android.maps.GeoPoint;
+import com.tcf_corp.android.aed.Constants;
 import com.tcf_corp.android.aed.R;
 import com.tcf_corp.android.util.LogUtil;
 
 public class MarkerQueryAsyncTask extends
-        AsyncTask<MarkerItemQuery, Integer, AsyncTaskResult<List<MarkerItem>>> {
+        AsyncTask<MarkerItemQuery, Integer, AsyncTaskResult<MarkerItemResult>> {
 
     private static final String TAG = MarkerQueryAsyncTask.class.getSimpleName();
 
-    private final AsyncTaskCallback<List<MarkerItem>> callback;
+    private final AsyncTaskCallback<MarkerItemResult> callback;
 
-    public MarkerQueryAsyncTask(AsyncTaskCallback<List<MarkerItem>> callback) {
+    public MarkerQueryAsyncTask(AsyncTaskCallback<MarkerItemResult> callback) {
         this.callback = callback;
     }
 
@@ -39,8 +38,8 @@ public class MarkerQueryAsyncTask extends
     }
 
     @Override
-    protected AsyncTaskResult<List<MarkerItem>> doInBackground(MarkerItemQuery... param) {
-        List<MarkerItem> markers = null;
+    protected AsyncTaskResult<MarkerItemResult> doInBackground(MarkerItemQuery... param) {
+        MarkerItemResult result = null;
 
         HttpResponse response = null;
         String url = String.format("%s?lat=%s&lng=%s", param[0].getUrl(), param[0].getLatitude(),
@@ -67,7 +66,7 @@ public class MarkerQueryAsyncTask extends
                 // ・XmlPullParser.TEXT
                 // ・XmlPullParser.END_TAG
                 // ・XmlPullParser.END_DOCUMENT
-                markers = new ArrayList<MarkerItem>();
+                result = new MarkerItemResult(param[0].getPoint());
                 for (int e = parser.getEventType(); e != XmlPullParser.END_DOCUMENT; e = parser
                         .next()) {
                     switch (e) {
@@ -79,6 +78,15 @@ public class MarkerQueryAsyncTask extends
                                         "lat")) * 1E6);
                                 int lng = (int) (Double.parseDouble(parser.getAttributeValue(null,
                                         "lng")) * 1E6);
+
+                                result.minLatitude1E6 = Math.min(result.minLatitude1E6, lat
+                                        + Constants.LATITUDE_1E6);
+                                result.minLongitude1E6 = Math.min(result.minLongitude1E6, lng
+                                        + Constants.LONGITUDE_1E6);
+                                result.maxLatitude1E6 = Math.max(result.maxLatitude1E6, lat
+                                        + Constants.LATITUDE_1E6);
+                                result.maxLongitude1E6 = Math.max(result.maxLongitude1E6, lng
+                                        + Constants.LONGITUDE_1E6);
                                 String name = parser.getAttributeValue(null, "name");
                                 String adr = parser.getAttributeValue(null, "adr");
 
@@ -88,7 +96,7 @@ public class MarkerQueryAsyncTask extends
                                 marker.src = parser.getAttributeValue(null, "src");
                                 marker.spl = parser.getAttributeValue(null, "spl");
                                 marker.time = parser.getAttributeValue(null, "time");
-                                markers.add(marker);
+                                result.markers.add(marker);
 
                             } else if ("markers".equals(parser.getName())) {
 
@@ -109,7 +117,7 @@ public class MarkerQueryAsyncTask extends
                 }
 
                 is.close();
-                return AsyncTaskResult.createNormalResult(markers);
+                return AsyncTaskResult.createNormalResult(result);
             default:
                 Log.e(TAG, "server error");
                 return AsyncTaskResult.createErrorResult(R.string.http_server_error);
@@ -135,7 +143,7 @@ public class MarkerQueryAsyncTask extends
     }
 
     @Override
-    protected void onPostExecute(AsyncTaskResult<List<MarkerItem>> result) {
+    protected void onPostExecute(AsyncTaskResult<MarkerItemResult> result) {
         if (result.isError()) {
             if (result.getResId() == 0) {
                 callback.onAppFailed(result.getResult());

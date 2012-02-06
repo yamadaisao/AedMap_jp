@@ -1,10 +1,7 @@
 package com.tcf_corp.android.aed;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.android.maps.GeoPoint;
-import com.tcf_corp.android.aed.http.MarkerItem;
+import com.tcf_corp.android.aed.http.MarkerItemResult;
 
 /**
  * Shared data between tabs.
@@ -17,7 +14,7 @@ public class SharedData {
     private static final SharedData instance = new SharedData();
 
     private GeoPoint geoPoint;
-    private List<MarkerItem> markerList;
+    private MarkerItemResult lastResult;
     private boolean moveCurrent;
 
     private SharedData() {
@@ -35,15 +32,12 @@ public class SharedData {
         this.geoPoint = geoPoint;
     }
 
-    public List<MarkerItem> getMarkerList() {
-        if (markerList == null) {
-            markerList = new ArrayList<MarkerItem>();
-        }
-        return markerList;
+    public MarkerItemResult getLastResult() {
+        return lastResult;
     }
 
-    public void setMarkerList(List<MarkerItem> markerList) {
-        this.markerList = markerList;
+    public void setLastResult(MarkerItemResult lastResult) {
+        this.lastResult = lastResult;
     }
 
     public boolean isMoveCurrent() {

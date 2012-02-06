@@ -35,14 +35,14 @@ public class AedListActivity extends Activity {
         super.onResume();
         SharedData data = SharedData.getInstance();
         GeoPoint current = data.getGeoPoint();
-        List<MarkerItem> list = data.getMarkerList();
+        List<MarkerItem> list = data.getLastResult().markers;
         for (MarkerItem item : list) {
             item.dist = MapUtil.getDistance(current, item.getPoint());
         }
         Collections.sort(list, new MarkerComparator());
         // TextView の autoLinkがある場合は、
         // getApplicationContextではなくthisを渡さないといけない.
-        listView.setAdapter(new AedAdapter(this, data.getMarkerList()));
+        listView.setAdapter(new AedAdapter(this, data.getLastResult().markers));
     }
 
     @Override
