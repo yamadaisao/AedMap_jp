@@ -110,12 +110,15 @@ public class AedMapActivity extends MapActivity {
             @Override
             public void onCenterChange(CustomMapView mapView, GeoPoint newGeoPoint,
                     GeoPoint oldGeoPoint) {
-                int compLat = newGeoPoint.getLatitudeE6() + Constants.LATITUDE_1E6;
-                int compLng = newGeoPoint.getLongitudeE6() + Constants.LONGITUDE_1E6;
+                int compLat = newGeoPoint.getLatitudeE6();
+                int compLng = newGeoPoint.getLongitudeE6();
 
                 if (compLat < lastResult.minLatitude1E6 || compLat > lastResult.maxLatitude1E6
                         || compLng < lastResult.minLongitude1E6
                         || compLng > lastResult.maxLongitude1E6) {
+                    LogUtil.v(TAG, String.format("lat=%d < %d < %d, lng=%d < %d < %d",
+                            lastResult.minLatitude1E6, compLat, lastResult.maxLatitude1E6,
+                            lastResult.minLongitude1E6, compLng, lastResult.maxLongitude1E6));
                     getMarkers(newGeoPoint);
                 }
                 getAddress(newGeoPoint);
@@ -165,7 +168,9 @@ public class AedMapActivity extends MapActivity {
         lm.addGpsStatusListener(gpsStatusLitener);
         requestLocationUpdates();
         boolean isWifiEnabled = wifi.isWifiEnabled();
-        LogUtil.d(TAG, "isWifiEnabled:" + isWifiEnabled);
+        if (DEBUG) {
+            LogUtil.v(TAG, "isWifiEnabled:" + isWifiEnabled);
+        }
         wifiButton.setChecked(isWifiEnabled);
         getMarkers(mapView.getMapCenter());
         getAddress(mapView.getMapCenter());
@@ -310,7 +315,9 @@ public class AedMapActivity extends MapActivity {
      * @param accuracy
      */
     private void setZoomLevel(float accuracy) {
-        LogUtil.d(TAG, "accuracy=" + accuracy + ",zoom=" + mapView.getZoomLevel());
+        if (DEBUG) {
+            LogUtil.d(TAG, "accuracy=" + accuracy + ",zoom=" + mapView.getZoomLevel());
+        }
         if (moveCurrent.isChecked()) {
             if (accuracy < 100) {
                 zoomLevel = 20;
@@ -345,6 +352,9 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onSuccess(MarkerItemResult result) {
+                // LogUtil.v(TAG, String.format("onSuccess:%d,%d",
+                // result.minLongitude1E6,
+                // result.maxLongitude1E6));
                 lastResult = result;
                 aedOverlay.setMarkerList(result.markers);
                 progress.setVisibility(View.INVISIBLE);
@@ -432,21 +442,18 @@ public class AedMapActivity extends MapActivity {
 
         @Override
         public void onGpsStatusChanged(int event) {
-            LogUtil.d(TAG, "onGpsStatusChanged...");
             // GpsStatus.Listenerで呼ばれる
             switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
-                LogUtil.v(TAG, "GPS_EVENT_STARTED");
                 gpsButton.setChecked(true);
                 break;
             case GpsStatus.GPS_EVENT_STOPPED:
-                LogUtil.v(TAG, "GPS_EVENT_STOPPED");
                 gpsButton.setChecked(false);
                 break;
             case GpsStatus.GPS_EVENT_FIRST_FIX:
-                LogUtil.v(TAG, "GPS_EVENT_FIRST_FIX");
                 break;
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+                gpsButton.setChecked(true);
                 // LocationManager lm = (LocationManager)
                 // getSystemService(Context.LOCATION_SERVICE);
                 // GpsStatus st = lm.getGpsStatus(null);

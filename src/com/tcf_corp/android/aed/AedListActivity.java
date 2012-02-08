@@ -35,6 +35,8 @@ public class AedListActivity extends Activity {
         super.onResume();
         SharedData data = SharedData.getInstance();
         GeoPoint current = data.getGeoPoint();
+
+        // TODO:null pointer Exception
         List<MarkerItem> list = data.getLastResult().markers;
         for (MarkerItem item : list) {
             item.dist = MapUtil.getDistance(current, item.getPoint());

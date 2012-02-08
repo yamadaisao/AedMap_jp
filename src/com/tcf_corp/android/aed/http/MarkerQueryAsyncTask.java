@@ -17,7 +17,6 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.google.android.maps.GeoPoint;
-import com.tcf_corp.android.aed.Constants;
 import com.tcf_corp.android.aed.R;
 import com.tcf_corp.android.util.LogUtil;
 
@@ -25,6 +24,7 @@ public class MarkerQueryAsyncTask extends
         AsyncTask<MarkerItemQuery, Integer, AsyncTaskResult<MarkerItemResult>> {
 
     private static final String TAG = MarkerQueryAsyncTask.class.getSimpleName();
+    private static final boolean DEBUG = false;
 
     private final AsyncTaskCallback<MarkerItemResult> callback;
 
@@ -49,13 +49,13 @@ public class MarkerQueryAsyncTask extends
             Locale locale = Locale.getDefault();
             get.addHeader("accept-language", locale.getLanguage());
 
+            // if (DEBUG) {
             LogUtil.v(TAG, "connect to '" + url + "'");
+            // }
             DefaultHttpClient httpClient = new DefaultHttpClient();
             response = httpClient.execute(get);
-            LogUtil.v(TAG, "execute");
 
             int status = response.getStatusLine().getStatusCode();
-            LogUtil.v(TAG, "status:" + status);
             switch (status) {
             case HttpStatus.SC_OK:
                 InputStream is = response.getEntity().getContent();
@@ -72,34 +72,29 @@ public class MarkerQueryAsyncTask extends
                     switch (e) {
                     case XmlPullParser.START_TAG:
                         try {
+                            // other tag : markers
                             if ("marker".equals(parser.getName())) {
                                 long id = Long.parseLong(parser.getAttributeValue(null, "id"));
-                                int lat = (int) (Double.parseDouble(parser.getAttributeValue(null,
-                                        "lat")) * 1E6);
-                                int lng = (int) (Double.parseDouble(parser.getAttributeValue(null,
-                                        "lng")) * 1E6);
+                                long lat = (long) (Double.parseDouble(parser.getAttributeValue(
+                                        null, "lat")) * 1E6);
+                                long lng = (long) (Double.parseDouble(parser.getAttributeValue(
+                                        null, "lng")) * 1E6);
 
-                                result.minLatitude1E6 = Math.min(result.minLatitude1E6, lat
-                                        + Constants.LATITUDE_1E6);
-                                result.minLongitude1E6 = Math.min(result.minLongitude1E6, lng
-                                        + Constants.LONGITUDE_1E6);
-                                result.maxLatitude1E6 = Math.max(result.maxLatitude1E6, lat
-                                        + Constants.LATITUDE_1E6);
-                                result.maxLongitude1E6 = Math.max(result.maxLongitude1E6, lng
-                                        + Constants.LONGITUDE_1E6);
+                                // 日本限定なので、西経・南緯は気にしない.
+                                result.minLatitude1E6 = Math.min(result.minLatitude1E6, lat);
+                                result.minLongitude1E6 = Math.min(result.minLongitude1E6, lng);
+                                result.maxLatitude1E6 = Math.max(result.maxLatitude1E6, lat);
+                                result.maxLongitude1E6 = Math.max(result.maxLongitude1E6, lng);
                                 String name = parser.getAttributeValue(null, "name");
                                 String adr = parser.getAttributeValue(null, "adr");
 
-                                MarkerItem marker = new MarkerItem(id, new GeoPoint(lat, lng),
-                                        name, adr);
+                                MarkerItem marker = new MarkerItem(id, new GeoPoint((int) lat,
+                                        (int) lng), name, adr);
                                 marker.able = parser.getAttributeValue(null, "able");
                                 marker.src = parser.getAttributeValue(null, "src");
                                 marker.spl = parser.getAttributeValue(null, "spl");
                                 marker.time = parser.getAttributeValue(null, "time");
                                 result.markers.add(marker);
-
-                            } else if ("markers".equals(parser.getName())) {
-
                             }
                         } catch (NumberFormatException ex) {
                             Log.e(TAG, "NumberFormatException");
@@ -117,6 +112,13 @@ public class MarkerQueryAsyncTask extends
                 }
 
                 is.close();
+                // 少しだけ範囲を狭くする
+                result.minLatitude1E6 += (param[0].getPoint().getLatitudeE6() - result.minLatitude1E6) / 3;
+                result.minLongitude1E6 += (param[0].getPoint().getLongitudeE6() - result.minLongitude1E6) / 3;
+                result.maxLatitude1E6 -= (result.maxLatitude1E6 - param[0].getPoint()
+                        .getLatitudeE6()) / 3;
+                result.maxLongitude1E6 -= (result.maxLongitude1E6 - param[0].getPoint()
+                        .getLongitudeE6()) / 3;
                 return AsyncTaskResult.createNormalResult(result);
             default:
                 Log.e(TAG, "server error");
@@ -151,6 +153,10 @@ public class MarkerQueryAsyncTask extends
                 callback.onFailed(result.getResId(), (String[]) null);
             }
         } else {
+            LogUtil.v(
+                    TAG,
+                    String.format("onPostExecute:%d,%d", result.getResult().minLongitude1E6,
+                            result.getResult().maxLongitude1E6));
             callback.onSuccess(result.getResult());
         }
     }
