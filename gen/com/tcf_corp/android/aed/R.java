@@ -77,6 +77,7 @@ public final class R {
         public static final int button_search_address=0x7f050006;
         public static final int current_location=0x7f050004;
         public static final int http_illegal_state=0x7f05000f;
+        public static final int http_io_error=0x7f050011;
         public static final int http_network_error=0x7f05000d;
         public static final int http_parse_error=0x7f050010;
         public static final int http_server_error=0x7f05000a;

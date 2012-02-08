@@ -49,9 +49,9 @@ public class MarkerQueryAsyncTask extends
             Locale locale = Locale.getDefault();
             get.addHeader("accept-language", locale.getLanguage());
 
-            // if (DEBUG) {
-            LogUtil.v(TAG, "connect to '" + url + "'");
-            // }
+            if (DEBUG) {
+                LogUtil.v(TAG, "connect to '" + url + "'");
+            }
             DefaultHttpClient httpClient = new DefaultHttpClient();
             response = httpClient.execute(get);
 
@@ -136,7 +136,7 @@ public class MarkerQueryAsyncTask extends
         } catch (IOException e) {
             Log.e(TAG, "io error");
             e.printStackTrace();
-            return AsyncTaskResult.createErrorResult(R.string.http_unkown_error);
+            return AsyncTaskResult.createErrorResult(R.string.http_io_error);
         } catch (XmlPullParserException e) {
             Log.e(TAG, "XmlPullParserException");
             e.printStackTrace();
@@ -153,10 +153,6 @@ public class MarkerQueryAsyncTask extends
                 callback.onFailed(result.getResId(), (String[]) null);
             }
         } else {
-            LogUtil.v(
-                    TAG,
-                    String.format("onPostExecute:%d,%d", result.getResult().minLongitude1E6,
-                            result.getResult().maxLongitude1E6));
             callback.onSuccess(result.getResult());
         }
     }

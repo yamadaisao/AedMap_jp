@@ -17,5 +17,6 @@
     <string name="http_unkown_error">不明なエラーが発生しました</string>
     <string name="http_illegal_state">URLのサーバ記述がありません</string>
     <string name="http_parse_error">データの解析に失敗しました</string>
+    <string name="http_io_error">サーバーに接続できません\n電波ガ届く所に来てください</string>
         
 </resources>
