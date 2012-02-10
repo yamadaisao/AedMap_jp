@@ -135,6 +135,13 @@ public class AedMapActivity extends MapActivity {
                 zoomLevel = newZoom;
             }
         });
+        mapView.setTouchListener(new CustomMapView.TouchListener() {
+
+            @Override
+            public void onActionDown() {
+                moveCurrent.setChecked(false);
+            }
+        });
         progress = (ProgressBar) findViewById(R.id.progress);
         progress.setVisibility(View.INVISIBLE);
         progress.setIndeterminate(true);
@@ -392,7 +399,7 @@ public class AedMapActivity extends MapActivity {
 
             str_address = GeocodeManager.point2address(latitude, longitude, context);
         } catch (IOException e) {
-            str_address = "座標情報から住所へのデコードに失敗";
+            str_address = getString(R.string.msg_location_fail);
         }
 
         // 住所をメッセージに持たせて
