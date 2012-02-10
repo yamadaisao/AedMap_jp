@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <FrameLayout
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/frameLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_height="fill_parent" >
 
-        <com.tcf_corp.android.map.CustomMapView
-            android:id="@+id/mapview"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:apiKey="@string/map_api_key"
-            android:clickable="true"
-            android:enabled="true" >
-        </com.tcf_corp.android.map.CustomMapView>
+            android:orientation="vertical" >
+
+            <com.tcf_corp.android.map.CustomMapView
+                android:id="@+id/mapview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:apiKey="@string/map_api_key"
+                android:clickable="true" >
+            </com.tcf_corp.android.map.CustomMapView>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
@@ -29,92 +29,72 @@
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_center"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_center" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" android:layout_alignParentRight="true" android:layout_alignParentTop="true"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true">
-
+                android:layout_height="wrap_content" >
+
                 <ToggleButton
                     android:id="@+id/button_gps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ToggleButton"
-                    android:textOn="GPS ON"
-                    android:textOff="GPS OFF"/>
-
+                    android:textOff="GPS OFF"
+                    android:textOn="GPS ON" />
+
                 <ToggleButton
                     android:id="@+id/button_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ToggleButton"
                     android:textOff="Wi-Fi OFF"
-                    android:textOn="Wi-Fi ON"/>
-
-                <ProgressBar
-                    android:id="@+id/progress"
-                    style="?android:attr/progressBarStyle"
+                    android:textOn="Wi-Fi ON" />
+
+                <ToggleButton
+                    android:id="@+id/button_my_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:indeterminate="true" />
-
+                    android:text="@string/button_my_location"
+                    android:textOff="@string/button_my_location"
+                    android:textOn="@string/button_my_location" />
             </LinearLayout>
 
-        </RelativeLayout>
-
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_location"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <TextView
-                android:id="@+id/text_address"
+            <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_location"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:layout_height="wrap_content" android:background="@drawable/address_background">
 
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_location"
+                    android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/text_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_location"
+                    android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/white"/>
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <ToggleButton
-                android:id="@+id/button_my_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_my_location" android:layout_gravity="center_vertical" android:textOn="@string/button_my_location" android:textOff="@string/button_my_location"/>
-
-            <Button
-                android:id="@+id/button_search_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_search_address" android:layout_weight="1" android:layout_gravity="center_vertical"/>
-
-        </LinearLayout>
-    </LinearLayout>
-
-</LinearLayout>
+    </FrameLayout>

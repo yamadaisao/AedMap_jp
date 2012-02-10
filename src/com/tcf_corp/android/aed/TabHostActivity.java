@@ -23,7 +23,11 @@ public class TabHostActivity extends TabActivity {
         host.addTab(createTabSpec(host, AedMapActivity.class, 0, r.getString(R.string.tab_map),
                 true));
         host.addTab(createTabSpec(host, AedListActivity.class, 0, r.getString(R.string.tab_list),
-                true));
+                false));
+        // TabSpec tab = createTabSpec(host, AedMapActivity.class, 0,
+        // r.getString(R.string.tab_edit),
+        // false);
+        // host.addTab(tab);
     }
 
     /**

@@ -3,7 +3,7 @@
     <string name="app_name">AEDマップ.jp</string>
     <string name="map_api_key">0MMOEhZjjditqYMOnN5bwp_kApvCgcXNmM8j-Ow</string>
     <string name="tab_map">AEDマップ</string>
-    <string name="tab_list">AEDリスト</string>
+    <string name="tab_list">AEDリスト</string><string name="tab_edit">AED登録</string>
     <string name="current_location">現在地</string>
     <string name="button_my_location">現在地</string>
     <string name="button_search_address">住所検索</string>
@@ -18,5 +18,6 @@
     <string name="http_illegal_state">URLのサーバ記述がありません</string>
     <string name="http_parse_error">データの解析に失敗しました</string>
     <string name="http_io_error">サーバーに接続できません\n電波ガ届く所に来てください</string>
+    
         
 </resources>

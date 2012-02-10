@@ -42,23 +42,23 @@ public class AedMapActivity extends MapActivity {
 
     private static final String SAVE_ZOOM_LEVEL = "zoom_level";
 
-    private Context context;
-    private MapController mapController;
-    private CustomMapView mapView;
-    private MyLocationOverlay myLocationOverlay;
-    private AedOverlay aedOverlay;
-    private ToggleButton moveCurrent;
+    protected Context context;
+    protected MapController mapController;
+    protected CustomMapView mapView;
+    protected MyLocationOverlay myLocationOverlay;
+    protected AedOverlay aedOverlay;
+    protected ToggleButton moveCurrent;
     // 現在のGeoPoint
-    private GeoPoint currentGeoPoint;
-    private MarkerItemResult lastResult;
+    protected GeoPoint currentGeoPoint;
+    protected MarkerItemResult lastResult;
     // private GeoPoint lastGeoPoint;
-    private int zoomLevel = 19;
+    protected int zoomLevel = 19;
 
-    ToggleButton gpsButton;
-    ToggleButton wifiButton;
-    private ProgressBar progress;
-    private WifiManager wifi;
-    TextView address;
+    protected ToggleButton gpsButton;
+    protected ToggleButton wifiButton;
+    protected ProgressBar progress;
+    protected WifiManager wifi;
+    protected TextView address;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +113,9 @@ public class AedMapActivity extends MapActivity {
                 int compLat = newGeoPoint.getLatitudeE6();
                 int compLng = newGeoPoint.getLongitudeE6();
 
+                if (lastResult == null) {
+                    lastResult = new MarkerItemResult(newGeoPoint);
+                }
                 if (compLat < lastResult.minLatitude1E6 || compLat > lastResult.maxLatitude1E6
                         || compLng < lastResult.minLongitude1E6
                         || compLng > lastResult.maxLongitude1E6) {
@@ -398,7 +401,7 @@ public class AedMapActivity extends MapActivity {
         Bundle bundle = new Bundle();
         bundle.putString("str_address", str_address);
         message.setData(bundle);
-        ui_handler.sendMessage(message);
+        addrhandler.sendMessage(message);
     }
 
     public class LocationUpdateReceiver extends BroadcastReceiver {
@@ -451,6 +454,7 @@ public class AedMapActivity extends MapActivity {
                 gpsButton.setChecked(false);
                 break;
             case GpsStatus.GPS_EVENT_FIRST_FIX:
+                gpsButton.setChecked(true);
                 break;
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 gpsButton.setChecked(true);
@@ -466,7 +470,7 @@ public class AedMapActivity extends MapActivity {
     };
 
     // ラベルを書き換えるためのハンドラ
-    final Handler ui_handler = new Handler() {
+    final Handler addrhandler = new Handler() {
         // @Override
         @Override
         public void handleMessage(Message msg) {
