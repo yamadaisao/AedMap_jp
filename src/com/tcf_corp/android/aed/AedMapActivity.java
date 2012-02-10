@@ -50,7 +50,8 @@ public class AedMapActivity extends MapActivity {
     protected ToggleButton moveCurrent;
     // 現在のGeoPoint
     protected GeoPoint currentGeoPoint;
-    protected MarkerItemResult lastResult;
+    private final SharedData sharedData = SharedData.getInstance();
+    // protected MarkerItemResult lastResult;
     // private GeoPoint lastGeoPoint;
     protected int zoomLevel = 19;
 
@@ -113,9 +114,10 @@ public class AedMapActivity extends MapActivity {
                 int compLat = newGeoPoint.getLatitudeE6();
                 int compLng = newGeoPoint.getLongitudeE6();
 
-                if (lastResult == null) {
-                    lastResult = new MarkerItemResult(newGeoPoint);
+                if (sharedData.getLastResult() == null) {
+                    sharedData.setLastResult(new MarkerItemResult(newGeoPoint));
                 }
+                MarkerItemResult lastResult = sharedData.getLastResult();
                 if (compLat < lastResult.minLatitude1E6 || compLat > lastResult.maxLatitude1E6
                         || compLng < lastResult.minLongitude1E6
                         || compLng > lastResult.maxLongitude1E6) {
@@ -362,10 +364,7 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onSuccess(MarkerItemResult result) {
-                // LogUtil.v(TAG, String.format("onSuccess:%d,%d",
-                // result.minLongitude1E6,
-                // result.maxLongitude1E6));
-                lastResult = result;
+                sharedData.setLastResult(result);
                 aedOverlay.setMarkerList(result.markers);
                 progress.setVisibility(View.INVISIBLE);
             }
