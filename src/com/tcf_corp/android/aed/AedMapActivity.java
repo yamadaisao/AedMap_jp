@@ -32,6 +32,7 @@ import com.tcf_corp.android.aed.http.MarkerItemQuery;
 import com.tcf_corp.android.aed.http.MarkerItemResult;
 import com.tcf_corp.android.aed.http.MarkerQueryAsyncTask;
 import com.tcf_corp.android.map.CustomMapView;
+import com.tcf_corp.android.util.GeocodeManager;
 import com.tcf_corp.android.util.LogUtil;
 
 public class AedMapActivity extends MapActivity {
@@ -121,9 +122,11 @@ public class AedMapActivity extends MapActivity {
                 if (compLat < lastResult.minLatitude1E6 || compLat > lastResult.maxLatitude1E6
                         || compLng < lastResult.minLongitude1E6
                         || compLng > lastResult.maxLongitude1E6) {
-                    LogUtil.v(TAG, String.format("lat=%d < %d < %d, lng=%d < %d < %d",
-                            lastResult.minLatitude1E6, compLat, lastResult.maxLatitude1E6,
-                            lastResult.minLongitude1E6, compLng, lastResult.maxLongitude1E6));
+                    if (DEBUG) {
+                        LogUtil.v(TAG, String.format("lat=%d < %d < %d, lng=%d < %d < %d",
+                                lastResult.minLatitude1E6, compLat, lastResult.maxLatitude1E6,
+                                lastResult.minLongitude1E6, compLng, lastResult.maxLongitude1E6));
+                    }
                     getMarkers(newGeoPoint);
                 }
                 getAddress(newGeoPoint);
@@ -283,7 +286,9 @@ public class AedMapActivity extends MapActivity {
         for (String providerName : lm.getAllProviders()) {
             if (lm.isProviderEnabled(providerName)) {
                 lm.requestLocationUpdates(providerName, 0, 0, requestLocation);
-                LogUtil.d(TAG, "Provider: " + providerName);
+                if (DEBUG) {
+                    LogUtil.d(TAG, "Provider: " + providerName);
+                }
             }
         }
     }

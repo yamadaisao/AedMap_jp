@@ -6,18 +6,20 @@ import com.google.android.maps.GeoPoint;
 
 public class MapUtil {
 
+    /**
+     * 2転換の距離をメートル単位で算出します.
+     * <p>
+     * 誤差があるとの話もありますが、アプリケーションの緊急度合を考えると、 大きな誤差が発生する大陸間の距離を測りたいわけではないので、
+     * この方法をとることにします.
+     * </p>
+     * 
+     * @param from
+     *            2点間の始点
+     * @param to
+     *            2点間の終点
+     * @return 2点間の距離メートル単位)
+     */
     public static long getDistance(GeoPoint from, GeoPoint to) {
-        // double fromX = from.getLongitudeE6() * Math.PI / 180;
-        // double fromY = from.getLatitudeE6() * Math.PI / 180;
-        // double toX = to.getLongitudeE6() * Math.PI / 180;
-        // double toY = to.getLatitudeE6() * Math.PI / 180;
-        // double deg = Math.sin(fromY) * Math.sin(toY) + Math.cos(fromY) *
-        // Math.cos(toY)
-        // + Math.cos(toX - fromX);
-        // double dist = (6378140 * (Math.atan(-deg / Math.sqrt(-deg * deg + 1))
-        // + Math.PI / 2) / 1000) * 1000;
-        //
-        // return (long) dist;
         double fromLat = from.getLatitudeE6() / 1E6;
         double fromLng = from.getLongitudeE6() / 1E6;
         double toLat = to.getLatitudeE6() / 1E6;
@@ -25,6 +27,5 @@ public class MapUtil {
         float[] result = { 0, 0, 0 };
         Location.distanceBetween(fromLat, fromLng, toLat, toLng, result);
         return (long) result[0];
-
     }
 }

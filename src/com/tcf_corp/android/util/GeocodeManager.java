@@ -1,4 +1,4 @@
-package com.tcf_corp.android.aed;
+package com.tcf_corp.android.util;
 
 import java.io.IOException;
 import java.util.List;
