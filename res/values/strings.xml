@@ -2,8 +2,9 @@
 <resources>
     <string name="app_name">AEDマップ.jp</string>
     <string name="map_api_key">0MMOEhZjjditqYMOnN5bwp_kApvCgcXNmM8j-Ow</string>
-    <string name="tab_map">AEDマップ</string>
-    <string name="tab_list">AEDリスト</string><string name="tab_edit">AED登録</string>
+    <string name="tab_map">マップ</string>
+    <string name="tab_list">リスト</string>
+    <string name="tab_edit">登録</string>
     <string name="current_location">現在地</string>
     <string name="button_my_location">現在地</string>
     <string name="button_search_address">住所検索</string>

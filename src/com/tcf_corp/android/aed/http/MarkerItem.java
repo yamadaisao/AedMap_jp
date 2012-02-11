@@ -25,6 +25,7 @@ public class MarkerItem extends OverlayItem {
      */
     public MarkerItem(long id, GeoPoint point, String title, String snippet) {
         super(point, title, snippet);
+        this.id = id;
     }
 
     public Long id;
@@ -53,5 +54,4 @@ public class MarkerItem extends OverlayItem {
     public int hashCode() {
         return id.hashCode();
     }
-
 }

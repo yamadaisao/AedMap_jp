@@ -44,28 +44,27 @@ public class AedMapActivity extends MapActivity {
     private static final String SAVE_ZOOM_LEVEL = "zoom_level";
 
     protected Context context;
-    protected MapController mapController;
+    private MapController mapController;
     protected CustomMapView mapView;
-    protected MyLocationOverlay myLocationOverlay;
+    private MyLocationOverlay myLocationOverlay;
     protected AedOverlay aedOverlay;
-    protected ToggleButton moveCurrent;
+    private ToggleButton moveCurrent;
     // 現在のGeoPoint
-    protected GeoPoint currentGeoPoint;
+    private GeoPoint currentGeoPoint;
     private final SharedData sharedData = SharedData.getInstance();
-    // protected MarkerItemResult lastResult;
-    // private GeoPoint lastGeoPoint;
-    protected int zoomLevel = 19;
+    private int zoomLevel = 19;
 
-    protected ToggleButton gpsButton;
-    protected ToggleButton wifiButton;
-    protected ProgressBar progress;
-    protected WifiManager wifi;
-    protected TextView address;
+    private ToggleButton gpsButton;
+    private ToggleButton wifiButton;
+    private ProgressBar progress;
+    private WifiManager wifi;
+    private TextView address;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
+
         setContentView(R.layout.aed_map);
         initMapSet();
         gpsButton = (ToggleButton) findViewById(R.id.button_gps);
@@ -172,12 +171,12 @@ public class AedMapActivity extends MapActivity {
         // tab間の共有データの復元
         SharedData data = SharedData.getInstance();
         currentGeoPoint = data.getGeoPoint();
-        if (data.getLastResult() != null) {
-            aedOverlay.setMarkerList(data.getLastResult().markers);
-        }
         moveCurrent.setChecked(data.isMoveCurrent());
 
         setOverlays();
+        if (data.getLastResult() != null) {
+            aedOverlay.setMarkerList(data.getLastResult().markers);
+        }
         setIntentFilterToReceiver();
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm.addGpsStatusListener(gpsStatusLitener);
@@ -234,7 +233,7 @@ public class AedMapActivity extends MapActivity {
     /**
      * オーバーレイの設定.
      */
-    private void setOverlays() {
+    protected void setOverlays() {
         // User location表示用のMyLocationOverlay objectを取得
         myLocationOverlay = new MyLocationOverlay(this, mapView);
         // 初めてLocation情報を受け取った時の処理を記載
@@ -251,7 +250,7 @@ public class AedMapActivity extends MapActivity {
 
         // OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
         Drawable aedMarker = getResources().getDrawable(R.drawable.ic_aed);
-        aedOverlay = new AedOverlay(aedMarker, mapView);
+        aedOverlay = new AedOverlay(context, aedMarker, mapView);
 
         // overlayのlistにMyLocationOverlayを登録
         List<Overlay> overlays = mapView.getOverlays();
@@ -259,7 +258,7 @@ public class AedMapActivity extends MapActivity {
         overlays.add(aedOverlay);
     }
 
-    private void resetOverlays() {
+    protected void resetOverlays() {
         // LocationManagerからのLocation update情報を取得をcancel
         myLocationOverlay.disableMyLocation();
 

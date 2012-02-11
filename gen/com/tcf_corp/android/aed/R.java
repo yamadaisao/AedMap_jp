@@ -23,13 +23,14 @@ public final class R {
         public static final int ic_aed=0x7f020005;
         public static final int ic_center=0x7f020006;
         public static final int ic_launcher=0x7f020007;
-        public static final int ic_wifi_off=0x7f020008;
-        public static final int ic_wifi_on=0x7f020009;
-        public static final int icon_pin=0x7f02000a;
-        public static final int selector_tab=0x7f02000b;
-        public static final int shape_border=0x7f02000c;
-        public static final int shape_tab_item=0x7f02000d;
-        public static final int shape_tab_item_active=0x7f02000e;
+        public static final int ic_new_aed=0x7f020008;
+        public static final int ic_wifi_off=0x7f020009;
+        public static final int ic_wifi_on=0x7f02000a;
+        public static final int icon_pin=0x7f02000b;
+        public static final int selector_tab=0x7f02000c;
+        public static final int shape_border=0x7f02000d;
+        public static final int shape_tab_item=0x7f02000e;
+        public static final int shape_tab_item_active=0x7f02000f;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f050004;
