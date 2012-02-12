@@ -40,17 +40,18 @@
                 android:indeterminate="true" android:layout_alignParentRight="true" android:layout_alignParentTop="true"/>
 
         </RelativeLayout>
-
+
         <LinearLayout
-            android:id="@+id/linearLayout1"
+            android:id="@+id/overwrap_view"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <LinearLayout
-                android:id="@+id/linearLayout4"
+                android:id="@+id/controls"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
 
                 <ToggleButton
                     android:id="@+id/button_gps"

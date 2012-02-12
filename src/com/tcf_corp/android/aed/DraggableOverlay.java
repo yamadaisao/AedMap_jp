@@ -48,13 +48,13 @@ public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
         super(boundCenter(defaultMarker));
 
         this.gesDetect = new GestureDetector(context, new SimpleOnGestureListener());
-        this.marker = ((BitmapDrawable) defaultMarker).getBitmap();
         populate();
     }
 
-    public void setPoint(GeoPoint point) {
+    public void setPoint(GeoPoint point, Drawable marker) {
         this.point = point;
         longPressFlag = true;
+        this.marker = ((BitmapDrawable) marker).getBitmap();
     }
 
     @Override
