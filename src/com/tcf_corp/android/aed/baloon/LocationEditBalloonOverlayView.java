@@ -1,9 +1,13 @@
 package com.tcf_corp.android.aed.baloon;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +45,83 @@ public class LocationEditBalloonOverlayView extends BalloonOverlayView<MarkerIte
                 parent.setVisibility(GONE);
             }
         });
+        final Context ctx = context;
+        Button btnSave = (Button) v.findViewById(R.id.button_save);
+        Button btnDelete = (Button) v.findViewById(R.id.button_delete);
+        Button btnCancel = (Button) v.findViewById(R.id.button_cancel);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(ctx, ctx.getString(R.string.dialog_save_message),
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(ctx, ctx.getString(R.string.dialog_delete_message),
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(ctx, ctx.getString(R.string.dialog_cancel_message),
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+            }
+        });
+    }
+
+    // カスタムダイアログの表示
+    public static void showDialog(Context context, String text,
+            final DialogInterface.OnClickListener listener) {
+        // カスタムダイアログの生成
+        final Dialog dialog = new Dialog(context, R.style.Theme_CustomDialog);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setOwnerActivity((Activity) context);
+
+        // テキストの指定
+        TextView textView = (TextView) dialog.findViewById(R.id.dialog_message);
+        textView.setText(text);
+
+        // ボタンの指定
+        Button btnOK = (Button) dialog.findViewById(R.id.button_ok);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClick(dialog, Dialog.BUTTON_POSITIVE);
+                }
+            }
+        });
+        Button btnCancel = (Button) dialog.findViewById(R.id.button_cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClick(dialog, Dialog.BUTTON_NEGATIVE);
+                }
+            }
+        });
+        dialog.show();
     }
 
     /**

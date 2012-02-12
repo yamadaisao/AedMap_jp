@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- カスタムダイアログのテーマ -->
+    <style name="Theme_CustomDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/Animation.CustomDialog</item>
+        <item name="android:windowBackground">@drawable/box</item>
+        <item name="android:buttonStyle">@style/Style_CustomButton</item>
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

@@ -63,7 +63,7 @@ public class AedMapActivity extends MapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getApplicationContext();
+        context = this;
 
         setContentView(R.layout.aed_map);
         initMapSet();

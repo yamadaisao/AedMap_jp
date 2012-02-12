@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- カスタムダイアログのアニメーション -->
+    <style name="Animation.CustomDialog" parent="android:Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
+    <!-- カスタムボタンのスタイル -->
+    <style name="Style_CustomButton" parent="android:Widget.Button">
+        <item name="android:background">@drawable/custombutton</item>
+    </style>
+</resources>
