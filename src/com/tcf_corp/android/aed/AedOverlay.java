@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;
+import com.google.android.maps.Projection;
 import com.tcf_corp.android.aed.baloon.LocationBalloonOverlay;
 import com.tcf_corp.android.aed.http.MarkerItem;
 
@@ -24,6 +26,8 @@ public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
 
     private final Context context;
     private GestureDetector gestureDetector = null;
+    private final int markerHalfWidth;
+    private final int markerHeight;
 
     private final MapView mapView;
 
@@ -38,14 +42,16 @@ public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
         setBalloonBottomOffset(mh / 3 * 2);
         // 呼び出しておかないと描画されない
         boundCenterBottom(defaultMarker);
+        markerHalfWidth = defaultMarker.getIntrinsicWidth() / 2;
+        markerHeight = defaultMarker.getIntrinsicHeight();
     }
 
     public void setGestureDetector(GestureDetector gestureDetector) {
         this.gestureDetector = gestureDetector;
     }
 
-    public void setMarkerList(List<MarkerItem> markerList) {
-        this.markerList = markerList;
+    public void setMarkerList(List<MarkerItem> list) {
+        this.markerList = list;
         populate();
     }
 
@@ -67,6 +73,7 @@ public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
 
     public boolean remove(MarkerItem item) {
         boolean ret = markerList.remove(item);
+        hideBalloon();
         populate();
         return ret;
     }
@@ -91,5 +98,33 @@ public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
             gestureDetector.onTouchEvent(motionevent);
         }
         return super.onTouchEvent(motionevent, mapview);
+    }
+
+    /**
+     * イベントの位置に存在するItemのリストを取得する.
+     * 
+     * @param hitX
+     *            イベントの位置 x
+     * @param hitY
+     *            イベントの位置 y
+     * @return Itemのリスト
+     */
+    public List<MarkerItem> getHitItems(int hitX, int hitY) {
+        List<MarkerItem> hitList = new ArrayList<MarkerItem>();
+        Projection pj = mapView.getProjection();
+        for (MarkerItem item : getMarkerList()) {
+            Point point = new Point();
+            pj.toPixels(item.getPoint(), point);
+            int left = point.x - markerHalfWidth;
+            int right = point.x + markerHalfWidth;
+            int top = point.y - markerHeight;
+            int bottom = point.y;
+            if (left <= hitX && hitX <= right) {
+                if (top <= hitY && hitY <= bottom) {
+                    hitList.add(item);
+                }
+            }
+        }
+        return hitList;
     }
 }

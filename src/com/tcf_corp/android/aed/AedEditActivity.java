@@ -16,6 +16,9 @@ import com.tcf_corp.android.aed.http.MarkerItem;
 
 public class AedEditActivity extends AedMapActivity {
 
+    private static final String TAG = AedEditActivity.class.getSimpleName();
+    private static final boolean DEBUG = true;
+
     private DraggableOverlay dragOverlay;
     private MarkerItem draggingItem;
     private Vibrator vibrator;
@@ -68,7 +71,12 @@ public class AedEditActivity extends AedMapActivity {
         @Override
         public void onLongPress(MotionEvent e) {
             super.onLongPress(e);
-            draggingItem = aedOverlay.getFocus();
+            List<MarkerItem> list = aedOverlay.getHitItems((int) e.getX(), (int) e.getY());
+            if (list.size() > 0) {
+                draggingItem = list.get(0);
+            } else {
+                draggingItem = null;
+            }
             if (draggingItem != null) {
                 vibrator.vibrate(100);
                 dragOverlay.setPoint(draggingItem.getPoint());
