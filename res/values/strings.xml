@@ -22,4 +22,9 @@
     
     <string name="msg_location_fail">住所が取得できませんでした</string>
 
+    <string name="hint_title">場所名</string>
+    <string name="hint_snipet">住所</string>
+    <string name="hint_able">利用可能時間帯</string>
+    <string name="hint_src">情報源</string>
+    <string name="hint_spl">補足事項</string>
 </resources>

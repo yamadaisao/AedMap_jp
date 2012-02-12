@@ -6,7 +6,7 @@
     android:background="@drawable/balloon_overlay_bg_selector"
     android:minWidth="200dip"
     android:orientation="vertical"
-    android:paddingBottom="25dip"
+    android:paddingBottom="20dip"
     android:paddingLeft="10dip"
     android:paddingRight="0dip"
     android:paddingTop="0dip" >
@@ -18,14 +18,18 @@
 	    android:layout_weight="1"
 	    android:orientation="horizontal" >
 
-		<TextView
+		<EditText
 		    android:id="@+id/balloon_item_title"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
+		    android:hint="@string/hint_title"
 		    android:text="balloon_item_title"
 		    android:textColor="@android:color/primary_text_light"
-		    android:textSize="16dip" android:layout_gravity="center_vertical"/>
+		    android:textSize="16dip" android:layout_marginTop="4dip">
+
+		    <requestFocus />
+		</EditText>
 
 		<ImageView
 		    android:id="@+id/balloon_close"
@@ -45,38 +49,40 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
 	    android:orientation="vertical" android:paddingRight="10dip">
-
-		<TextView
+
+		<EditText
 		    android:id="@+id/balloon_item_snippet"
 		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
+		    android:layout_height="34dp"
+		    android:hint="@string/hint_snipet"
 		    android:text="balloon_item_snippet"
 		    android:textColor="@android:color/secondary_text_light"
 		    android:textSize="12dip" />
-
-		<TextView
+
+		<EditText
 		    android:id="@+id/balloon_item_able"
 		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
+		    android:layout_height="34dp"
+		    android:hint="@string/hint_able"
 		    android:text="balloon_item_able"
 		    android:textColor="@android:color/secondary_text_light"
 		    android:textSize="12dip" />
-
-		<TextView
+
+		<EditText
 		    android:id="@+id/balloon_item_src"
 		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
+		    android:layout_height="34dip"
 		    android:layout_weight="1"
+		    android:hint="@string/hint_src"
 		    android:text="balloon_item_src"
 		    android:textColor="@android:color/secondary_text_light"
 		    android:textSize="12dip" />
-
-		<TextView
+
+		<EditText
 		    android:id="@+id/balloon_item_spl"
 		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
+		    android:layout_height="34dip"
+		    android:hint="@string/hint_spl"
 		    android:text="balloon_item_spl"
 		    android:textColor="@android:color/secondary_text_light"
 		    android:textSize="12dip" />

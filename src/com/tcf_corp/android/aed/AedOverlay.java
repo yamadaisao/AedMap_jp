@@ -11,7 +11,9 @@ import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;
 import com.google.android.maps.Projection;
-import com.tcf_corp.android.aed.baloon.LocationBalloonOverlay;
+import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
+import com.readystatesoftware.mapviewballoons.BalloonOverlayView;
+import com.tcf_corp.android.aed.baloon.LocationDisplayBalloonOverlayView;
 import com.tcf_corp.android.aed.http.MarkerItem;
 
 /**
@@ -19,7 +21,7 @@ import com.tcf_corp.android.aed.http.MarkerItem;
  * 
  * @author yamadaisao
  */
-public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
+public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
 
     private static final int DEFAULT_LIMIT = 600;
     private List<MarkerItem> markerList = new ArrayList<MarkerItem>(DEFAULT_LIMIT);
@@ -98,6 +100,11 @@ public class AedOverlay extends LocationBalloonOverlay<MarkerItem> {
             gestureDetector.onTouchEvent(motionevent);
         }
         return super.onTouchEvent(motionevent, mapview);
+    }
+
+    @Override
+    protected BalloonOverlayView<MarkerItem> createBalloonOverlayView() {
+        return new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
     }
 
     /**
