@@ -173,7 +173,8 @@ public class AedMapActivity extends MapActivity {
         currentGeoPoint = data.getGeoPoint();
         moveCurrent.setChecked(data.isMoveCurrent());
 
-        setOverlays();
+        setLocationOverlay();
+        setMarkerOverlay();
         if (data.getLastResult() != null) {
             aedOverlay.setMarkerList(data.getLastResult().markers);
         }
@@ -233,7 +234,7 @@ public class AedMapActivity extends MapActivity {
     /**
      * オーバーレイの設定.
      */
-    protected void setOverlays() {
+    protected void setLocationOverlay() {
         // User location表示用のMyLocationOverlay objectを取得
         myLocationOverlay = new MyLocationOverlay(this, mapView);
         // 初めてLocation情報を受け取った時の処理を記載
@@ -248,13 +249,18 @@ public class AedMapActivity extends MapActivity {
         // LocationManagerからのLocation update取得
         myLocationOverlay.enableMyLocation();
 
+        // overlayのlistにMyLocationOverlayを登録
+        List<Overlay> overlays = mapView.getOverlays();
+        overlays.add(myLocationOverlay);
+    }
+
+    protected void setMarkerOverlay() {
         // OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
         Drawable aedMarker = getResources().getDrawable(R.drawable.ic_aed);
         aedOverlay = new AedOverlay(context, aedMarker, mapView);
 
         // overlayのlistにMyLocationOverlayを登録
         List<Overlay> overlays = mapView.getOverlays();
-        overlays.add(myLocationOverlay);
         overlays.add(aedOverlay);
     }
 

@@ -45,7 +45,7 @@ public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
     private OnDropListener onDropListener;
 
     public DraggableOverlay(Context context, Drawable defaultMarker) {
-        super(boundCenter(defaultMarker));
+        super(boundCenterBottom(defaultMarker));
 
         this.gesDetect = new GestureDetector(context, new SimpleOnGestureListener());
         populate();

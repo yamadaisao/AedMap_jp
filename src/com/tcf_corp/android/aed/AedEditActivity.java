@@ -55,16 +55,20 @@ public class AedEditActivity extends AedMapActivity {
     }
 
     @Override
-    protected void setOverlays() {
-        super.setOverlays();
-        aedOverlay.setGestureDetector(new GestureDetector(context, onGestureListener));
+    protected void setMarkerOverlay() {
+        // OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
         Drawable aedMarker = getResources().getDrawable(R.drawable.ic_aed);
+        AedEditOverlay eo = new AedEditOverlay(context, aedMarker, mapView);
+        eo.setGestureDetector(new GestureDetector(context, onGestureListener));
+        aedOverlay = eo;
         dragOverlay = new DraggableOverlay(context, aedMarker);
+
         // OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
         Drawable editMarker = getResources().getDrawable(R.drawable.ic_new_aed);
-        editOverlay = new AedOverlay(context, editMarker, mapView);
+        editOverlay = new AedEditOverlay(context, editMarker, mapView);
         // overlayのlistにDraggableOverlayを登録
         List<Overlay> overlays = mapView.getOverlays();
+        overlays.add(aedOverlay);
         overlays.add(dragOverlay);
         overlays.add(editOverlay);
     }

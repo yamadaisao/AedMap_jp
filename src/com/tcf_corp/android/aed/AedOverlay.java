@@ -6,8 +6,6 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;
 import com.google.android.maps.Projection;
@@ -15,6 +13,7 @@ import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
 import com.readystatesoftware.mapviewballoons.BalloonOverlayView;
 import com.tcf_corp.android.aed.baloon.LocationDisplayBalloonOverlayView;
 import com.tcf_corp.android.aed.http.MarkerItem;
+import com.tcf_corp.android.util.LogUtil;
 
 /**
  * AEDアイコンのオーバーレイ
@@ -22,16 +21,16 @@ import com.tcf_corp.android.aed.http.MarkerItem;
  * @author yamadaisao
  */
 public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
+    private static final String TAG = AedOverlay.class.getSimpleName();
+    private static final boolean DEBUG = true;
 
     private static final int DEFAULT_LIMIT = 600;
     private List<MarkerItem> markerList = new ArrayList<MarkerItem>(DEFAULT_LIMIT);
 
-    private final Context context;
-    private GestureDetector gestureDetector = null;
+    protected final Context context;
+    protected final MapView mapView;
     private final int markerHalfWidth;
     private final int markerHeight;
-
-    private final MapView mapView;
 
     public AedOverlay(Context context, Drawable defaultMarker, MapView mapView) {
         super(defaultMarker, mapView);
@@ -46,10 +45,6 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         boundCenterBottom(defaultMarker);
         markerHalfWidth = defaultMarker.getIntrinsicWidth() / 2;
         markerHeight = defaultMarker.getIntrinsicHeight();
-    }
-
-    public void setGestureDetector(GestureDetector gestureDetector) {
-        this.gestureDetector = gestureDetector;
     }
 
     public void setMarkerList(List<MarkerItem> list) {
@@ -95,15 +90,10 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent motionevent, MapView mapview) {
-        if (gestureDetector != null) {
-            gestureDetector.onTouchEvent(motionevent);
-        }
-        return super.onTouchEvent(motionevent, mapview);
-    }
-
-    @Override
     protected BalloonOverlayView<MarkerItem> createBalloonOverlayView() {
+        if (DEBUG) {
+            LogUtil.v(TAG, "offset=" + getBalloonBottomOffset());
+        }
         return new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
     }
 
