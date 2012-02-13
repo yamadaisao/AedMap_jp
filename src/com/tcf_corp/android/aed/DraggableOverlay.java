@@ -24,6 +24,8 @@ public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
      * アノテーションアイテムの画像
      */
     Bitmap marker;
+    Drawable defaultMarker;
+    OverlayItem dragItem;
 
     /**
      * 描画ポイント
@@ -46,15 +48,22 @@ public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
 
     public DraggableOverlay(Context context, Drawable defaultMarker) {
         super(boundCenterBottom(defaultMarker));
-
+        this.defaultMarker = defaultMarker;
         this.gesDetect = new GestureDetector(context, new SimpleOnGestureListener());
         populate();
     }
 
-    public void setPoint(GeoPoint point, Drawable marker) {
-        this.point = point;
+    public void setMarker(OverlayItem item) {
+        this.point = item.getPoint();
+        this.dragItem = item;
         longPressFlag = true;
-        this.marker = ((BitmapDrawable) marker).getBitmap();
+        Drawable draw = null;
+        if (item.getMarker(0) != null) {
+            draw = boundCenterBottom(item.getMarker(0));
+        } else {
+            draw = defaultMarker;
+        }
+        marker = ((BitmapDrawable) draw).getBitmap();
     }
 
     @Override
@@ -125,7 +134,7 @@ public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
                 (int) motionEvent.getY() - dropUpPoint);
         // mapView.getController().animateTo(point);
         if (onDropListener != null) {
-            onDropListener.onDrop(point);
+            onDropListener.onDrop(point, dragItem);
         }
         touchCenterPoint = null;
         point = null;
@@ -136,6 +145,6 @@ public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
     }
 
     public interface OnDropListener {
-        public void onDrop(GeoPoint point);
+        public void onDrop(GeoPoint point, OverlayItem item);
     }
 }

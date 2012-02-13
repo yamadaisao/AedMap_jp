@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 import com.tcf_corp.android.aed.DraggableOverlay.OnDropListener;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.util.LogUtil;
@@ -26,7 +27,7 @@ public class AedEditActivity extends AedMapActivity {
     private static final String TAG = AedEditActivity.class.getSimpleName();
     private static final boolean DEBUG = true;
 
-    private AedOverlay editOverlay;
+    private AedEditOverlay editOverlay;
     private DraggableOverlay dragOverlay;
     private MarkerItem draggingItem;
     private Vibrator vibrator;
@@ -66,6 +67,7 @@ public class AedEditActivity extends AedMapActivity {
 
         // OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
         editOverlay = new AedEditOverlay(context, aedEditMarker, mapView);
+        editOverlay.setGestureDetector(editGestureDetector);
         // overlayのlistにDraggableOverlayを登録
         List<Overlay> overlays = mapView.getOverlays();
         overlays.add(aedOverlay);
@@ -84,7 +86,7 @@ public class AedEditActivity extends AedMapActivity {
     }
 
     /**
-     * 複雑なタッチイベントを検知 (ここでは、長押しイベントを取得)
+     * drag non-edit marker, on long tap.
      */
     private final SimpleOnGestureListener onGestureListener = new SimpleOnGestureListener() {
         @Override
@@ -98,7 +100,7 @@ public class AedEditActivity extends AedMapActivity {
             }
             if (draggingItem != null) {
                 vibrator.vibrate(100);
-                dragOverlay.setPoint(draggingItem.getPoint(), aedEditMarker);
+                dragOverlay.setMarker(draggingItem);
                 dragOverlay.setOnDropListener(aedDropListener);
                 aedOverlay.remove(draggingItem);
                 // オーバーレイアイテムを再描画
@@ -106,9 +108,13 @@ public class AedEditActivity extends AedMapActivity {
             }
         }
     };
+    /**
+     * if non-edit marker dropped, set to edit overlay.
+     */
     private final OnDropListener aedDropListener = new OnDropListener() {
         @Override
-        public void onDrop(GeoPoint point) {
+        public void onDrop(GeoPoint point, OverlayItem item) {
+            draggingItem = (MarkerItem) item;
             if (draggingItem != null) {
                 MarkerItem newItem = new MarkerItem(draggingItem.id, point,
                         draggingItem.getTitle(), draggingItem.getSnippet());
@@ -117,13 +123,16 @@ public class AedEditActivity extends AedMapActivity {
                 newItem.spl = draggingItem.spl;
                 newItem.time = draggingItem.time;
                 newItem.setMarker(aedEditMarker);
+                editOverlay.addMarker(newItem);
                 draggingItem = null;
-                aedOverlay.addMarker(newItem);
                 mapView.invalidate();
             }
         }
     };
 
+    /**
+     * new aed-marker drag from holder.
+     */
     private final GestureDetector newAedHolderGestureDetector = new GestureDetector(context,
             new SimpleOnGestureListener() {
 
@@ -138,20 +147,26 @@ public class AedEditActivity extends AedMapActivity {
                                 "onLongPress:lat=" + gp.getLatitudeE6() + ",lng="
                                         + gp.getLongitudeE6());
                     }
-                    dragOverlay.setPoint(gp, aedEditMarker);
+                    Date date = new Date();
+                    MarkerItem item = new MarkerItem(date.getTime(), gp, "", "");
+                    item.setMarker(aedNewMarker);
+                    dragOverlay.setMarker(item);
                     dragOverlay.setOnDropListener(newAedDropListener);
                     mapView.invalidate();
                 }
             });
 
+    /**
+     * drop new aed-marker.
+     */
     private final OnDropListener newAedDropListener = new OnDropListener() {
         @Override
-        public void onDrop(GeoPoint gp) {
+        public void onDrop(GeoPoint gp, OverlayItem item) {
+            draggingItem = (MarkerItem) item;
             if (DEBUG) {
                 LogUtil.v(TAG, "onDrop:lat=" + gp.getLatitudeE6() + ",lng=" + gp.getLongitudeE6());
             }
-            Date date = new Date();
-            MarkerItem newItem = new MarkerItem(date.getTime(), gp, "", "");
+            MarkerItem newItem = new MarkerItem(draggingItem.id, gp, "", "");
             newItem.able = "";
             newItem.src = "";
             newItem.spl = "";
@@ -164,6 +179,59 @@ public class AedEditActivity extends AedMapActivity {
             }
             mapView.animateTo(gp);
             mapView.invalidate();
+        }
+    };
+
+    /**
+     * new/edit aed-marker drag from edit overlay.
+     */
+    private final GestureDetector editGestureDetector = new GestureDetector(context,
+            new SimpleOnGestureListener() {
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    List<MarkerItem> list = editOverlay.getHitItems((int) e.getX(), (int) e.getY());
+                    if (list.size() > 0) {
+                        draggingItem = list.get(0);
+                    } else {
+                        draggingItem = null;
+                    }
+                    if (draggingItem != null) {
+                        vibrator.vibrate(100);
+                        dragOverlay.setMarker(draggingItem);
+                        dragOverlay.setOnDropListener(editDropListener);
+                        editOverlay.remove(draggingItem);
+                        // オーバーレイアイテムを再描画
+                        mapView.invalidate();
+                    }
+                }
+            });
+
+    /**
+     * drop new/edit aed-marker into edit overlay.
+     */
+    private final OnDropListener editDropListener = new OnDropListener() {
+        @Override
+        public void onDrop(GeoPoint gp, OverlayItem item) {
+            draggingItem = (MarkerItem) item;
+            if (DEBUG) {
+                LogUtil.v(
+                        TAG,
+                        "editDropListener:lat=" + gp.getLatitudeE6() + ",lng="
+                                + gp.getLongitudeE6());
+            }
+            if (draggingItem != null) {
+                MarkerItem newItem = new MarkerItem(draggingItem.id, gp, draggingItem.getTitle(),
+                        draggingItem.getSnippet());
+                newItem.able = draggingItem.able;
+                newItem.src = draggingItem.src;
+                newItem.spl = draggingItem.spl;
+                newItem.time = draggingItem.time;
+                newItem.setMarker(draggingItem.getMarker(0));
+                editOverlay.addMarker(newItem);
+                draggingItem = null;
+                mapView.invalidate();
+            }
         }
     };
 }
