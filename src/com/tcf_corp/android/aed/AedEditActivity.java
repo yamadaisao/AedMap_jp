@@ -33,6 +33,7 @@ public class AedEditActivity extends AedMapActivity {
     private ImageView newAedHolder;
     private Drawable aedMarker;
     private Drawable aedEditMarker;
+    private Drawable aedNewMarker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,9 @@ public class AedEditActivity extends AedMapActivity {
         newAedHolder = (ImageView) inflater.inflate(R.layout.new_aed_holder, null);
         ViewGroup v = (ViewGroup) findViewById(R.id.controls);
         v.addView(newAedHolder);
-        aedEditMarker = getResources().getDrawable(R.drawable.ic_new_aed);
         aedMarker = getResources().getDrawable(R.drawable.ic_aed);
+        aedEditMarker = getResources().getDrawable(R.drawable.ic_edit_aed);
+        aedNewMarker = getResources().getDrawable(R.drawable.ic_new_aed);
         newAedHolder.setOnTouchListener(new OnTouchListener() {
 
             @Override
@@ -57,20 +59,20 @@ public class AedEditActivity extends AedMapActivity {
     @Override
     protected void setMarkerOverlay() {
         // OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
-        Drawable aedMarker = getResources().getDrawable(R.drawable.ic_aed);
         AedEditOverlay eo = new AedEditOverlay(context, aedMarker, mapView);
         eo.setGestureDetector(new GestureDetector(context, onGestureListener));
         aedOverlay = eo;
         dragOverlay = new DraggableOverlay(context, aedMarker);
 
         // OverlayItemを表示するためのMyItemizedOverlayを拡張したclassのobjectを取得
-        Drawable editMarker = getResources().getDrawable(R.drawable.ic_new_aed);
-        editOverlay = new AedEditOverlay(context, editMarker, mapView);
+        editOverlay = new AedEditOverlay(context, aedEditMarker, mapView);
         // overlayのlistにDraggableOverlayを登録
         List<Overlay> overlays = mapView.getOverlays();
         overlays.add(aedOverlay);
         overlays.add(dragOverlay);
         overlays.add(editOverlay);
+        aedEditMarker = aedOverlay.getBoundCenterBottom(aedEditMarker);
+        aedNewMarker = aedOverlay.getBoundCenterBottom(aedNewMarker);
     }
 
     @Override
@@ -96,7 +98,7 @@ public class AedEditActivity extends AedMapActivity {
             }
             if (draggingItem != null) {
                 vibrator.vibrate(100);
-                dragOverlay.setPoint(draggingItem.getPoint(), aedMarker);
+                dragOverlay.setPoint(draggingItem.getPoint(), aedEditMarker);
                 dragOverlay.setOnDropListener(aedDropListener);
                 aedOverlay.remove(draggingItem);
                 // オーバーレイアイテムを再描画
@@ -114,6 +116,7 @@ public class AedEditActivity extends AedMapActivity {
                 newItem.src = draggingItem.src;
                 newItem.spl = draggingItem.spl;
                 newItem.time = draggingItem.time;
+                newItem.setMarker(aedEditMarker);
                 draggingItem = null;
                 aedOverlay.addMarker(newItem);
                 mapView.invalidate();
@@ -153,6 +156,7 @@ public class AedEditActivity extends AedMapActivity {
             newItem.src = "";
             newItem.spl = "";
             newItem.time = "";
+            newItem.setMarker(aedNewMarker);
             draggingItem = null;
             editOverlay.addMarker(newItem);
             if (DEBUG) {

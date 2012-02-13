@@ -97,6 +97,10 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         return new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
     }
 
+    public Drawable getBoundCenterBottom(Drawable drawable) {
+        return boundCenterBottom(drawable);
+    }
+
     /**
      * イベントの位置に存在するItemのリストを取得する.
      * 

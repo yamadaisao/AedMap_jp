@@ -1,6 +1,10 @@
 package com.tcf_corp.android.aed;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.android.maps.GeoPoint;
+import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.aed.http.MarkerItemResult;
 
 /**
@@ -16,6 +20,7 @@ public class SharedData {
     private GeoPoint geoPoint;
     private MarkerItemResult lastResult;
     private boolean moveCurrent;
+    private List<MarkerItem> editList = new ArrayList<MarkerItem>();
 
     private SharedData() {
     }
@@ -46,5 +51,13 @@ public class SharedData {
 
     public void setMoveCurrent(boolean moveCurrent) {
         this.moveCurrent = moveCurrent;
+    }
+
+    public List<MarkerItem> getEditList() {
+        return editList;
+    }
+
+    public void setEditList(List<MarkerItem> editList) {
+        this.editList = editList;
     }
 }

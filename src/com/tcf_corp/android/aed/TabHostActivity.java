@@ -17,6 +17,7 @@ public class TabHostActivity extends TabActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         TabHost host = this.getTabHost();
         Resources r = this.getResources();
 

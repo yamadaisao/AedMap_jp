@@ -35,6 +35,9 @@ public class MarkerItem extends OverlayItem {
     public String time;
     public Long dist;
 
+    /** 編集前の情報 */
+    public MarkerItem original;
+
     @Override
     public boolean equals(Object obj) {
         // 引数が自分自身かどうか
