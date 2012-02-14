@@ -2,6 +2,6 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/new_aed_holder"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:src="@drawable/ic_new_aed">
+    android:layout_height="fill_parent" android:src="@drawable/ic_new_aed" android:background="@drawable/background">
 
 </ImageView>

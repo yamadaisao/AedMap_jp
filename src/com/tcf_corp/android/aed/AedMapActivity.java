@@ -224,7 +224,7 @@ public class AedMapActivity extends MapActivity {
         // MapView objectの取得
         mapView = (CustomMapView) findViewById(R.id.mapview);
         // MapView#setBuiltInZoomControl()でZoom controlをbuilt-in moduleに任せる
-        mapView.setBuiltInZoomControls(true);
+        // mapView.setBuiltInZoomControls(true);
 
         // MapController objectを取得
         mapController = mapView.getController();
