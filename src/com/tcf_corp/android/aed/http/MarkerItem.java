@@ -25,7 +25,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
 	public String src;
 	/** 特記事項 */
 	public String spl;
-	/** ? */
+	/** parseできなかったりする */
 	public String time;
 	/** 中心からの距離(m) */
 	public Long dist;
@@ -35,6 +35,11 @@ public class MarkerItem extends OverlayItem implements Parcelable {
 
 	/** 編集前の情報 */
 	public MarkerItem original;
+
+	/** 編集balloon との受け渡し用. */
+	public String editTitle;
+	/** 編集balloon との受け渡し用. */
+	public String editSnippet;
 
 	/**
 	 * コンストラクタ
@@ -67,6 +72,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
 		original = in.readParcelable(null);
 	}
 
+	// override equals/hashCode
 	@Override
 	public boolean equals(Object obj) {
 		// 引数が自分自身かどうか
@@ -85,7 +91,10 @@ public class MarkerItem extends OverlayItem implements Parcelable {
 
 	@Override
 	public int hashCode() {
-		return id.hashCode();
+		int hash = 1;
+		hash = hash * 31 + id.hashCode();
+		hash = hash * 31 + Integer.bitCount(dataSource);
+		return hash;
 	}
 
 	// implements Parcelable
