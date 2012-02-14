@@ -25,13 +25,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_center" />
-
             <ProgressBar
                 android:id="@+id/progress"
                 style="?android:attr/progressBarStyle"
@@ -39,63 +32,74 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true" android:layout_alignParentRight="true" android:layout_alignParentTop="true"/>
 
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/overwrap_view"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
             <LinearLayout
-                android:id="@+id/controls"
+                android:id="@+id/overwrap_view"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical" >
+                android:orientation="vertical" android:layout_alignParentBottom="true">
 
-                <ToggleButton
-                    android:id="@+id/button_gps"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ToggleButton"
-                    android:textOff="GPS OFF"
-                    android:textOn="GPS ON" />
-
-                <ToggleButton
-                    android:id="@+id/button_wifi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ToggleButton"
-                    android:textOff="Wi-Fi OFF"
-                    android:textOn="Wi-Fi ON" />
-
-                <ToggleButton
-                    android:id="@+id/button_my_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/button_my_location"
-                    android:textOff="@string/button_my_location"
-                    android:textOn="@string/button_my_location" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:background="@drawable/address_background">
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_location"
-                    android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/white"/>
-
-                <TextView
-                    android:id="@+id/text_address"
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_location"
-                    android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/white"/>
+                    android:background="@drawable/address_background" >
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_location"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/text_address"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_location"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/controls"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical" >
+
+                    <ToggleButton
+                        android:id="@+id/button_gps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ToggleButton"
+                        android:textOff="GPS OFF"
+                        android:textOn="GPS ON" />
+
+                    <ToggleButton
+                        android:id="@+id/button_wifi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ToggleButton"
+                        android:textOff="Wi-Fi OFF"
+                        android:textOn="Wi-Fi ON" />
+
+                    <ToggleButton
+                        android:id="@+id/button_my_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/button_my_location"
+                        android:textOff="@string/button_my_location"
+                        android:textOn="@string/button_my_location" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="48dip"
+                android:layout_height="48dip"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/center" />
+
+        </RelativeLayout>
     </FrameLayout>
