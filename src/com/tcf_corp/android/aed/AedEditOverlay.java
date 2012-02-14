@@ -13,43 +13,43 @@ import com.tcf_corp.android.util.LogUtil;
 
 public class AedEditOverlay extends AedOverlay {
 
-	private static final String TAG = AedEditOverlay.class.getSimpleName();
-	private static final boolean DEBUG = true;
+    private static final String TAG = AedEditOverlay.class.getSimpleName();
+    private static final boolean DEBUG = true;
 
-	private LocationEditBalloonOverlayView baloonView;
-	private GestureDetector gestureDetector = null;
+    private LocationEditBalloonOverlayView baloonView;
+    private GestureDetector gestureDetector = null;
 
-	public AedEditOverlay(Context context, Drawable defaultMarker,
-			MapView mapView) {
-		super(context, defaultMarker, mapView);
-	}
+    public AedEditOverlay(Context context, Drawable defaultMarker, MapView mapView) {
+        super(context, defaultMarker, mapView);
+    }
 
-	@Override
-	protected void hideBalloon() {
-		baloonView.saveMarkerItem();
-		super.hideBalloon();
-	}
+    @Override
+    protected void hideBalloon() {
+        if (baloonView != null) {
+            baloonView.saveMarkerItem();
+        }
+        super.hideBalloon();
+    }
 
-	@Override
-	protected BalloonOverlayView<MarkerItem> createBalloonOverlayView() {
-		if (DEBUG) {
-			LogUtil.v(TAG, "offset=" + getBalloonBottomOffset());
-		}
-		baloonView = new LocationEditBalloonOverlayView(context,
-				getBalloonBottomOffset());
-		return baloonView;
-	}
+    @Override
+    protected BalloonOverlayView<MarkerItem> createBalloonOverlayView() {
+        if (DEBUG) {
+            LogUtil.v(TAG, "offset=" + getBalloonBottomOffset());
+        }
+        baloonView = new LocationEditBalloonOverlayView(context, getBalloonBottomOffset());
+        return baloonView;
+    }
 
-	@Override
-	public boolean onTouchEvent(MotionEvent motionevent, MapView mapview) {
-		if (gestureDetector != null) {
-			gestureDetector.onTouchEvent(motionevent);
-		}
-		return super.onTouchEvent(motionevent, mapview);
-	}
+    @Override
+    public boolean onTouchEvent(MotionEvent motionevent, MapView mapview) {
+        if (gestureDetector != null) {
+            gestureDetector.onTouchEvent(motionevent);
+        }
+        return super.onTouchEvent(motionevent, mapview);
+    }
 
-	public void setGestureDetector(GestureDetector gestureDetector) {
-		this.gestureDetector = gestureDetector;
-	}
+    public void setGestureDetector(GestureDetector gestureDetector) {
+        this.gestureDetector = gestureDetector;
+    }
 
 }
