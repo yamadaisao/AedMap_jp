@@ -139,8 +139,10 @@ public class AedEditActivity extends AedMapActivity {
                 @Override
                 public void onLongPress(MotionEvent e) {
                     vibrator.vibrate(100);
-                    GeoPoint gp = mapView.getProjection()
-                            .fromPixels((int) e.getX(), (int) e.getY());
+                    // RawX, RowYを取得.
+                    // X, Y だとiconの中の位置(?)を取得している.
+                    GeoPoint gp = mapView.getProjection().fromPixels((int) e.getRawX(),
+                            (int) e.getRawY());
                     if (DEBUG) {
                         LogUtil.v(
                                 TAG,

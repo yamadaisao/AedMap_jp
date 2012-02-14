@@ -14,8 +14,12 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
+import com.tcf_corp.android.util.LogUtil;
 
 public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
+
+    private static final String TAG = DraggableOverlay.class.getSimpleName();
+    private static final boolean DEBUG = false;
 
     // Resources resources;
     GestureDetector gesDetect;
@@ -81,6 +85,11 @@ public class DraggableOverlay extends ItemizedOverlay<OverlayItem> {
         if (point != null) {
             Point screenPoint = new Point();
             mapView.getProjection().toPixels(point, screenPoint);
+            if (DEBUG) {
+                LogUtil.v(TAG,
+                        "draw:lat=" + point.getLatitudeE6() + ",lng=" + point.getLongitudeE6());
+                LogUtil.v(TAG, "screenPoint:x=" + screenPoint.x + ",y=" + screenPoint.y);
+            }
             canvas.drawBitmap(marker, screenPoint.x - (marker.getWidth() / 2), screenPoint.y
                     - (marker.getHeight() / 2), null);
         } else {
