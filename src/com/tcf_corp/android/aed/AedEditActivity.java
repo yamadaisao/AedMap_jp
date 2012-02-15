@@ -118,10 +118,15 @@ public class AedEditActivity extends AedMapActivity {
             if (draggingItem != null) {
                 MarkerItem newItem = new MarkerItem(draggingItem.id, point,
                         draggingItem.getTitle(), draggingItem.getSnippet());
+                newItem.editTitle = draggingItem.editTitle;
+                newItem.editSnippet = draggingItem.editSnippet;
                 newItem.able = draggingItem.able;
                 newItem.src = draggingItem.src;
                 newItem.spl = draggingItem.spl;
                 newItem.time = draggingItem.time;
+                if (draggingItem.original == null) {
+                    newItem.original = draggingItem;
+                }
                 newItem.setMarker(aedEditMarker);
                 editOverlay.addMarker(newItem);
                 draggingItem = null;

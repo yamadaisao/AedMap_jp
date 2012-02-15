@@ -2,6 +2,7 @@ package com.tcf_corp.android.aed;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -25,6 +26,7 @@ public class AedEditOverlay extends AedOverlay {
 
     @Override
     protected void hideBalloon() {
+        Log.d(TAG, "hideBalloon");
         if (baloonView != null) {
             baloonView.saveMarkerItem();
         }
@@ -34,7 +36,7 @@ public class AedEditOverlay extends AedOverlay {
     @Override
     protected BalloonOverlayView<MarkerItem> createBalloonOverlayView() {
         if (DEBUG) {
-            LogUtil.v(TAG, "offset=" + getBalloonBottomOffset());
+            LogUtil.v(TAG, "createBalloonOverlayView:offset=" + getBalloonBottomOffset());
         }
         baloonView = new LocationEditBalloonOverlayView(context, getBalloonBottomOffset());
         return baloonView;
