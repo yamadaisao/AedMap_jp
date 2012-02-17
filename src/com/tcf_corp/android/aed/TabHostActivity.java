@@ -25,9 +25,6 @@ public class TabHostActivity extends TabActivity {
                 true));
         host.addTab(createTabSpec(host, AedListActivity.class, 0, r.getString(R.string.tab_list),
                 false));
-        TabSpec tab = createTabSpec(host, AedEditActivity.class, 0, r.getString(R.string.tab_edit),
-                false);
-        host.addTab(tab);
     }
 
     /**

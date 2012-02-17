@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.readystatesoftware.mapviewballoons.BalloonOverlayView;
 import com.tcf_corp.android.aed.R;
 import com.tcf_corp.android.aed.http.MarkerItem;
 
@@ -18,7 +17,7 @@ import com.tcf_corp.android.aed.http.MarkerItem;
  * @author yamada
  * 
  */
-public class LocationDisplayBalloonOverlayView extends BalloonOverlayView<MarkerItem> {
+public class LocationDisplayBalloonOverlayView extends LocationBalloonOverlayView {
     private TextView title;
     private TextView snippet;
     private TextView able;
@@ -115,5 +114,9 @@ public class LocationDisplayBalloonOverlayView extends BalloonOverlayView<Marker
             spl.setText("");
             spl.setVisibility(GONE);
         }
+    }
+
+    @Override
+    public void saveMarkerItem() {
     }
 }

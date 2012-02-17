@@ -6,12 +6,16 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;
 import com.google.android.maps.Projection;
 import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
-import com.readystatesoftware.mapviewballoons.BalloonOverlayView;
+import com.tcf_corp.android.aed.baloon.LocationBalloonOverlayView;
 import com.tcf_corp.android.aed.baloon.LocationDisplayBalloonOverlayView;
+import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.util.LogUtil;
 
@@ -31,6 +35,9 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     protected final MapView mapView;
     private final int markerHalfWidth;
     private final int markerHeight;
+    private GestureDetector gestureDetector = null;
+    private LocationBalloonOverlayView baloonView;
+    private boolean isEdit = false;
 
     public AedOverlay(Context context, Drawable defaultMarker, MapView mapView) {
         super(defaultMarker, mapView);
@@ -89,14 +96,6 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         return markerList.size();
     }
 
-    @Override
-    protected BalloonOverlayView<MarkerItem> createBalloonOverlayView() {
-        if (DEBUG) {
-            LogUtil.v(TAG, "offset=" + getBalloonBottomOffset());
-        }
-        return new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
-    }
-
     public Drawable getBoundCenterBottom(Drawable drawable) {
         return boundCenterBottom(drawable);
     }
@@ -127,5 +126,50 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
             }
         }
         return hitList;
+    }
+
+    /**
+     * 編集できる場合はtrueを設定します.
+     * 
+     * @param isEdit
+     */
+    public void setEdit(boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionevent, MapView mapview) {
+        if (isEdit == true) {
+            if (gestureDetector != null) {
+                gestureDetector.onTouchEvent(motionevent);
+            }
+        }
+        return super.onTouchEvent(motionevent, mapview);
+    }
+
+    public void setGestureDetector(GestureDetector gestureDetector) {
+        this.gestureDetector = gestureDetector;
+    }
+
+    @Override
+    protected void hideBalloon() {
+        Log.d(TAG, "hideBalloon");
+        if (baloonView != null) {
+            baloonView.saveMarkerItem();
+        }
+        super.hideBalloon();
+    }
+
+    @Override
+    protected LocationBalloonOverlayView createBalloonOverlayView() {
+        if (DEBUG) {
+            LogUtil.v(TAG, "offset=" + getBalloonBottomOffset());
+        }
+        if (isEdit == false) {
+            baloonView = new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
+        } else {
+            baloonView = new LocationEditBalloonOverlayView(context, getBalloonBottomOffset());
+        }
+        return baloonView;
     }
 }

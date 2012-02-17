@@ -11,12 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.readystatesoftware.mapviewballoons.BalloonOverlayView;
 import com.tcf_corp.android.aed.R;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.util.LogUtil;
 
-public class LocationEditBalloonOverlayView extends BalloonOverlayView<MarkerItem> {
+public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
 
     private static final String TAG = LocationEditBalloonOverlayView.class.getSimpleName();
     private static final boolean DEBUG = true;
@@ -157,6 +156,14 @@ public class LocationEditBalloonOverlayView extends BalloonOverlayView<MarkerIte
         spl.setText(item.spl);
     }
 
+    /*
+     * (非 Javadoc)
+     * 
+     * @see
+     * com.tcf_corp.android.aed.baloon.LocationBalloonOverlayView#saveMarkerItem
+     * ()
+     */
+    @Override
     public void saveMarkerItem() {
         if (DEBUG) {
             LogUtil.v(TAG, "saveMarkerItem");
