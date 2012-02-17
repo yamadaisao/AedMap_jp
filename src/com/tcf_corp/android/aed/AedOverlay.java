@@ -36,8 +36,8 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     private final int markerHalfWidth;
     private final int markerHeight;
     private GestureDetector gestureDetector = null;
-    private LocationBalloonOverlayView baloonView;
     private boolean isEdit = false;
+    private LocationBalloonOverlayView balloonView;
 
     public AedOverlay(Context context, Drawable defaultMarker, MapView mapView) {
         super(defaultMarker, mapView);
@@ -135,6 +135,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
      */
     public void setEdit(boolean isEdit) {
         this.isEdit = isEdit;
+        balloonView = null;
     }
 
     @Override
@@ -152,10 +153,10 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     }
 
     @Override
-    protected void hideBalloon() {
+    public void hideBalloon() {
         Log.d(TAG, "hideBalloon");
-        if (baloonView != null) {
-            baloonView.saveMarkerItem();
+        if (balloonView != null) {
+            balloonView.saveMarkerItem();
         }
         super.hideBalloon();
     }
@@ -166,10 +167,10 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
             LogUtil.v(TAG, "offset=" + getBalloonBottomOffset());
         }
         if (isEdit == false) {
-            baloonView = new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
+            balloonView = new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
         } else {
-            baloonView = new LocationEditBalloonOverlayView(context, getBalloonBottomOffset());
+            balloonView = new LocationEditBalloonOverlayView(context, getBalloonBottomOffset());
         }
-        return baloonView;
+        return balloonView;
     }
 }
