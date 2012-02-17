@@ -135,7 +135,8 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
      */
     public void setEdit(boolean isEdit) {
         this.isEdit = isEdit;
-        balloonView = null;
+        hideBalloon();
+        super.balloonView = null;
     }
 
     @Override
