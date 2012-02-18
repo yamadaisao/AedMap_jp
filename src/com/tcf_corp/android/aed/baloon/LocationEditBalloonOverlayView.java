@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -182,6 +183,10 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         item.able = able.getText().toString();
         item.src = src.getText().toString();
         item.spl = spl.getText().toString();
+        // キーボードを隠す
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(this.getApplicationWindowToken(), 0);
         return item;
     }
 
