@@ -543,6 +543,7 @@ public class AedMapActivity extends MapActivity {
                 SharedData data = SharedData.getInstance();
                 data.setLastResult(result);
                 aedOverlay.setMarkerList(result.markers);
+                mapView.invalidate();
                 progress.setVisibility(View.INVISIBLE);
             }
 
