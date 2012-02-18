@@ -727,9 +727,6 @@ public class AedMapActivity extends MapActivity {
                 newItem.src = draggingItem.src;
                 newItem.spl = draggingItem.spl;
                 newItem.time = draggingItem.time;
-                if (draggingItem.original == null) {
-                    newItem.original = draggingItem;
-                }
                 newItem.setMarker(aedEditMarker);
                 editOverlay.addMarker(newItem);
                 draggingItem = null;
@@ -840,11 +837,6 @@ public class AedMapActivity extends MapActivity {
                 newItem.spl = draggingItem.spl;
                 newItem.time = draggingItem.time;
                 newItem.setMarker(draggingItem.getMarker(0));
-                if (draggingItem.original == null) {
-                    newItem.original = draggingItem;
-                } else {
-                    newItem.original = draggingItem.original;
-                }
                 editOverlay.addMarker(newItem);
                 draggingItem = null;
                 mapView.invalidate();

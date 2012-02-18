@@ -35,9 +35,6 @@ public class MarkerItem extends OverlayItem implements Parcelable {
     /** アイコンの種類 */
     public int type;
 
-    /** 編集前の情報 */
-    public MarkerItem original;
-
     /** 編集balloon との受け渡し用. */
     public String editTitle;
     /** 編集balloon との受け渡し用. */
@@ -69,7 +66,6 @@ public class MarkerItem extends OverlayItem implements Parcelable {
         time = in.readString();
         dist = in.readLong();
         type = in.readInt();
-        original = in.readParcelable(null);
     }
 
     // override equals/hashCode
@@ -114,7 +110,6 @@ public class MarkerItem extends OverlayItem implements Parcelable {
         dest.writeString(time);
         dest.writeLong(dist);
         dest.writeInt(type);
-        dest.writeParcelable(original, 0);
     }
 
     public static final Parcelable.Creator<MarkerItem> CREATOR = new Parcelable.Creator<MarkerItem>() {

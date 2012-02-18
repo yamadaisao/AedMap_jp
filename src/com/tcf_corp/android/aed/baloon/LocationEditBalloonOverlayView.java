@@ -172,11 +172,13 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
             LogUtil.v(TAG, "saveMarkerItem");
         }
         if (isChanged()) {
-            item.original = item;
+            item = new MarkerItem(item.id, item.getPoint(), title.getText().toString(), snippet
+                    .getText().toString());
             item.type = MarkerItem.TYPE_EDIT;
+        } else {
+            item.editTitle = title.getText().toString();
+            item.editSnippet = snippet.getText().toString();
         }
-        item.editTitle = title.getText().toString();
-        item.editSnippet = snippet.getText().toString();
         item.able = able.getText().toString();
         item.src = src.getText().toString();
         item.spl = spl.getText().toString();
