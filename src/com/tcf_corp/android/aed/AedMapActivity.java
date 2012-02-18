@@ -39,6 +39,7 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.tcf_corp.android.aed.DraggableOverlay.OnDropListener;
+import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView;
 import com.tcf_corp.android.aed.http.AsyncTaskCallback;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.aed.http.MarkerItemQuery;
@@ -388,6 +389,19 @@ public class AedMapActivity extends MapActivity {
         aedOverlay = new AedOverlay(context, aedMarker, mapView);
         aedOverlay.setGestureDetector(new GestureDetector(context, onGestureListener));
         aedOverlay.setEdit(isEditMode);
+        if (isEditMode) {
+            aedOverlay
+                    .setOnItemChangedListener(new LocationEditBalloonOverlayView.OnItemChangedListener() {
+
+                        @Override
+                        public void onChanged(MarkerItem item) {
+                            aedOverlay.remove(item);
+                            editOverlay.addMarker(item);
+                            item.setMarker(aedEditMarker);
+                            mapView.invalidate();
+                        }
+                    });
+        }
 
         // to edit
         // Drag用
@@ -395,6 +409,7 @@ public class AedMapActivity extends MapActivity {
 
         // 編集用AED
         editOverlay = new AedOverlay(context, aedEditMarker, mapView);
+        editOverlay.setEdit(true);
         editOverlay.setGestureDetector(editGestureDetector);
 
         aedEditMarker = aedOverlay.getBoundCenterBottom(aedEditMarker);
@@ -406,6 +421,8 @@ public class AedMapActivity extends MapActivity {
         if (isEditMode) {
             overlays.add(editOverlay);
             overlays.add(dragOverlay);
+        } else {
+            newAedHolder.setVisibility(View.GONE);
         }
     }
 
@@ -791,11 +808,18 @@ public class AedMapActivity extends MapActivity {
             if (draggingItem != null) {
                 MarkerItem newItem = new MarkerItem(draggingItem.id, gp, draggingItem.getTitle(),
                         draggingItem.getSnippet());
+                newItem.editTitle = draggingItem.editTitle;
+                newItem.editSnippet = draggingItem.editSnippet;
                 newItem.able = draggingItem.able;
                 newItem.src = draggingItem.src;
                 newItem.spl = draggingItem.spl;
                 newItem.time = draggingItem.time;
                 newItem.setMarker(draggingItem.getMarker(0));
+                if (draggingItem.original == null) {
+                    newItem.original = draggingItem;
+                } else {
+                    newItem.original = draggingItem.original;
+                }
                 editOverlay.addMarker(newItem);
                 draggingItem = null;
                 mapView.invalidate();

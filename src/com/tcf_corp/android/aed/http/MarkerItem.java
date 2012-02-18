@@ -14,6 +14,10 @@ import com.google.android.maps.OverlayItem;
  */
 public class MarkerItem extends OverlayItem implements Parcelable {
 
+    public static final int TYPE_ORIGNAL = 0;
+    public static final int TYPE_NEW = 1;
+    public static final int TYPE_EDIT = 2;
+
     /** id */
     public Long id;
 

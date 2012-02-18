@@ -47,6 +47,9 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
             @Override
             public void onClick(View v) {
                 saveMarkerItem();
+                if (item.type == MarkerItem.TYPE_EDIT && listener != null) {
+                    listener.onChanged(item);
+                }
                 parent.setVisibility(GONE);
             }
         });
@@ -164,14 +167,61 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
      * ()
      */
     @Override
-    public void saveMarkerItem() {
+    public MarkerItem saveMarkerItem() {
         if (DEBUG) {
             LogUtil.v(TAG, "saveMarkerItem");
+        }
+        if (isChanged()) {
+            item.original = item;
+            item.type = MarkerItem.TYPE_EDIT;
         }
         item.editTitle = title.getText().toString();
         item.editSnippet = snippet.getText().toString();
         item.able = able.getText().toString();
         item.src = src.getText().toString();
         item.spl = spl.getText().toString();
+        return item;
+    }
+
+    private boolean isChanged() {
+        boolean ret = false;
+        if (item.type == MarkerItem.TYPE_ORIGNAL) {
+            if (item.getTitle() != null && title.getText().toString() != null) {
+                if (item.getTitle().equals(title.getText().toString()) == false) {
+                    return true;
+                }
+            }
+            if (item.getSnippet() != null && snippet.getText().toString() != null) {
+                if (item.getSnippet().equals(snippet.getText().toString()) == false) {
+                    return true;
+                }
+            }
+            if (item.able != null && able.getText().toString() != null) {
+                if (item.able.equals(able.getText().toString()) == false) {
+                    return true;
+                }
+            }
+            if (item.src != null && src.getText().toString() != null) {
+                if (item.src.equals(src.getText().toString()) == false) {
+                    return true;
+                }
+            }
+            if (item.spl != null && spl.getText().toString() != null) {
+                if (item.spl.equals(spl.getText().toString()) == false) {
+                    return true;
+                }
+            }
+        }
+        return ret;
+    }
+
+    protected OnItemChangedListener listener;
+
+    public void setOnItemChangedListener(OnItemChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemChangedListener {
+        public void onChanged(MarkerItem item);
     }
 }

@@ -11,5 +11,6 @@ public abstract class LocationBalloonOverlayView extends BalloonOverlayView<Mark
         super(context, balloonBottomOffset);
     }
 
-    public abstract void saveMarkerItem();
+    public abstract MarkerItem saveMarkerItem();
+
 }

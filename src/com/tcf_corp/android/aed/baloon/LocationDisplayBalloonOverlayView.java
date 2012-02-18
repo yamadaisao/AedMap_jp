@@ -117,6 +117,7 @@ public class LocationDisplayBalloonOverlayView extends LocationBalloonOverlayVie
     }
 
     @Override
-    public void saveMarkerItem() {
+    public MarkerItem saveMarkerItem() {
+        return null;
     }
 }

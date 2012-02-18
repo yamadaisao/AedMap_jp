@@ -16,6 +16,7 @@ import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
 import com.tcf_corp.android.aed.baloon.LocationBalloonOverlayView;
 import com.tcf_corp.android.aed.baloon.LocationDisplayBalloonOverlayView;
 import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView;
+import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView.OnItemChangedListener;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.util.LogUtil;
 
@@ -77,7 +78,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
 
     public boolean remove(MarkerItem item) {
         boolean ret = markerList.remove(item);
-        hideBalloon();
+        super.hideBalloon();
         populate();
         return ret;
     }
@@ -156,8 +157,13 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     @Override
     public void hideBalloon() {
         Log.d(TAG, "hideBalloon");
-        if (balloonView != null) {
-            balloonView.saveMarkerItem();
+        if (balloonView != null && isEdit == true) {
+            MarkerItem item = balloonView.saveMarkerItem();
+            if (item != null && item.type == MarkerItem.TYPE_EDIT) {
+                if (listener != null) {
+                    listener.onChanged(item);
+                }
+            }
         }
         super.hideBalloon();
     }
@@ -171,7 +177,14 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
             balloonView = new LocationDisplayBalloonOverlayView(context, getBalloonBottomOffset());
         } else {
             balloonView = new LocationEditBalloonOverlayView(context, getBalloonBottomOffset());
+            ((LocationEditBalloonOverlayView) balloonView).setOnItemChangedListener(listener);
         }
         return balloonView;
+    }
+
+    protected OnItemChangedListener listener;
+
+    public void setOnItemChangedListener(OnItemChangedListener listener) {
+        this.listener = listener;
     }
 }
