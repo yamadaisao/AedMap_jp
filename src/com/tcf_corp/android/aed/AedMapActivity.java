@@ -74,6 +74,7 @@ public class AedMapActivity extends MapActivity {
     private TextView address;
 
     // to edit
+    private AedOverlay viewOverlay;
     private AedOverlay editOverlay;
     private DraggableOverlay dragOverlay;
     private MarkerItem draggingItem;
@@ -161,7 +162,12 @@ public class AedMapActivity extends MapActivity {
         setMarkerOverlay();
 
         if (data.getLastResult() != null) {
-            aedOverlay.setMarkerList(data.getLastResult().markers);
+            if (isEditMode) {
+                viewOverlay
+                        .setMarkerList(data.getLastResult().markers, editOverlay.getMarkerList());
+            } else {
+                aedOverlay.setMarkerList(data.getLastResult().markers);
+            }
         }
         // Map取得サービスの起動.
         setIntentFilterToReceiver();
@@ -195,19 +201,31 @@ public class AedMapActivity extends MapActivity {
 
     private void setEditMode() {
         List<Overlay> overlays = mapView.getOverlays();
-        overlays.add(dragOverlay);
-        overlays.add(editOverlay);
-        newAedHolder.setVisibility(View.VISIBLE);
-        aedOverlay.setEdit(true);
-    }
-
-    private void removeEditMode() {
-        // to edit
-        List<Overlay> overlays = mapView.getOverlays();
-        overlays.remove(dragOverlay);
-        overlays.remove(editOverlay);
-        newAedHolder.setVisibility(View.GONE);
-        aedOverlay.setEdit(false);
+        SharedData data = SharedData.getInstance();
+        if (isEditMode) {
+            if (data.getLastResult() != null) {
+                viewOverlay
+                        .setMarkerList(data.getLastResult().markers, editOverlay.getMarkerList());
+            }
+            aedOverlay.hideBalloon();
+            overlays.remove(aedOverlay);
+            overlays.add(viewOverlay);
+            overlays.add(editOverlay);
+            overlays.add(dragOverlay);
+            newAedHolder.setVisibility(View.VISIBLE);
+        } else {
+            if (data.getLastResult() != null) {
+                aedOverlay.setMarkerList(data.getLastResult().markers);
+            }
+            overlays.add(aedOverlay);
+            viewOverlay.hideBalloon();
+            overlays.remove(viewOverlay);
+            editOverlay.hideBalloon();
+            overlays.remove(editOverlay);
+            overlays.remove(dragOverlay);
+            newAedHolder.setVisibility(View.GONE);
+        }
+        mapView.invalidate();
     }
 
     // implements mapView
@@ -259,7 +277,7 @@ public class AedMapActivity extends MapActivity {
         switch (item.getItemId()) {
         case R.id.menu_to_view:
             isEditMode = false;
-            removeEditMode();
+            setEditMode();
             break;
         case R.id.menu_to_edit:
             isEditMode = true;
@@ -386,30 +404,29 @@ public class AedMapActivity extends MapActivity {
     protected void setMarkerOverlay() {
         // 表示用AED
         aedMarker = getResources().getDrawable(R.drawable.ic_aed);
-        aedOverlay = new AedOverlay(context, aedMarker, mapView);
-        aedOverlay.setGestureDetector(new GestureDetector(context, onGestureListener));
-        aedOverlay.setEdit(isEditMode);
-        if (isEditMode) {
-            aedOverlay
-                    .setOnItemChangedListener(new LocationEditBalloonOverlayView.OnItemChangedListener() {
-
-                        @Override
-                        public void onChanged(MarkerItem item) {
-                            aedOverlay.remove(item);
-                            editOverlay.addMarker(item);
-                            item.setMarker(aedEditMarker);
-                            mapView.invalidate();
-                        }
-                    });
-        }
+        aedOverlay = new AedOverlay(context, aedMarker, mapView, false);
 
         // to edit
         // Drag用
         dragOverlay = new DraggableOverlay(context, aedMarker);
 
+        // 編集モードの表示用
+        viewOverlay = new AedOverlay(context, aedMarker, mapView, true);
+        viewOverlay.setGestureDetector(viewGestureDetector);
+        viewOverlay
+                .setOnItemChangedListener(new LocationEditBalloonOverlayView.OnItemChangedListener() {
+
+                    @Override
+                    public void onChanged(MarkerItem item) {
+                        viewOverlay.remove(item);
+                        editOverlay.addMarker(item);
+                        item.setMarker(aedEditMarker);
+                        mapView.invalidate();
+                    }
+                });
+
         // 編集用AED
-        editOverlay = new AedOverlay(context, aedEditMarker, mapView);
-        editOverlay.setEdit(true);
+        editOverlay = new AedOverlay(context, aedEditMarker, mapView, true);
         editOverlay.setGestureDetector(editGestureDetector);
 
         aedEditMarker = aedOverlay.getBoundCenterBottom(aedEditMarker);
@@ -419,6 +436,7 @@ public class AedMapActivity extends MapActivity {
         List<Overlay> overlays = mapView.getOverlays();
         overlays.add(aedOverlay);
         if (isEditMode) {
+            overlays.add(viewOverlay);
             overlays.add(editOverlay);
             overlays.add(dragOverlay);
         } else {
@@ -435,8 +453,9 @@ public class AedMapActivity extends MapActivity {
         overlays.remove(myLocationOverlay);
         overlays.remove(aedOverlay);
         if (isEditMode) {
-            overlays.remove(dragOverlay);
+            overlays.remove(viewOverlay);
             overlays.remove(editOverlay);
+            overlays.remove(dragOverlay);
         }
     }
 
@@ -542,7 +561,11 @@ public class AedMapActivity extends MapActivity {
             public void onSuccess(MarkerItemResult result) {
                 SharedData data = SharedData.getInstance();
                 data.setLastResult(result);
-                aedOverlay.setMarkerList(result.markers);
+                if (isEditMode == false) {
+                    aedOverlay.setMarkerList(result.markers);
+                } else {
+                    viewOverlay.setMarkerList(result.markers, editOverlay.getMarkerList());
+                }
                 mapView.invalidate();
                 progress.setVisibility(View.INVISIBLE);
             }
@@ -667,26 +690,27 @@ public class AedMapActivity extends MapActivity {
     /**
      * drag non-edit marker, on long tap.
      */
-    private final SimpleOnGestureListener onGestureListener = new SimpleOnGestureListener() {
-        @Override
-        public void onLongPress(MotionEvent e) {
-            super.onLongPress(e);
-            List<MarkerItem> list = aedOverlay.getHitItems((int) e.getX(), (int) e.getY());
-            if (list.size() > 0) {
-                draggingItem = list.get(0);
-            } else {
-                draggingItem = null;
-            }
-            if (draggingItem != null) {
-                vibrator.vibrate(100);
-                dragOverlay.setMarker(draggingItem);
-                dragOverlay.setOnDropListener(aedDropListener);
-                aedOverlay.remove(draggingItem);
-                // オーバーレイアイテムを再描画
-                mapView.invalidate();
-            }
-        }
-    };
+    private final GestureDetector viewGestureDetector = new GestureDetector(context,
+            new SimpleOnGestureListener() {
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    super.onLongPress(e);
+                    List<MarkerItem> list = aedOverlay.getHitItems((int) e.getX(), (int) e.getY());
+                    if (list.size() > 0) {
+                        draggingItem = list.get(0);
+                    } else {
+                        draggingItem = null;
+                    }
+                    if (draggingItem != null) {
+                        vibrator.vibrate(100);
+                        dragOverlay.setMarker(draggingItem);
+                        dragOverlay.setOnDropListener(aedDropListener);
+                        viewOverlay.remove(draggingItem);
+                        // オーバーレイアイテムを再描画
+                        mapView.invalidate();
+                    }
+                }
+            });
     /**
      * if non-edit marker dropped, set to edit overlay.
      */

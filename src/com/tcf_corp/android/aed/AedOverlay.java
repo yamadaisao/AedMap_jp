@@ -40,7 +40,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     private boolean isEdit = false;
     private LocationBalloonOverlayView balloonView;
 
-    public AedOverlay(Context context, Drawable defaultMarker, MapView mapView) {
+    public AedOverlay(Context context, Drawable defaultMarker, MapView mapView, boolean isEdit) {
         super(defaultMarker, mapView);
         // 呼び出しておかないとNullPointer Exception
         populate();
@@ -53,10 +53,21 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         boundCenterBottom(defaultMarker);
         markerHalfWidth = defaultMarker.getIntrinsicWidth() / 2;
         markerHeight = defaultMarker.getIntrinsicHeight();
+        this.isEdit = isEdit;
     }
 
     public void setMarkerList(List<MarkerItem> list) {
         this.markerList = list;
+        populate();
+    }
+
+    public void setMarkerList(List<MarkerItem> list, List<MarkerItem> ignoreList) {
+        this.markerList.clear();
+        for (MarkerItem item : list) {
+            if (!ignoreList.contains(item)) {
+                this.markerList.add(item);
+            }
+        }
         populate();
     }
 
@@ -129,17 +140,6 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         return hitList;
     }
 
-    /**
-     * 編集できる場合はtrueを設定します.
-     * 
-     * @param isEdit
-     */
-    public void setEdit(boolean isEdit) {
-        this.isEdit = isEdit;
-        hideBalloon();
-        super.balloonView = null;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent motionevent, MapView mapview) {
         if (isEdit == true) {
@@ -157,7 +157,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     @Override
     public void hideBalloon() {
         Log.d(TAG, "hideBalloon");
-        if (balloonView != null && isEdit == true) {
+        if (isEdit == true && balloonView != null) {
             MarkerItem item = balloonView.saveMarkerItem();
             if (item != null && item.type == MarkerItem.TYPE_EDIT) {
                 if (listener != null) {
