@@ -67,6 +67,13 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                if (which == DialogInterface.BUTTON_POSITIVE) {
+                                    if (storeListener != null) {
+                                        saveMarkerItem();
+                                        parent.setVisibility(GONE);
+                                        storeListener.onSave(item);
+                                    }
+                                }
                             }
                         });
             }
@@ -80,6 +87,12 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                if (which == DialogInterface.BUTTON_POSITIVE) {
+                                    if (storeListener != null) {
+                                        parent.setVisibility(GONE);
+                                        storeListener.onDelete(item);
+                                    }
+                                }
                             }
                         });
             }
@@ -93,6 +106,12 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                if (which == DialogInterface.BUTTON_POSITIVE) {
+                                    if (storeListener != null) {
+                                        parent.setVisibility(GONE);
+                                        storeListener.onRollback(item);
+                                    }
+                                }
                             }
                         });
             }
@@ -173,6 +192,8 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
             LogUtil.v(TAG, "saveMarkerItem");
         }
         if (isChanged()) {
+            // ダイアログを閉じた時に通常マーカーが編集されていたら
+            // マーカーのインスタンスを生成する.
             item = new MarkerItem(item.id, item.getPoint(), title.getText().toString(), snippet
                     .getText().toString());
             item.type = MarkerItem.TYPE_EDIT;
@@ -230,5 +251,19 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
 
     public interface OnItemChangedListener {
         public void onChanged(MarkerItem item);
+    }
+
+    protected OnItemStoreListener storeListener;
+
+    public void setOnItemStoreListener(OnItemStoreListener storeListener) {
+        this.storeListener = storeListener;
+    }
+
+    public interface OnItemStoreListener {
+        public void onSave(MarkerItem item);
+
+        public void onRollback(MarkerItem item);
+
+        public void onDelete(MarkerItem item);
     }
 }

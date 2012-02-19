@@ -17,6 +17,7 @@ import com.tcf_corp.android.aed.baloon.LocationBalloonOverlayView;
 import com.tcf_corp.android.aed.baloon.LocationDisplayBalloonOverlayView;
 import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView;
 import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView.OnItemChangedListener;
+import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView.OnItemStoreListener;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.util.LogUtil;
 
@@ -178,6 +179,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         } else {
             balloonView = new LocationEditBalloonOverlayView(context, getBalloonBottomOffset());
             ((LocationEditBalloonOverlayView) balloonView).setOnItemChangedListener(listener);
+            ((LocationEditBalloonOverlayView) balloonView).setOnItemStoreListener(storeListener);
         }
         return balloonView;
     }
@@ -186,5 +188,11 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
 
     public void setOnItemChangedListener(OnItemChangedListener listener) {
         this.listener = listener;
+    }
+
+    protected OnItemStoreListener storeListener;
+
+    public void setOnItemStoreListener(OnItemStoreListener storeListener) {
+        this.storeListener = storeListener;
     }
 }

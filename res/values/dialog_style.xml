@@ -9,5 +9,6 @@
     <!-- カスタムボタンのスタイル -->
     <style name="Style_CustomButton" parent="android:Widget.Button">
         <item name="android:background">@drawable/custombutton</item>
+        <item name="android:padding">5dip</item>
     </style>
 </resources>

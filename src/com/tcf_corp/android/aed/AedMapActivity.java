@@ -30,6 +30,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.maps.GeoPoint;
@@ -41,6 +42,7 @@ import com.google.android.maps.OverlayItem;
 import com.tcf_corp.android.aed.DraggableOverlay.OnDropListener;
 import com.tcf_corp.android.aed.baloon.LocationEditBalloonOverlayView;
 import com.tcf_corp.android.aed.http.AsyncTaskCallback;
+import com.tcf_corp.android.aed.http.MarkerEditAsyncTask;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.aed.http.MarkerItemQuery;
 import com.tcf_corp.android.aed.http.MarkerItemResult;
@@ -378,7 +380,7 @@ public class AedMapActivity extends MapActivity {
     /**
      * Locationオーバーレイの設定.
      */
-    protected void setLocationOverlay() {
+    private void setLocationOverlay() {
         // User location表示用のMyLocationOverlay objectを取得
         myLocationOverlay = new MyLocationOverlay(this, mapView);
         // 初めてLocation情報を受け取った時の処理を記載
@@ -401,7 +403,7 @@ public class AedMapActivity extends MapActivity {
     /**
      * aedマーカーのオーバーレイを設定します.
      */
-    protected void setMarkerOverlay() {
+    private void setMarkerOverlay() {
         // 表示用AED
         aedMarker = getResources().getDrawable(R.drawable.ic_aed);
         aedOverlay = new AedOverlay(context, aedMarker, mapView, false);
@@ -424,10 +426,12 @@ public class AedMapActivity extends MapActivity {
                         mapView.invalidate();
                     }
                 });
+        viewOverlay.setOnItemStoreListener(storeListener);
 
         // 編集用AED
         editOverlay = new AedOverlay(context, aedEditMarker, mapView, true);
         editOverlay.setGestureDetector(editGestureDetector);
+        editOverlay.setOnItemStoreListener(storeListener);
 
         aedEditMarker = aedOverlay.getBoundCenterBottom(aedEditMarker);
         aedNewMarker = aedOverlay.getBoundCenterBottom(aedNewMarker);
@@ -778,6 +782,7 @@ public class AedMapActivity extends MapActivity {
             newItem.src = "";
             newItem.spl = "";
             newItem.time = "";
+            newItem.type = MarkerItem.TYPE_NEW;
             newItem.setMarker(aedNewMarker);
             draggingItem = null;
             editOverlay.addMarker(newItem);
@@ -842,5 +847,69 @@ public class AedMapActivity extends MapActivity {
                 mapView.invalidate();
             }
         }
+    };
+
+    private final LocationEditBalloonOverlayView.OnItemStoreListener storeListener = new LocationEditBalloonOverlayView.OnItemStoreListener() {
+
+        @Override
+        public void onSave(MarkerItem item) {
+            Toast.makeText(getApplicationContext(), "save", Toast.LENGTH_LONG).show();
+            AsyncTaskCallback<MarkerItemResult> callback = new AsyncTaskCallback<MarkerItemResult>() {
+
+                @Override
+                public void onSuccess(MarkerItemResult result) {
+                    // SharedData data = SharedData.getInstance();
+                    // data.setLastResult(result);
+                    // if (isEditMode == false) {
+                    // aedOverlay.setMarkerList(result.markers);
+                    // } else {
+                    // viewOverlay.setMarkerList(result.markers,
+                    // editOverlay.getMarkerList());
+                    // }
+                    // mapView.invalidate();
+                    progress.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onFailed(int resId, String... args) {
+                    progress.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAppFailed(MarkerItemResult result) {
+                    progress.setVisibility(View.INVISIBLE);
+                }
+            };
+            progress.setVisibility(View.VISIBLE);
+
+            MarkerEditAsyncTask task = new MarkerEditAsyncTask(callback);
+            task.execute(item);
+        }
+
+        @Override
+        public void onRollback(MarkerItem item) {
+            if (item.type == MarkerItem.TYPE_NEW) {
+                editOverlay.remove(item);
+            } else {
+                for (MarkerItem marker : aedOverlay.getMarkerList()) {
+                    if (marker.equals(item)) {
+                        viewOverlay.addMarker(marker);
+                        editOverlay.remove(item);
+                        Toast.makeText(getApplicationContext(), "rollback", Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onDelete(MarkerItem item) {
+            if (item.type == MarkerItem.TYPE_NEW) {
+                editOverlay.remove(item);
+            } else {
+                Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_LONG).show();
+            }
+        }
+
     };
 }

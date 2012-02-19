@@ -8,7 +8,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" android:padding="5dip">
+        android:orientation="vertical" android:padding="5dip" android:layout_marginTop="10dip">
 
         <TextView
             android:id="@+id/dialog_message"
@@ -22,13 +22,13 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:gravity="center_horizontal">
+        android:layout_height="wrap_content" android:gravity="center_horizontal" android:layout_marginBottom="10dip">
 
         <Button
             android:id="@+id/button_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_yes" android:layout_marginRight="10dip"/>
+            android:text="@string/button_yes" android:layout_marginLeft="10dip"/>
 
         <Button
             android:id="@+id/button_cancel"
