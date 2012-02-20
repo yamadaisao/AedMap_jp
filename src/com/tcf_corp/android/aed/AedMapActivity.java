@@ -592,26 +592,32 @@ public class AedMapActivity extends MapActivity {
         task.execute(query);
     }
 
-    private void getAddress(GeoPoint geoPoint) {
-        // 場所名を文字列で取得する
-        String str_address = null;
-        try {
-            // 住所を取得
-            double latitude = geoPoint.getLatitudeE6() / 1E6;
-            double longitude = geoPoint.getLongitudeE6() / 1E6;
+    private void getAddress(final GeoPoint geoPoint) {
+        Thread searchAdress = new Thread() {
+            @Override
+            public void run() {
+                // 場所名を文字列で取得する
+                String str_address = null;
+                try {
+                    // 住所を取得
+                    double latitude = geoPoint.getLatitudeE6() / 1E6;
+                    double longitude = geoPoint.getLongitudeE6() / 1E6;
 
-            str_address = GeocodeManager.point2address(latitude, longitude, context);
-        } catch (IOException e) {
-            str_address = getString(R.string.msg_location_fail);
-        }
+                    str_address = GeocodeManager.point2address(latitude, longitude, context);
+                } catch (IOException e) {
+                    str_address = getString(R.string.msg_location_fail);
+                }
 
-        // 住所をメッセージに持たせて
-        // ハンドラにUIを書き換えさせる
-        Message message = new Message();
-        Bundle bundle = new Bundle();
-        bundle.putString("str_address", str_address);
-        message.setData(bundle);
-        addrhandler.sendMessage(message);
+                // 住所をメッセージに持たせて
+                // ハンドラにUIを書き換えさせる
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("str_address", str_address);
+                message.setData(bundle);
+                addrhandler.sendMessage(message);
+            }
+        };
+        searchAdress.start();
     }
 
     public class LocationUpdateReceiver extends BroadcastReceiver {
