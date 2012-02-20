@@ -1,9 +1,15 @@
 package com.tcf_corp.android.aed.baloon;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +18,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.maps.GeoPoint;
 import com.tcf_corp.android.aed.R;
 import com.tcf_corp.android.aed.http.MarkerItem;
+import com.tcf_corp.android.util.GeocodeManager;
 import com.tcf_corp.android.util.LogUtil;
 
 public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
 
     private static final String TAG = LocationEditBalloonOverlayView.class.getSimpleName();
     private static final boolean DEBUG = true;
+
+    private final Context context;
 
     private MarkerItem item;
     private TextView title;
@@ -30,6 +40,7 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
 
     public LocationEditBalloonOverlayView(Context context, int balloonBottomOffset) {
         super(context, balloonBottomOffset);
+        this.context = context;
     }
 
     @Override
@@ -170,14 +181,58 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
             title.setText(item.getTitle());
         }
         if (item.editSnippet != null) {
+            if (item.editSnippet == null || "".equals(item.editSnippet)) {
+                getAddress(item.getPoint());
+            }
             snippet.setText(item.editSnippet);
         } else {
+            if (item.getSnippet() == null || "".equals(item.getSnippet())) {
+                getAddress(item.getPoint());
+            }
             snippet.setText(item.getSnippet());
         }
         able.setText(item.able);
         src.setText(item.src);
         spl.setText(item.spl);
     }
+
+    private void getAddress(final GeoPoint geoPoint) {
+        Thread searchAdress = new Thread() {
+            @Override
+            public void run() {
+                // 場所名を文字列で取得する
+                String str_address = null;
+                try {
+                    // 住所を取得
+                    double latitude = geoPoint.getLatitudeE6() / 1E6;
+                    double longitude = geoPoint.getLongitudeE6() / 1E6;
+
+                    str_address = GeocodeManager.point2address(latitude, longitude, context);
+                } catch (IOException e) {
+                    Log.w(TAG, "");
+                }
+
+                // 住所をメッセージに持たせて
+                // ハンドラにUIを書き換えさせる
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("str_address", str_address);
+                message.setData(bundle);
+                addrhandler.sendMessage(message);
+            }
+        };
+        searchAdress.start();
+    }
+
+    // ラベルを書き換えるためのハンドラ
+    final Handler addrhandler = new Handler() {
+        // @Override
+        @Override
+        public void handleMessage(Message msg) {
+            String str_address = msg.getData().get("str_address").toString();
+            snippet.setText(str_address);
+        }
+    };
 
     /*
      * (非 Javadoc)
