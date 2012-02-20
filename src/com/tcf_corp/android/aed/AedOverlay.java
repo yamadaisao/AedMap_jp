@@ -59,6 +59,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
 
     public void setMarkerList(List<MarkerItem> list) {
         this.markerList = list;
+        setLastFocusedIndex(-1);
         populate();
     }
 
@@ -69,6 +70,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
                 this.markerList.add(item);
             }
         }
+        setLastFocusedIndex(-1);
         populate();
     }
 
@@ -91,6 +93,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     public boolean remove(MarkerItem item) {
         boolean ret = markerList.remove(item);
         super.hideBalloon();
+        setLastFocusedIndex(-1);
         populate();
         return ret;
     }
