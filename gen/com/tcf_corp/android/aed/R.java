@@ -66,11 +66,12 @@ public final class R {
         public static final int controls=0x7f050013;
         public static final int dialog_message=0x7f05001c;
         public static final int frameLayout1=0x7f05000a;
+        public static final int imenu_help_edit=0x7f05002b;
         public static final int linearLayout1=0x7f05001f;
         public static final int linearLayout2=0x7f05000b;
         public static final int linearLayout3=0x7f050010;
         public static final int mapview=0x7f05000c;
-        public static final int menu_settings=0x7f05002a;
+        public static final int menu_help_view=0x7f05002a;
         public static final int menu_to_edit=0x7f050029;
         public static final int menu_to_view=0x7f050028;
         public static final int new_aed_holder=0x7f050018;
@@ -135,7 +136,7 @@ public final class R {
         public static final int label_location=0x7f080009;
         public static final int map_api_key=0x7f080001;
         public static final int menu_edit=0x7f080022;
-        public static final int menu_settings=0x7f080023;
+        public static final int menu_help=0x7f080023;
         public static final int menu_view=0x7f080021;
         public static final int msg_location_fail=0x7f080013;
         public static final int tab_edit=0x7f080004;

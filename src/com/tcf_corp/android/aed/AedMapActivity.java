@@ -89,7 +89,9 @@ public class AedMapActivity extends MapActivity {
     private boolean isEditMode = false;
     private MenuItem menuView;
     private MenuItem menuEdit;
-    private MenuItem menuSettings;
+    private MenuItem menuHelpView;
+    private MenuItem menuHelpList;
+    private MenuItem menuHelpEdit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -246,7 +248,7 @@ public class AedMapActivity extends MapActivity {
         inflater.inflate(R.menu.menu, menu);
         menuEdit = menu.findItem(R.id.menu_to_edit);
         menuView = menu.findItem(R.id.menu_to_view);
-        menuSettings = menu.findItem(R.id.menu_settings);
+        menuHelpView = menu.findItem(R.id.menu_help_view);
         return ret;
     }
 
@@ -259,11 +261,11 @@ public class AedMapActivity extends MapActivity {
         if (isEditMode) {
             menuEdit.setVisible(false);
             menuView.setVisible(true);
-            menuSettings.setVisible(true);
+            menuHelpView.setVisible(true);
         } else {
             menuEdit.setVisible(true);
             menuView.setVisible(false);
-            menuSettings.setVisible(true);
+            menuHelpView.setVisible(true);
         }
         return ret;
     }
@@ -284,7 +286,7 @@ public class AedMapActivity extends MapActivity {
             isEditMode = true;
             setEditMode();
             break;
-        case R.id.menu_settings:
+        case R.id.menu_help_view:
             break;
         default:
             break;
