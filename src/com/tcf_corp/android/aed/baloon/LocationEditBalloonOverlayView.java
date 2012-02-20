@@ -130,7 +130,7 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
     }
 
     // カスタムダイアログの表示
-    public static void showDialog(Context context, String text,
+    private static void showDialog(Context context, String text,
             final DialogInterface.OnClickListener listener) {
         // カスタムダイアログの生成
         final Dialog dialog = new Dialog(context, R.style.Theme_CustomDialog);
@@ -297,7 +297,7 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         return ret;
     }
 
-    protected OnItemChangedListener listener;
+    private OnItemChangedListener listener;
 
     public void setOnItemChangedListener(OnItemChangedListener listener) {
         this.listener = listener;
@@ -307,7 +307,7 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         public void onChanged(MarkerItem item);
     }
 
-    protected OnItemStoreListener storeListener;
+    private OnItemStoreListener storeListener;
 
     public void setOnItemStoreListener(OnItemStoreListener storeListener) {
         this.storeListener = storeListener;
