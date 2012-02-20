@@ -24,6 +24,12 @@ import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.util.GeocodeManager;
 import com.tcf_corp.android.util.LogUtil;
 
+/**
+ * 編集用のバルーンを表示します.
+ * 
+ * @author yamadaisao
+ * 
+ */
 public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
 
     private static final String TAG = LocationEditBalloonOverlayView.class.getSimpleName();
@@ -47,6 +53,7 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
     protected void setupView(Context context, final ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        // Viewの構築とオブジェクトの取得
         View v = inflater.inflate(R.layout.location_edit_balloon_overlay, parent);
         title = (TextView) v.findViewById(R.id.balloon_item_title);
         snippet = (TextView) v.findViewById(R.id.balloon_item_snippet);
@@ -54,6 +61,7 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         src = (TextView) v.findViewById(R.id.balloon_item_src);
         spl = (TextView) v.findViewById(R.id.balloon_item_spl);
 
+        // クローズボタンのハンドラ
         ImageView close = (ImageView) v.findViewById(R.id.balloon_close);
         close.setOnClickListener(new OnClickListener() {
             @Override
@@ -65,10 +73,13 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
                 parent.setVisibility(GONE);
             }
         });
+
         final Context ctx = context;
         Button btnSave = (Button) v.findViewById(R.id.button_save);
         Button btnDelete = (Button) v.findViewById(R.id.button_delete);
         Button btnCancel = (Button) v.findViewById(R.id.button_cancel);
+
+        // 保存ボタンのリスナーを設定
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +100,8 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
                         });
             }
         });
+
+        // 削除ボタンのリスナーを設定
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +121,8 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
                         });
             }
         });
+
+        // 破棄ボタンのリスナーを設定
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +144,16 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         });
     }
 
-    // カスタムダイアログの表示
+    /**
+     * 確認ダイアログを表示します.
+     * 
+     * @param context
+     *            context
+     * @param text
+     *            メッセージ
+     * @param listener
+     *            ボタンを押したときのリスナー
+     */
     private static void showDialog(Context context, String text,
             final DialogInterface.OnClickListener listener) {
         // カスタムダイアログの生成
@@ -297,27 +321,69 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         return ret;
     }
 
-    private OnItemChangedListener listener;
-
+    /**
+     * 編集を通知するリスナーを設定します.
+     * 
+     * @param listener
+     *            リスナー
+     */
     public void setOnItemChangedListener(OnItemChangedListener listener) {
         this.listener = listener;
     }
 
+    private OnItemChangedListener listener;
+
+    /**
+     * 編集を通知するためのリスナーです.
+     * 
+     * @author yamadaisao
+     * 
+     */
     public interface OnItemChangedListener {
         public void onChanged(MarkerItem item);
     }
 
-    private OnItemStoreListener storeListener;
-
+    /**
+     * 確認ダイアログでの結果を通知するリスナーを設定します.
+     * 
+     * @param storeListener
+     *            リスナー
+     */
     public void setOnItemStoreListener(OnItemStoreListener storeListener) {
         this.storeListener = storeListener;
     }
 
+    private OnItemStoreListener storeListener;
+
+    /**
+     * マーカーの変更を通知するためのリスナーです.
+     * 
+     * @author yamadaisao
+     * 
+     */
     public interface OnItemStoreListener {
+        /**
+         * 保存ボタンを押した時のイベント.
+         * 
+         * @param item
+         *            対象のマーカー
+         */
         public void onSave(MarkerItem item);
 
+        /**
+         * 編集を破棄した時のイベント
+         * 
+         * @param item
+         *            対象のマーカー
+         */
         public void onRollback(MarkerItem item);
 
+        /**
+         * 削除した時のイベント
+         * 
+         * @param item
+         *            対象のマーカー
+         */
         public void onDelete(MarkerItem item);
     }
 }
