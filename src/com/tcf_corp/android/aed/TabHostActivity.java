@@ -35,6 +35,17 @@ public class TabHostActivity extends TabActivity {
         Debug.stopMethodTracing();
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // TODO 自動生成されたメソッド・スタブ
+        super.onSaveInstanceState(outState);
+    }
+
     /**
      * タブを生成します。
      * 
