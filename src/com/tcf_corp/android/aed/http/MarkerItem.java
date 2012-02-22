@@ -31,7 +31,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
     /** parseできなかったりする */
     public String time;
     /** 中心からの距離(m) */
-    public Long dist;
+    public Long dist = 0L;
 
     /** アイコンの種類 */
     public int type;

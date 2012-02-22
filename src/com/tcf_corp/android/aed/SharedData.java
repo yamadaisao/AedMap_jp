@@ -23,7 +23,7 @@ public class SharedData implements Parcelable {
     private GeoPoint geoPoint;
     private MarkerItemResult lastResult;
     private boolean moveCurrent;
-    private List<MarkerItem> editList = new ArrayList<MarkerItem>();
+    private List<MarkerItem> editList;
 
     private SharedData() {
     }
@@ -64,6 +64,9 @@ public class SharedData implements Parcelable {
     }
 
     public List<MarkerItem> getEditList() {
+        if (editList == null) {
+            editList = new ArrayList<MarkerItem>();
+        }
         return editList;
     }
 

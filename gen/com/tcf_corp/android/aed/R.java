@@ -66,11 +66,11 @@ public final class R {
         public static final int controls=0x7f050013;
         public static final int dialog_message=0x7f05001c;
         public static final int frameLayout1=0x7f05000a;
-        public static final int imenu_help_edit=0x7f05002b;
         public static final int linearLayout1=0x7f05001f;
         public static final int linearLayout2=0x7f05000b;
         public static final int linearLayout3=0x7f050010;
         public static final int mapview=0x7f05000c;
+        public static final int menu_help_edit=0x7f05002b;
         public static final int menu_help_view=0x7f05002a;
         public static final int menu_to_edit=0x7f050029;
         public static final int menu_to_view=0x7f050028;

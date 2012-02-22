@@ -57,6 +57,7 @@ public class AedMapActivity extends MapActivity {
     private static final String ACTION_LOCATION_UPDATE = "com.android.practice.map.ACTION_LOCATION_UPDATE";
 
     private static final String SAVE_ZOOM_LEVEL = "zoom_level";
+    private static final String IS_EDIT = "is_edit";
 
     private Context context;
     private MapController mapController;
@@ -139,10 +140,12 @@ public class AedMapActivity extends MapActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
-            zoomLevel = savedInstanceState.getInt(SAVE_ZOOM_LEVEL, 19);
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        if (state != null) {
+            zoomLevel = state.getInt(SAVE_ZOOM_LEVEL, 19);
+            isEditMode = state.getBoolean(IS_EDIT, false);
+            SharedData data = state.getParcelable("data");
         }
     }
 
@@ -150,6 +153,9 @@ public class AedMapActivity extends MapActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVE_ZOOM_LEVEL, zoomLevel);
+        outState.putBoolean(IS_EDIT, isEditMode);
+        SharedData data = SharedData.getInstance();
+        outState.putParcelable("data", data);
     }
 
     @Override
@@ -249,6 +255,7 @@ public class AedMapActivity extends MapActivity {
         menuEdit = menu.findItem(R.id.menu_to_edit);
         menuView = menu.findItem(R.id.menu_to_view);
         menuHelpView = menu.findItem(R.id.menu_help_view);
+        menuHelpEdit = menu.findItem(R.id.menu_help_edit);
         return ret;
     }
 
@@ -262,10 +269,12 @@ public class AedMapActivity extends MapActivity {
             menuEdit.setVisible(false);
             menuView.setVisible(true);
             menuHelpView.setVisible(true);
+            menuHelpEdit.setVisible(false);
         } else {
             menuEdit.setVisible(true);
             menuView.setVisible(false);
-            menuHelpView.setVisible(true);
+            menuHelpView.setVisible(false);
+            menuHelpEdit.setVisible(true);
         }
         return ret;
     }
