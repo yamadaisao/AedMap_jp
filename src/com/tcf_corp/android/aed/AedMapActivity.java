@@ -96,7 +96,7 @@ public class AedMapActivity extends MapActivity {
     private MenuItem menuHelpList;
     private MenuItem menuHelpEdit;
 
-    private HelpView helpView;
+    // private HelpView helpView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -445,7 +445,7 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onClick(View v) {
-                openHelp("file:///android_asset/viewmode.html");
+                openHelp("file:///android_asset/emergency.html");
             }
         });
     }
@@ -732,7 +732,9 @@ public class AedMapActivity extends MapActivity {
     }
 
     private final GpsStatus.Listener gpsStatusLitener = new GpsStatus.Listener() {
-
+        /**
+         * このメソッドは、プロバイダの場所を取得することができない場合、 または最近使用不能の期間後に利用可能となっている場合に呼び出されます。
+         */
         @Override
         public void onGpsStatusChanged(int event) {
             // GpsStatus.Listenerで呼ばれる
