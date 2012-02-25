@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/frameLayout1"
+    android:id="@+id/root_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
@@ -84,14 +84,20 @@
                     android:text="ToggleButton"
                     android:textOff="Wi-Fi OFF"
                     android:textOn="Wi-Fi ON"/>
-
+
                 <ToggleButton
                     android:id="@+id/button_my_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/button_my_location"
                     android:textOff="@string/button_my_location"
-                    android:textOn="@string/button_my_location" android:layout_gravity="right"/>
+                    android:textOn="@string/button_my_location" />
+
+                <Button
+                    android:id="@+id/button_emergency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_emergency" />
 
             </LinearLayout>
         </LinearLayout>

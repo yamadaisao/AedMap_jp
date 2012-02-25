@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -70,6 +71,8 @@ public class AedMapActivity extends MapActivity {
 
     private ToggleButton gpsButton;
     private ToggleButton wifiButton;
+    private Button emergencyButton;
+
     private ProgressBar progress;
     private WifiManager wifi;
     private TextView address;
@@ -92,6 +95,8 @@ public class AedMapActivity extends MapActivity {
     private MenuItem menuHelpView;
     private MenuItem menuHelpList;
     private MenuItem menuHelpEdit;
+
+    private HelpView helpView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -299,13 +304,13 @@ public class AedMapActivity extends MapActivity {
         if (isEditMode) {
             menuEdit.setVisible(false);
             menuView.setVisible(true);
-            menuHelpView.setVisible(true);
-            menuHelpEdit.setVisible(false);
+            menuHelpView.setVisible(false);
+            menuHelpEdit.setVisible(true);
         } else {
             menuEdit.setVisible(true);
             menuView.setVisible(false);
-            menuHelpView.setVisible(false);
-            menuHelpEdit.setVisible(true);
+            menuHelpView.setVisible(true);
+            menuHelpEdit.setVisible(false);
         }
         return ret;
     }
@@ -328,10 +333,28 @@ public class AedMapActivity extends MapActivity {
             break;
         case R.id.menu_help_view:
             break;
+        case R.id.menu_help_edit:
+            break;
         default:
             break;
         }
         return ret;
+    }
+
+    private void openHelp(String url) {
+        // if (helpView == null) {
+        // helpView = new HelpView(context, url);
+        // ViewGroup rootView = (ViewGroup) findViewById(R.id.root_view);
+        // rootView.addView(helpView, new
+        // FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
+        // LayoutParams.FILL_PARENT));
+        // } else {
+        // helpView.loadUrl(url);
+        // helpView.setVisibility(View.VISIBLE);
+        // }
+        Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+        intent.putExtra(HelpActivity.ARG_URL, url);
+        startActivity(intent);
     }
 
     /**
@@ -414,6 +437,15 @@ public class AedMapActivity extends MapActivity {
                     getMarkers(newGeoPoint);
                 }
                 getAddress(newGeoPoint);
+            }
+        });
+
+        emergencyButton = (Button) findViewById(R.id.button_emergency);
+        emergencyButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                openHelp("file:///android_asset/viewmode.html");
             }
         });
     }

@@ -38,6 +38,7 @@
         <activity android:name=".AedMapActivity"></activity>
         <activity android:name=".AedListActivity"></activity>
         <activity android:name=".AedEditActivity"></activity>
+        <activity android:name=".HelpActivity"></activity>
     </application>
 
 </manifest>
