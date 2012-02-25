@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -160,7 +159,6 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
 
     @Override
     public void hideBalloon() {
-        Log.d(TAG, "hideBalloon");
         if (isEdit == true && balloonView != null) {
             MarkerItem item = balloonView.saveMarkerItem();
             if (item != null && item.type == MarkerItem.TYPE_EDIT) {

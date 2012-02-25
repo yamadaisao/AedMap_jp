@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import com.google.android.maps.GeoPoint;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.aed.http.MarkerItemResult;
+import com.tcf_corp.android.util.LogUtil;
 
 /**
  * Shared data between tabs.
@@ -17,6 +18,9 @@ import com.tcf_corp.android.aed.http.MarkerItemResult;
  * 
  */
 public class SharedData implements Parcelable {
+
+    private static final String TAG = SharedData.class.getSimpleName();
+    private static final boolean DEBUG = true;
 
     private static final SharedData instance = new SharedData();
 
@@ -33,6 +37,10 @@ public class SharedData implements Parcelable {
         lastResult = in.readParcelable(null);
         moveCurrent = Boolean.valueOf(in.readString());
         in.readTypedList(editList, MarkerItem.CREATOR);
+        if (DEBUG) {
+            LogUtil.v(TAG,
+                    "restore:result=" + lastResult.markers.size() + ",edit=" + editList.size());
+        }
     }
 
     public static SharedData getInstance() {
@@ -86,6 +94,12 @@ public class SharedData implements Parcelable {
         dest.writeParcelable(lastResult, 0);
         dest.writeString(Boolean.toString(moveCurrent));
         dest.writeTypedList(editList);
+        if (DEBUG) {
+            if (lastResult != null) {
+                LogUtil.v(TAG,
+                        "store:result=" + lastResult.markers.size() + ",edit=" + editList.size());
+            }
+        }
     }
 
     public static final Parcelable.Creator<SharedData> CREATOR = new Parcelable.Creator<SharedData>() {

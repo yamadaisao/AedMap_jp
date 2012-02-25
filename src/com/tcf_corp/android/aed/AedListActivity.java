@@ -17,8 +17,11 @@ import android.widget.TextView;
 import com.google.android.maps.GeoPoint;
 import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.map.MapUtil;
+import com.tcf_corp.android.util.LogUtil;
 
 public class AedListActivity extends Activity {
+    private static final String TAG = AedListActivity.class.getSimpleName();
+    private static final boolean DEBUG = false;
 
     ListView listView;
     TabHostActivity parent;
@@ -33,23 +36,20 @@ public class AedListActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.v(TAG, "onResume");
         SharedData data = SharedData.getInstance();
         GeoPoint current = data.getGeoPoint();
 
-        // TODO:null pointer Exception
-        List<MarkerItem> list = data.getLastResult().markers;
-        for (MarkerItem item : list) {
-            item.dist = MapUtil.getDistance(current, item.getPoint());
+        if (data.getLastResult() != null) {
+            List<MarkerItem> list = data.getLastResult().markers;
+            for (MarkerItem item : list) {
+                item.dist = MapUtil.getDistance(current, item.getPoint());
+            }
+            Collections.sort(list, new MarkerComparator());
+            // TextView の autoLinkがある場合は、
+            // getApplicationContextではなくthisを渡さないといけない.
+            listView.setAdapter(new AedAdapter(this, data.getLastResult().markers));
         }
-        Collections.sort(list, new MarkerComparator());
-        // TextView の autoLinkがある場合は、
-        // getApplicationContextではなくthisを渡さないといけない.
-        listView.setAdapter(new AedAdapter(this, data.getLastResult().markers));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     /**
