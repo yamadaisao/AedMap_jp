@@ -1,0 +1,115 @@
+@CHARSET "utf-8";
+body {
+    margin:1em;
+    font-family: ArialMT, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", メイリオ, sans-serif;  
+    font-size: 1em;
+    line-height: 1.5em;
+    -webkit-text-size-adjust: none; /* フォントサイズ自動調整 */  
+}
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align:center;
+}
+h1 {
+	background: url(../img/ic_aed.png) left center no-repeat;
+    font-size: 1.2em;
+    -webkit-margin-before: 0.3em;
+    -webkit-margin-after: 0.3em;
+	color: #f4b800;
+	text-shadow: 1px 1px 2px #ccc;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+    padding-left: 32px;
+    margin-top: 8px;
+}
+h2 {
+    font-size: 1.2em;  
+    -webkit-margin-before: 0.3em;
+    -webkit-margin-after: 0.3em;
+	color: #ff3333;
+	text-shadow: 1px 1px 2px #ccc;
+	margin-bottom: 1em;
+    padding-left: 16px;
+    padding-top: 8px;
+    margin-top: 8px;
+}
+p {
+    margin: 10px 5px 10px 10px ;
+    padding: 0 ;
+}
+aside {
+    background-color: #ebebeb;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    padding: 10px;
+}
+h2+aside {
+    background-color: #ebebeb;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 10px 5px 10px 16px ;
+}
+
+/*
+aside p:last-child  {
+    margin-bottom: 0;
+}
+*/
+#container {
+	margin:0 auto;
+	/*スマホ向け*/
+	width:100%;
+	overflow:hidden;
+	/*スマホ向け*/
+}
+.icon {
+	width: 24px;
+	height: 24px;
+}
+.image {
+	margin-left:8px;
+	margin-right:8px;
+	font-size:11px;
+
+	background-color: #f0e68c;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    padding: 8px;
+}
+.sup {
+	vertical-align:super;
+	font-size:0.9em;
+}
+.comment {
+	font-size: 0.9em;
+}
+#header_title {
+    font-size: 1.2em;
+	color: #f4b800;
+	text-shadow: 1px 1px 2px #ccc;
+}
+#header_link {
+	text-align:right;
+}
+.link_button {
+	border-radius: 5px;
+	background-color: #cbcccf;
+	background: -webkit-gradient(linear, left top, left bottom, from(#cbcccf), to(#acaeb0));
+	width: 9em;
+	font-size: 0.9em;
+	text-align: center;
+	float: right;
+	margin-right: 10px;
+}
+.link_button a {
+	text-shadow: 1px 1px 0 #ddd;
+	display: block;
+	padding: 5px 0;
+	color: #444444;
+	text-decoration: none;
+}
+#footer {
+	margin-top:1em;
+}

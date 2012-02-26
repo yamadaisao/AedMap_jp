@@ -60,6 +60,10 @@ public class AedMapActivity extends MapActivity {
     private static final String SAVE_ZOOM_LEVEL = "zoom_level";
     private static final String IS_EDIT = "is_edit";
 
+    private static final String HELP_EMERGENCY = "file:///android_asset/emergency.html";
+    private static final String HELP_VIEW = "file:///android_asset/viewmode.html";
+    private static final String HELP_EDIT = "file:///android_asset/editmode.html";
+
     private Context context;
     private MapController mapController;
     private CustomMapView mapView;
@@ -332,8 +336,10 @@ public class AedMapActivity extends MapActivity {
             setEditMode();
             break;
         case R.id.menu_help_view:
+            openHelp(HELP_VIEW);
             break;
         case R.id.menu_help_edit:
+            openHelp(HELP_EDIT);
             break;
         default:
             break;
@@ -445,7 +451,7 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onClick(View v) {
-                openHelp("file:///android_asset/emergency.html");
+                openHelp(HELP_EMERGENCY);
             }
         });
     }

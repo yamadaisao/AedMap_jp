@@ -79,7 +79,7 @@
 		    android:layout_weight="1"
 		    android:text="balloon_item_spl"
 		    android:textColor="@android:color/secondary_text_light"
-		    android:textSize="12dip" />
+		    android:textSize="12dip" android:autoLink="phone"/>
 
 	</LinearLayout>
 
