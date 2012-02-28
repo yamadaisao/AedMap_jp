@@ -4,7 +4,7 @@
 	android:background="@drawable/selector_tab"
 	android:orientation="horizontal"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="wrap_content">
 
 	<!-- セパレータ -->
 	<FrameLayout
@@ -16,28 +16,59 @@
 	<!-- タブ -->
 
 	<LinearLayout
+	    android:id="@+id/linearLayout1"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:layout_weight="1"
-	    android:gravity="center"
-	    android:orientation="horizontal"
-	    android:padding="8dp" >
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" android:paddingLeft="8dip" android:paddingRight="8dip">
 
-		<!-- アイコン -->
-		<ImageView
-			android:id="@+id/tab_item_icon"
-			android:layout_marginBottom="4dp"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:orientation="horizontal"
+		    android:padding="4dp" >
 
-		<!-- テキスト -->
-		<TextView
-			android:id="@+id/tab_item_text"
-			android:textColor="#FFFFFF"
-			android:textStyle="bold"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			style="?android:attr/textAppearanceSmall"/>
+		    <ImageView
+		        android:id="@+id/tab_item_icon"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="4dp" />
+
+		    <TextView
+		        android:id="@+id/tab_item_text"
+		        style="?android:attr/textAppearanceSmall"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textColor="#FFFFFF"
+		        android:textStyle="bold" />
+		</LinearLayout>
+
+		<LinearLayout
+		    android:id="@+id/linearLayout2"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" android:layout_marginTop="-4dip">
+
+			<View
+			    android:id="@+id/view2"
+			    android:layout_width="0dip"
+			    android:layout_height="4dip"
+			    android:layout_weight="1" />
+
+			<View
+			    android:id="@+id/view1"
+			    android:layout_width="0dip"
+			    android:layout_height="4dip"
+			    android:layout_marginBottom="8dip"
+			    android:background="@drawable/selector_tab_underbar" android:layout_weight="1.5"/>
+
+			<View
+			    android:id="@+id/view3"
+			    android:layout_width="0dip"
+			    android:layout_height="4dip"
+			    android:layout_weight="1" />
+
+		</LinearLayout>
 
 	</LinearLayout>
 </LinearLayout>

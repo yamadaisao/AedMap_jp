@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 角を丸める -->
+    <corners android:radius="2dp" />
+    <!-- この形状の色 -->
+    <solid android:color="@color/cyan" />
+    <!-- 枠線 -->
+    <stroke android:width="2dp"
+        android:color="@color/cyan" />
+</shape>

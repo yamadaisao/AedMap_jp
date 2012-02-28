@@ -2,6 +2,8 @@
 <resources>
     <color name="dimgrey_half">#a0696969</color>
     <color name="white">#ffffffff</color>
+    <color name="cyan">#00ffff</color>
+    <color name="silver">#c0c0c0</color>
 
     
 </resources>

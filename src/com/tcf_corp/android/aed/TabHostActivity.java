@@ -13,8 +13,17 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+/**
+ * メインのタブactivityです.
+ * 
+ * @author yamada isao
+ * 
+ */
 public class TabHostActivity extends TabActivity {
 
+    /**
+     * タブを生成します.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

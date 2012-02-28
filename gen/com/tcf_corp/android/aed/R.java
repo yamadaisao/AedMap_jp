@@ -17,7 +17,9 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
+        public static final int cyan=0x7f060002;
         public static final int dimgrey_half=0x7f060000;
+        public static final int silver=0x7f060003;
         public static final int white=0x7f060001;
     }
     public static final class drawable {
@@ -43,9 +45,12 @@ public final class R {
         public static final int ic_wifi_on=0x7f020013;
         public static final int icon_pin=0x7f020014;
         public static final int selector_tab=0x7f020015;
-        public static final int shape_border=0x7f020016;
-        public static final int shape_tab_item=0x7f020017;
-        public static final int shape_tab_item_active=0x7f020018;
+        public static final int selector_tab_underbar=0x7f020016;
+        public static final int shape_border=0x7f020017;
+        public static final int shape_tab_item=0x7f020018;
+        public static final int shape_tab_item_active=0x7f020019;
+        public static final int shape_tab_item_underbar=0x7f02001a;
+        public static final int shape_tab_item_underbar_active=0x7f02001b;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f050004;
@@ -74,10 +79,10 @@ public final class R {
         public static final int linearLayout2=0x7f05000b;
         public static final int linearLayout3=0x7f050010;
         public static final int mapview=0x7f05000c;
-        public static final int menu_help_edit=0x7f05002f;
-        public static final int menu_help_view=0x7f05002e;
-        public static final int menu_to_edit=0x7f05002d;
-        public static final int menu_to_view=0x7f05002c;
+        public static final int menu_help_edit=0x7f050031;
+        public static final int menu_help_view=0x7f050030;
+        public static final int menu_to_edit=0x7f05002f;
+        public static final int menu_to_view=0x7f05002e;
         public static final int new_aed_holder=0x7f050019;
         public static final int overwrap_view=0x7f05000f;
         public static final int progress=0x7f05000e;
@@ -95,6 +100,8 @@ public final class R {
         public static final int textView1=0x7f050011;
         public static final int text_address=0x7f050012;
         public static final int view1=0x7f050018;
+        public static final int view2=0x7f05002c;
+        public static final int view3=0x7f05002d;
         public static final int webView=0x7f050022;
     }
     public static final class layout {
