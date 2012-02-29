@@ -5,7 +5,6 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Debug;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +26,7 @@ public class TabHostActivity extends TabActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Debug.startMethodTracing("aedmap");
+        // Debug.startMethodTracing("aedmap");
 
         TabHost host = this.getTabHost();
         Resources r = this.getResources();
@@ -41,7 +40,7 @@ public class TabHostActivity extends TabActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Debug.stopMethodTracing();
+        // Debug.stopMethodTracing();
     }
 
     /**

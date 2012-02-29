@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AEDマップ.jp</string>
+    <string name="map_dev_key" >0MMOEhZjjditqYMOnN5bwp_kApvCgcXNmM8j-Ow</string>
     <string name="map_api_key">0MMOEhZjjditqYMOnN5bwp_kApvCgcXNmM8j-Ow</string>
     <string name="tab_map">マップ</string>
     <string name="tab_list">リスト</string>
@@ -27,7 +28,7 @@
     <string name="hint_snipet">住所</string>
     <string name="hint_able">利用可能時間帯</string>
     <string name="hint_src">情報源</string>
-    <string name="hint_spl">補足事項</string>
+    <string name="hint_spl">補足事項、電話番号</string>
     <string name="button_save">保存</string>
     <string name="button_cancel">編集を破棄</string>
     <string name="button_delete">削除</string>
@@ -39,5 +40,8 @@
     <string name="menu_view">表示モード</string>
     <string name="menu_edit">編集モード</string>
     <string name="menu_help">ヘルプ</string>
-    
+    <string name="toggle_gps_on">GPS ON</string>
+    <string name="toggle_gps_off">GPS OFF</string>
+    <string name="toggle_wifi_on">Wi-Fi ON</string>
+    <string name="toggle_wifi_off">Wi-Fi OFF</string>
 </resources>
