@@ -52,6 +52,16 @@ public class AedListActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        LogUtil.v(TAG, "onRestoreInstanceState");
+        if (state != null) {
+            SharedData data = state.getParcelable("data");
+            LogUtil.d(TAG, "edit:" + data.getEditList().size());
+        }
+    }
+
     /**
      * MarkerItemの比較クラス.
      * 
