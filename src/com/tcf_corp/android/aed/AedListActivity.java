@@ -19,6 +19,12 @@ import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.map.MapUtil;
 import com.tcf_corp.android.util.LogUtil;
 
+/**
+ * マーカーをマップの中心地からの直線距離順に並び替えて表示します.
+ * 
+ * @author yamada.isao
+ * 
+ */
 public class AedListActivity extends Activity {
     private static final String TAG = AedListActivity.class.getSimpleName();
     private static final boolean DEBUG = false;
@@ -55,10 +61,13 @@ public class AedListActivity extends Activity {
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
+
         LogUtil.v(TAG, "onRestoreInstanceState");
         if (state != null) {
             SharedData data = state.getParcelable("data");
-            LogUtil.d(TAG, "edit:" + data.getEditList().size());
+            if (DEBUG) {
+                LogUtil.d(TAG, "edit:" + data.getEditList().size());
+            }
         }
     }
 
@@ -84,6 +93,12 @@ public class AedListActivity extends Activity {
         TextView dist;
     }
 
+    /**
+     * カスタムリスト用のadapter.
+     * 
+     * @author yamada.isao
+     * 
+     */
     class AedAdapter extends ArrayAdapter<MarkerItem> {
 
         private final LayoutInflater inflater;

@@ -97,10 +97,7 @@ public class AedMapActivity extends MapActivity {
     private MenuItem menuView;
     private MenuItem menuEdit;
     private MenuItem menuHelpView;
-    private MenuItem menuHelpList;
     private MenuItem menuHelpEdit;
-
-    // private HelpView helpView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -232,7 +229,9 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtil.v(TAG, "onPause");
+        if (DEBUG) {
+            LogUtil.v(TAG, "onPause");
+        }
 
         // tab間の共有データの保存
         SharedData data = SharedData.getInstance();
@@ -348,16 +347,6 @@ public class AedMapActivity extends MapActivity {
     }
 
     private void openHelp(String url) {
-        // if (helpView == null) {
-        // helpView = new HelpView(context, url);
-        // ViewGroup rootView = (ViewGroup) findViewById(R.id.root_view);
-        // rootView.addView(helpView, new
-        // FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-        // LayoutParams.FILL_PARENT));
-        // } else {
-        // helpView.loadUrl(url);
-        // helpView.setVisibility(View.VISIBLE);
-        // }
         Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
         intent.putExtra(HelpActivity.ARG_URL, url);
         startActivity(intent);
@@ -446,6 +435,7 @@ public class AedMapActivity extends MapActivity {
             }
         });
 
+        // 緊急救語法ボタン
         emergencyButton = (Button) findViewById(R.id.button_emergency);
         emergencyButton.setOnClickListener(new View.OnClickListener() {
 
@@ -767,7 +757,7 @@ public class AedMapActivity extends MapActivity {
 
     };
 
-    // ラベルを書き換えるためのハンドラ
+    // 住所ラベルを書き換えるためのハンドラ
     final Handler addrhandler = new Handler() {
         // @Override
         @Override
