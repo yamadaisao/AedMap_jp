@@ -51,6 +51,12 @@ import com.tcf_corp.android.map.CustomMapView;
 import com.tcf_corp.android.util.GeocodeManager;
 import com.tcf_corp.android.util.LogUtil;
 
+/**
+ * MapViewを表示するActivityです.
+ * 
+ * @author yamada.isao
+ * 
+ */
 public class AedMapActivity extends MapActivity {
     private static final String TAG = AedMapActivity.class.getSimpleName();
     private static final boolean DEBUG = false;
@@ -60,8 +66,11 @@ public class AedMapActivity extends MapActivity {
     private static final String SAVE_ZOOM_LEVEL = "zoom_level";
     private static final String IS_EDIT = "is_edit";
 
+    /** 救急救助法のURL */
     private static final String HELP_EMERGENCY = "file:///android_asset/emergency.html";
+    /** 表示モードヘルプのURL */
     private static final String HELP_VIEW = "file:///android_asset/viewmode.html";
+    /** 編集モードヘルプのURL */
     private static final String HELP_EDIT = "file:///android_asset/editmode.html";
 
     private Context context;
@@ -97,10 +106,7 @@ public class AedMapActivity extends MapActivity {
     private MenuItem menuView;
     private MenuItem menuEdit;
     private MenuItem menuHelpView;
-    private MenuItem menuHelpList;
     private MenuItem menuHelpEdit;
-
-    // private HelpView helpView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,6 +124,7 @@ public class AedMapActivity extends MapActivity {
                 zoomLevel = newZoom;
             }
         });
+        // タッチをしたら現在地のトグルボタンをOFFにします.
         mapView.setTouchListener(new CustomMapView.TouchListener() {
 
             @Override
@@ -125,6 +132,8 @@ public class AedMapActivity extends MapActivity {
                 moveCurrent.setChecked(false);
             }
         });
+
+        // プログレスの設定
         progress = (ProgressBar) findViewById(R.id.progress);
         progress.setVisibility(View.INVISIBLE);
         progress.setIndeterminate(true);
@@ -155,7 +164,9 @@ public class AedMapActivity extends MapActivity {
             zoomLevel = state.getInt(SAVE_ZOOM_LEVEL, 19);
             isEditMode = state.getBoolean(IS_EDIT, false);
             SharedData data = state.getParcelable("data");
-            LogUtil.d(TAG, "edit:" + data.getEditList().size());
+            if (DEBUG) {
+                LogUtil.d(TAG, "edit:" + data.getEditList().size());
+            }
         }
     }
 
@@ -172,7 +183,9 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.v(TAG, "onResume");
+        if (DEBUG) {
+            LogUtil.v(TAG, "onResume");
+        }
         // tab間の共有データの復元
         SharedData data = SharedData.getInstance();
         moveCurrent.setChecked(data.isMoveCurrent());
@@ -183,11 +196,16 @@ public class AedMapActivity extends MapActivity {
 
         if (data.getLastResult() != null) {
             if (isEditMode) {
+                // 編集中のOverlay
                 editOverlay.setMarkerList(data.getEditList());
+                // 編集モードの表示用Overlay
+                // マーカーリストから編集中のidを取り除いたもの
                 viewOverlay
                         .setMarkerList(data.getLastResult().markers, editOverlay.getMarkerList());
+                // 表示モードのOverlay
                 aedOverlay.setMarkerList(data.getLastResult().markers);
             } else {
+                // 表示モードのOverlay
                 aedOverlay.setMarkerList(data.getLastResult().markers);
             }
         }
@@ -196,6 +214,8 @@ public class AedMapActivity extends MapActivity {
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm.addGpsStatusListener(gpsStatusLitener);
         requestLocationUpdates();
+
+        // Wi-Fiの状態の設定
         boolean isWifiEnabled = wifi.isWifiEnabled();
         if (DEBUG) {
             LogUtil.v(TAG, "isWifiEnabled:" + isWifiEnabled);
@@ -232,7 +252,9 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtil.v(TAG, "onPause");
+        if (DEBUG) {
+            LogUtil.v(TAG, "onPause");
+        }
 
         // tab間の共有データの保存
         SharedData data = SharedData.getInstance();
@@ -348,16 +370,6 @@ public class AedMapActivity extends MapActivity {
     }
 
     private void openHelp(String url) {
-        // if (helpView == null) {
-        // helpView = new HelpView(context, url);
-        // ViewGroup rootView = (ViewGroup) findViewById(R.id.root_view);
-        // rootView.addView(helpView, new
-        // FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-        // LayoutParams.FILL_PARENT));
-        // } else {
-        // helpView.loadUrl(url);
-        // helpView.setVisibility(View.VISIBLE);
-        // }
         Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
         intent.putExtra(HelpActivity.ARG_URL, url);
         startActivity(intent);
@@ -385,14 +397,14 @@ public class AedMapActivity extends MapActivity {
                 Intent callGPSSettingIntent = new Intent(
                         android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(callGPSSettingIntent);
+                // GPSはOFFからONの状態はイベントが発生するが
+                // ONからOFFの状態はイベントが発生しない.
+                // ボタンを押してONの状態になったが結局GPSを起動しなかった場合は
+                // 不整合になるので一旦OFFにしておく.
+                gpsButton.setChecked(false);
             }
         });
-        gpsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            }
-        });
         // wifiボタンでon/offを行う.
         wifiButton = (ToggleButton) findViewById(R.id.button_wifi);
         wifi = (WifiManager) getSystemService(WIFI_SERVICE);
@@ -411,6 +423,7 @@ public class AedMapActivity extends MapActivity {
         moveCurrent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // ONになったら現在地を移動する
                 if (isChecked == true) {
                     GeoPoint gp = myLocationOverlay.getMyLocation();
                     moveToCurrent(gp);
@@ -431,6 +444,7 @@ public class AedMapActivity extends MapActivity {
                 if (data.getLastResult() == null) {
                     data.setLastResult(new MarkerItemResult(newGeoPoint));
                 }
+                // 取得済みの矩形範囲を超えた場合に再取得する
                 MarkerItemResult lastResult = data.getLastResult();
                 if (compLat < lastResult.minLatitude1E6 || compLat > lastResult.maxLatitude1E6
                         || compLng < lastResult.minLongitude1E6
@@ -442,10 +456,12 @@ public class AedMapActivity extends MapActivity {
                     }
                     getMarkers(newGeoPoint);
                 }
+                // 住所は常に再取得
                 getAddress(newGeoPoint);
             }
         });
 
+        // 緊急救護法ボタン
         emergencyButton = (Button) findViewById(R.id.button_emergency);
         emergencyButton.setOnClickListener(new View.OnClickListener() {
 
@@ -636,6 +652,12 @@ public class AedMapActivity extends MapActivity {
         }
     }
 
+    /**
+     * 現在地の緯度経度をパラメータにマーカーを取得します.
+     * 
+     * @param geoPoint
+     *            現在地の緯度経度
+     */
     private void getMarkers(GeoPoint geoPoint) {
         AsyncTaskCallback<MarkerItemResult> callback = new AsyncTaskCallback<MarkerItemResult>() {
 
@@ -672,6 +694,12 @@ public class AedMapActivity extends MapActivity {
         task.execute(query);
     }
 
+    /**
+     * 住所を取得します. パフォーマンスが悪かったのでスレッドで実行します.
+     * 
+     * @param geoPoint
+     *            緯度経度
+     */
     private void getAddress(final GeoPoint geoPoint) {
         Thread searchAdress = new Thread() {
             @Override
@@ -726,7 +754,7 @@ public class AedMapActivity extends MapActivity {
             if (action == null) {
                 return;
             }
-            // Wifi の ON/OFF が切り替えられたら WifiChangeActivity を起動
+            // Wifi の ON/OFF が切り替えられたら ボタンのステータスを変更.
             if (action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
                 if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED) {
                     wifiButton.setChecked(true);
@@ -756,18 +784,13 @@ public class AedMapActivity extends MapActivity {
                 break;
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 gpsButton.setChecked(true);
-                // LocationManager lm = (LocationManager)
-                // getSystemService(Context.LOCATION_SERVICE);
-                // GpsStatus st = lm.getGpsStatus(null);
-                // LocationProvider prod = lm
-                // .getProvider(LocationManager.GPS_PROVIDER);
                 break;
             }
         }
 
     };
 
-    // ラベルを書き換えるためのハンドラ
+    // 住所ラベルを書き換えるためのハンドラ
     final Handler addrhandler = new Handler() {
         // @Override
         @Override
@@ -1003,6 +1026,7 @@ public class AedMapActivity extends MapActivity {
     private final AsyncTaskCallback<MarkerItemResult> editCallback = new AsyncTaskCallback<MarkerItemResult>() {
         @Override
         public void onSuccess(MarkerItemResult result) {
+            // 編集対象は常にひとつ
             editOverlay.remove(result.markers.get(0));
             GeoPoint geoPoint = new GeoPoint(result.queryLatitude1E6, result.queryLongitude1E6);
             getMarkers(geoPoint);

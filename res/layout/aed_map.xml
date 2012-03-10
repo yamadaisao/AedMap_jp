@@ -74,16 +74,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ToggleButton"
-                    android:textOff="GPS OFF"
-                    android:textOn="GPS ON"/>
+                    android:textOff="@string/toggle_gps_off"
+                    android:textOn="@string/toggle_gps_on"/>
 
                 <ToggleButton
                     android:id="@+id/button_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ToggleButton"
-                    android:textOff="Wi-Fi OFF"
-                    android:textOn="Wi-Fi ON"/>
+                    android:textOff="@string/toggle_wifi_off"
+                    android:textOn="@string/toggle_wifi_on"/>
 
                 <ToggleButton
                     android:id="@+id/button_my_location"

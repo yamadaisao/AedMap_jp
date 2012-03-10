@@ -29,7 +29,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     private static final String TAG = AedOverlay.class.getSimpleName();
     private static final boolean DEBUG = true;
 
-    private static final int DEFAULT_LIMIT = 600;
+    private static final int DEFAULT_LIMIT = 100;
     private List<MarkerItem> markerList = new ArrayList<MarkerItem>(DEFAULT_LIMIT);
 
     protected final Context context;
@@ -37,7 +37,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     private final int markerHalfWidth;
     private final int markerHeight;
     private GestureDetector gestureDetector = null;
-    private boolean isEdit = false;
+    private final boolean isEdit;
     private LocationBalloonOverlayView balloonView;
 
     public AedOverlay(Context context, Drawable defaultMarker, MapView mapView, boolean isEdit) {
