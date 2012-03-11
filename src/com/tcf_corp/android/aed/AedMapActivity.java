@@ -106,7 +106,10 @@ public class AedMapActivity extends MapActivity {
     private MenuItem menuView;
     private MenuItem menuEdit;
     private MenuItem menuHelpView;
+    private MenuItem menuHelpList;
     private MenuItem menuHelpEdit;
+
+    // private HelpView helpView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -166,6 +169,7 @@ public class AedMapActivity extends MapActivity {
             zoomLevel = state.getInt(SAVE_ZOOM_LEVEL, 19);
             isEditMode = state.getBoolean(IS_EDIT, false);
             SharedData data = state.getParcelable("data");
+            LogUtil.d(TAG, "edit:" + data.getEditList().size());
             if (DEBUG) {
                 LogUtil.d(TAG, "edit:" + data.getEditList().size());
             }
@@ -187,6 +191,7 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         if (DEBUG) {
             LogUtil.v(TAG, "onResume");
         }
@@ -256,6 +261,7 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        LogUtil.v(TAG, "onPause");
         if (DEBUG) {
             LogUtil.v(TAG, "onPause");
         }
@@ -374,6 +380,16 @@ public class AedMapActivity extends MapActivity {
     }
 
     private void openHelp(String url) {
+        // if (helpView == null) {
+        // helpView = new HelpView(context, url);
+        // ViewGroup rootView = (ViewGroup) findViewById(R.id.root_view);
+        // rootView.addView(helpView, new
+        // FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
+        // LayoutParams.FILL_PARENT));
+        // } else {
+        // helpView.loadUrl(url);
+        // helpView.setVisibility(View.VISIBLE);
+        // }
         Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
         intent.putExtra(HelpActivity.ARG_URL, url);
         startActivity(intent);
@@ -406,6 +422,7 @@ public class AedMapActivity extends MapActivity {
                 gpsButton.setChecked(false);
             }
         });
+        gpsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
         // wifiボタンでon/offを行う.
         wifiButton = (ToggleButton) findViewById(R.id.button_wifi);
@@ -756,6 +773,7 @@ public class AedMapActivity extends MapActivity {
             if (action == null) {
                 return;
             }
+            // Wifi の ON/OFF が切り替えられたら WifiChangeActivity を起動
             // Wifi の ON/OFF が切り替えられたら ボタンのステータスを変更.
             if (action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
                 if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED) {
@@ -786,6 +804,11 @@ public class AedMapActivity extends MapActivity {
                 break;
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 gpsButton.setChecked(true);
+                // LocationManager lm = (LocationManager)
+                // getSystemService(Context.LOCATION_SERVICE);
+                // GpsStatus st = lm.getGpsStatus(null);
+                // LocationProvider prod = lm
+                // .getProvider(LocationManager.GPS_PROVIDER);
                 break;
             }
         }
