@@ -159,7 +159,9 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
-        LogUtil.v(TAG, "onRestoreInstanceState");
+        if (DEBUG) {
+            LogUtil.v(TAG, "onRestoreInstanceState");
+        }
         if (state != null) {
             zoomLevel = state.getInt(SAVE_ZOOM_LEVEL, 19);
             isEditMode = state.getBoolean(IS_EDIT, false);
@@ -173,7 +175,9 @@ public class AedMapActivity extends MapActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        LogUtil.v(TAG, "onSaveInstanceState");
+        if (DEBUG) {
+            LogUtil.v(TAG, "onSaveInstanceState");
+        }
         outState.putInt(SAVE_ZOOM_LEVEL, zoomLevel);
         outState.putBoolean(IS_EDIT, isEditMode);
         SharedData data = SharedData.getInstance();
@@ -381,8 +385,6 @@ public class AedMapActivity extends MapActivity {
     private void initMapSet() {
         // MapView objectの取得
         mapView = (CustomMapView) findViewById(R.id.mapview);
-        // MapView#setBuiltInZoomControl()でZoom controlをbuilt-in moduleに任せる
-        // mapView.setBuiltInZoomControls(true);
 
         // MapController objectを取得
         mapController = mapView.getController();
