@@ -7,35 +7,48 @@ import java.util.Locale;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 
 public class GeocodeManager {
-    public static final String TAG = GeocodeManager.class.getSimpleName();
+    private static final String TAG = GeocodeManager.class.getSimpleName();
+    private static final boolean DEBUG = true;
 
     // 座標から住所文字列へ変換
     public static String point2address(double latitude, double longitude, Context context)
             throws IOException {
-        String address_string = new String();
+        String address_string = "";
 
         // 変換実行
-        Geocoder coder = new Geocoder(context, Locale.JAPAN);
+        Geocoder coder = new Geocoder(context, Locale.getDefault());
         List<Address> list_address = coder.getFromLocation(latitude, longitude, 1);
 
         if (!list_address.isEmpty()) {
-
             // 変換成功時は，最初の変換候補を取得
-            Address address = list_address.get(0);
-            StringBuffer sb = new StringBuffer();
-
-            // adressの大区分から小区分までを改行で全結合
-            String s;
-            for (int i = 1; (s = address.getAddressLine(i)) != null; i++) {
-                sb.append(s);
-            }
-
-            address_string = sb.toString();
+            address_string = concatAddress(list_address.get(0));
         }
 
         return address_string;
     }
 
+    public static List<Address> address2Point(String query, Context context) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> addressList = null;
+        try {
+            addressList = geocoder.getFromLocationName(query, 20);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException 発生");
+        }
+        return addressList;
+    }
+
+    public static String concatAddress(Address address) {
+        StringBuffer sb = new StringBuffer();
+
+        // adressの大区分から小区分までを全結合
+        String s;
+        for (int i = 1; (s = address.getAddressLine(i)) != null; i++) {
+            sb.append(s);
+        }
+        return sb.toString();
+    }
 }

@@ -23,6 +23,11 @@
     <string name="http_io_error">サーバーに接続できません\n電波ガ届く所に移動してください</string>
     
     <string name="msg_location_fail">住所が取得できませんでした</string>
+    <string name="msg_query_fail">検索に失敗しました</string>
+    <string name="msg_result_zero">検索結果が0件でした</string>
+    <string name="msg_some_location">複数の候補が見つかりました</string>
+    <string name="search_label">住所検索</string>
+    <string name="search_hint">住所を入力してください</string>
 
     <string name="hint_title">場所名</string>
     <string name="hint_snipet">住所</string>

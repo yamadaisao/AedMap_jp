@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -62,6 +63,9 @@ public class AedMapActivity extends MapActivity {
     private static final boolean DEBUG = false;
 
     private static final String ACTION_LOCATION_UPDATE = "com.android.practice.map.ACTION_LOCATION_UPDATE";
+    public static final String ACTION_ADDRESS_SELECTED = "com.tcf_corp.android.aed.ACTION_ADDRESS_SELECTED";
+    public static final String SEARCH_RESULT_LATITUDE = "SEARCH_RESULT_LATITUDE";
+    public static final String SEARCH_RESULT_LONGITUDE = "SEARCH_RESULT_LONGITUDE";
 
     private static final String SAVE_ZOOM_LEVEL = "zoom_level";
     private static final String IS_EDIT = "is_edit";
@@ -89,6 +93,7 @@ public class AedMapActivity extends MapActivity {
     private ProgressBar progress;
     private WifiManager wifi;
     private TextView address;
+    private ImageView searchAddress;
 
     // to edit
     private AedOverlay viewOverlay;
@@ -107,6 +112,8 @@ public class AedMapActivity extends MapActivity {
     private MenuItem menuEdit;
     private MenuItem menuHelpView;
     private MenuItem menuHelpEdit;
+
+    private final AlertDialog dialog = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -214,7 +221,7 @@ public class AedMapActivity extends MapActivity {
             }
         }
         // Map取得サービスの起動.
-        setIntentFilterToReceiver();
+        registerReceivers();
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm.addGpsStatusListener(gpsStatusLitener);
         requestLocationUpdates();
@@ -271,6 +278,7 @@ public class AedMapActivity extends MapActivity {
 
         resetOverlays();
         removeUpdates();
+        unregisterReceivers();
     }
 
     private void setEditMode() {
@@ -433,6 +441,21 @@ public class AedMapActivity extends MapActivity {
             }
         });
         address = (TextView) findViewById(R.id.text_address);
+        address.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onSearchRequested();
+            }
+        });
+        searchAddress = (ImageView) findViewById(R.id.search_address);
+        searchAddress.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onSearchRequested();
+            }
+        });
 
         // マップが移動したらマーカーを取得,住所取得.
         mapView.setPanListener(new CustomMapView.PanListener() {
@@ -560,15 +583,27 @@ public class AedMapActivity extends MapActivity {
         }
     }
 
-    private void setIntentFilterToReceiver() {
+    private void registerReceivers() {
         final IntentFilter locationIntentFilter = new IntentFilter();
         locationIntentFilter.addAction(ACTION_LOCATION_UPDATE);
-        registerReceiver(new LocationUpdateReceiver(), locationIntentFilter);
+        registerReceiver(locationUpdateReceiver, locationIntentFilter);
+
         final IntentFilter wifiIntentFilter = new IntentFilter();
         wifiIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         wifiIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
         wifiIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        registerReceiver(new WifiStateUpdateReciever(), wifiIntentFilter);
+        registerReceiver(wifiStateUpdateReciever, wifiIntentFilter);
+        if (DEBUG) {
+            LogUtil.v(TAG, "unregisterReceivers");
+        }
+    }
+
+    private void unregisterReceivers() {
+        unregisterReceiver(locationUpdateReceiver);
+        unregisterReceiver(wifiStateUpdateReciever);
+        if (DEBUG) {
+            LogUtil.v(TAG, "unregisterReceivers");
+        }
     }
 
     private void requestLocationUpdates() {
@@ -595,7 +630,7 @@ public class AedMapActivity extends MapActivity {
         lm.removeUpdates(requestLocation);
     }
 
-    private void moveToCurrent(Location location) {
+    public void moveToCurrent(Location location) {
         // GPSを切ったらnullになった
         if (location != null) {
             GeoPoint geoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),
@@ -610,6 +645,17 @@ public class AedMapActivity extends MapActivity {
             if (moveCurrent.isChecked() == true) {
                 mapController.animateTo(geoPoint);
             }
+            if (DEBUG) {
+                LogUtil.v(TAG, "latitude:" + geoPoint.getLatitudeE6() / 1E6 + ",longitude:"
+                        + geoPoint.getLongitudeE6() / 1E6);
+            }
+        }
+    }
+
+    public void moveToSearchResult(GeoPoint geoPoint) {
+        if (geoPoint != null) {
+            moveCurrent.setChecked(false);
+            mapController.animateTo(geoPoint);
             if (DEBUG) {
                 LogUtil.v(TAG, "latitude:" + geoPoint.getLatitudeE6() / 1E6 + ",longitude:"
                         + geoPoint.getLongitudeE6() / 1E6);
@@ -730,7 +776,7 @@ public class AedMapActivity extends MapActivity {
         searchAdress.start();
     }
 
-    public class LocationUpdateReceiver extends BroadcastReceiver {
+    private final BroadcastReceiver locationUpdateReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -747,9 +793,9 @@ public class AedMapActivity extends MapActivity {
             }
         }
 
-    }
+    };
 
-    public class WifiStateUpdateReciever extends BroadcastReceiver {
+    private final BroadcastReceiver wifiStateUpdateReciever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -765,7 +811,7 @@ public class AedMapActivity extends MapActivity {
                 }
             }
         }
-    }
+    };
 
     private final GpsStatus.Listener gpsStatusLitener = new GpsStatus.Listener() {
         /**
