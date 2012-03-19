@@ -11,7 +11,7 @@
     <string name="button_search_address">住所検索</string>
     <string name="button_gps_setting">GPS設定</string>
     <string name="button_emergency">救命救急法</string>
-    <string name="label_location">現在地：</string>
+    <string name="label_location">中心点：</string>
     <string name="text_location">住所を表示</string>
     <string name="http_server_error">サーバーでエラーが発生しました</string>
     <string name="http_syntax_error">URLに誤りがあります</string>
