@@ -941,7 +941,7 @@ public class AedMapActivity extends MapActivity {
             newItem.able = "";
             newItem.src = "";
             newItem.spl = "";
-            newItem.time = "";
+            newItem.time = new Date();
             newItem.type = MarkerItem.TYPE_NEW;
             newItem.setMarker(aedNewMarker);
             draggingItem = null;

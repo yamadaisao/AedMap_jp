@@ -1,5 +1,7 @@
 package com.tcf_corp.android.aed.http;
 
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -29,7 +31,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
     /** 特記事項 */
     public String spl;
     /** parseできなかったりする */
-    public String time;
+    public Date time;
     /** 中心からの距離(m) */
     public Long dist = 0L;
 
@@ -64,7 +66,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
         able = in.readString();
         src = in.readString();
         spl = in.readString();
-        time = in.readString();
+        time = (Date) in.readSerializable();
         dist = in.readLong();
         type = in.readInt();
     }
@@ -108,7 +110,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
         dest.writeString(able);
         dest.writeString(src);
         dest.writeString(spl);
-        dest.writeString(time);
+        dest.writeSerializable(time);
         dest.writeLong(dist);
         dest.writeInt(type);
     }
