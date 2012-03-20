@@ -4,6 +4,8 @@
     <color name="white">#ffffffff</color>
     <color name="cyan">#00ffff</color>
     <color name="silver">#c0c0c0</color>
+    <color name="yellow">#a0ffff00</color>
+    <color name="red">#ffff0000</color>
 
     
 </resources>

@@ -39,6 +39,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/edit_mode_notification_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_mode_notification"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/edit_mode_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_mode_notification"
+                    android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/red" android:ellipsize="marquee" android:marqueeRepeatLimit="marquee_forever" android:focusableInTouchMode="true" android:focusable="true" android:scrollHorizontally="true" android:singleLine="true"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout3"

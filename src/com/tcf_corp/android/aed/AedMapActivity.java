@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -107,14 +106,15 @@ public class AedMapActivity extends MapActivity {
     private Drawable aedEditMarker;
     private Drawable aedNewMarker;
 
+    private View editModeNotificationView;
+    private TextView editModeNotification;
+
     // menu
     private boolean isEditMode = false;
     private MenuItem menuView;
     private MenuItem menuEdit;
     private MenuItem menuHelpView;
     private MenuItem menuHelpEdit;
-
-    private final AlertDialog dialog = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,6 +162,9 @@ public class AedMapActivity extends MapActivity {
         aedMarker = getResources().getDrawable(R.drawable.ic_aed);
         aedEditMarker = getResources().getDrawable(R.drawable.ic_edit_aed);
         aedNewMarker = getResources().getDrawable(R.drawable.ic_new_aed);
+
+        editModeNotificationView = findViewById(R.id.edit_mode_notification_layout);
+        editModeNotification = (TextView) findViewById(R.id.edit_mode_notification);
     }
 
     @Override
@@ -297,6 +300,9 @@ public class AedMapActivity extends MapActivity {
             overlays.add(editOverlay);
             overlays.add(dragOverlay);
             newAedHolder.setVisibility(View.VISIBLE);
+            // 編集モードの注意書き
+            editModeNotificationView.setVisibility(View.VISIBLE);
+            editModeNotification.requestFocus();
         } else {
             if (data.getLastResult() != null) {
                 aedOverlay.setMarkerList(data.getLastResult().markers);
@@ -308,6 +314,7 @@ public class AedMapActivity extends MapActivity {
             overlays.remove(editOverlay);
             overlays.remove(dragOverlay);
             newAedHolder.setVisibility(View.GONE);
+            editModeNotificationView.setVisibility(View.GONE);
         }
         mapView.invalidate();
     }
@@ -565,6 +572,7 @@ public class AedMapActivity extends MapActivity {
             overlays.add(dragOverlay);
         } else {
             newAedHolder.setVisibility(View.GONE);
+            editModeNotificationView.setVisibility(View.GONE);
             overlays.add(aedOverlay);
         }
     }
