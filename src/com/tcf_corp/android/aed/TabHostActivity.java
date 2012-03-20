@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -53,6 +54,8 @@ public class TabHostActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Debug.startMethodTracing("aedmap");
+        // タイトルバーを非表示にする
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         TabHost host = getTabHost();
         Resources r = getResources();
