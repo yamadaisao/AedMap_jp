@@ -14,6 +14,7 @@
     <string name="label_location">中心点：</string>
     <string name="text_location">住所を表示</string>
     <string name="list_title">地図上の中心点からの距離順です.\nクリックした地点にマップが移動します.</string>
+    <string name="edit_mode_notification">編集モードです.        マーカーの新規登録、修正、削除ができます.        位置を変更する場合はマーカーを長押しして移動させてください.</string>
         
     <string name="http_server_error">サーバーでエラーが発生しました</string>
     <string name="http_syntax_error">URLに誤りがあります</string>
