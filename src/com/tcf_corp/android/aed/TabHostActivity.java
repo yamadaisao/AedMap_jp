@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
+import com.tcf_corp.android.aed.http.MarkerItem;
 import com.tcf_corp.android.util.GeocodeManager;
 import com.tcf_corp.android.util.LogUtil;
 
@@ -38,6 +39,10 @@ import com.tcf_corp.android.util.LogUtil;
 public class TabHostActivity extends TabActivity {
 
     private static final String TAG = TabHostActivity.class.getSimpleName();
+    private static final boolean DEBUG = false;
+
+    private static final String TAB_MAP = "map";
+    private static final String TAB_LIST = "list";
 
     private AlertDialog dialog = null;
 
@@ -52,12 +57,34 @@ public class TabHostActivity extends TabActivity {
         TabHost host = getTabHost();
         Resources r = getResources();
 
-        host.addTab(createTabSpec(host, AedMapActivity.class, 0, r.getString(R.string.tab_map),
-                true));
-        host.addTab(createTabSpec(host, AedListActivity.class, 0, r.getString(R.string.tab_list),
-                false));
+        host.addTab(createTabSpec(host, AedMapActivity.class, TAB_MAP, 0,
+                r.getString(R.string.tab_map), true));
+        host.addTab(createTabSpec(host, AedListActivity.class, TAB_LIST, 0,
+                r.getString(R.string.tab_list), false));
 
+        // リストが表示された場合にリスナーを登録
+        host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                if (TAB_LIST.equals(tabId)) {
+                    Activity activity = getCurrentActivity();
+                    if (activity instanceof AedListActivity) {
+                        AedListActivity listActivity = (AedListActivity) activity;
+                        listActivity.setOnItemClickListener(listener);
+                    }
+                }
+            }
+        });
     }
+
+    private final AedListActivity.OnItemClickListener listener = new AedListActivity.OnItemClickListener() {
+        @Override
+        public void OnItemClick(MarkerItem markerItem) {
+            TabHost host = getTabHost();
+            host.setCurrentTabByTag(TAB_MAP);
+            moveToSearchResult(markerItem.getPoint());
+        }
+    };
 
     @Override
     protected void onDestroy() {
@@ -66,21 +93,23 @@ public class TabHostActivity extends TabActivity {
     }
 
     /**
-     * タブを生成します。
+     * タブを生成します.
      * 
-     * @param owner
-     *            タブ画面。
+     * @param host
+     *            TabHost.
+     * @param tabId
+     *            タブid.
      * @param icon
-     *            アイコンのリソース識別子。
+     *            アイコンのリソース識別子.
      * @param text
-     *            テキスト。
-     * @param layout
-     *            タブのレイアウトを示すリソース識別子。
+     *            テキスト.
+     * @param isFirst
+     *            最初のタブの場合はtrue.
      * 
-     * @return 生成されたタブ情報。
+     * @return 生成されたタブ情報.
      */
-    private TabSpec createTabSpec(TabHost host, Class<? extends Activity> child, int icon,
-            String text, boolean isFirst) {
+    private TabSpec createTabSpec(TabHost host, Class<? extends Activity> child, String tabId,
+            int icon, String text, boolean isFirst) {
         View v = LayoutInflater.from(this).inflate(R.layout.tab_item, null);
 
         // 始点なら区切り線を消す
@@ -94,7 +123,7 @@ public class TabHostActivity extends TabActivity {
         }
         ((TextView) v.findViewById(R.id.tab_item_text)).setText(text);
 
-        TabSpec spec = host.newTabSpec(text);
+        TabSpec spec = host.newTabSpec(tabId);
         spec.setIndicator(v);
 
         Intent intent = new Intent();
@@ -104,6 +133,9 @@ public class TabHostActivity extends TabActivity {
         return spec;
     }
 
+    /**
+     * 検索ダイアログで入力された文字列で住所検索を行います.
+     */
     @Override
     public void onNewIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -152,29 +184,77 @@ public class TabHostActivity extends TabActivity {
         }
     }
 
+    /**
+     * マップの中心点を移動します.
+     * 
+     * @param row
+     *            中心点のAddressView
+     */
     private void moveToSearchResult(AddressView row) {
         Activity target = getCurrentActivity();
         if (target instanceof AedMapActivity) {
             Toast.makeText(this, row.address, Toast.LENGTH_SHORT).show();
-            LogUtil.v(TAG, "current is AedMapActivity");
+            if (DEBUG) {
+                LogUtil.v(TAG, "current is AedMapActivity");
+            }
             int lat = (int) (row.latitude * 1E6);
             int lng = (int) (row.longitude * 1E6);
             ((AedMapActivity) target).moveToSearchResult(new GeoPoint(lat, lng));
         } else {
-            LogUtil.v(TAG, "current is nothing");
+            if (DEBUG) {
+                LogUtil.v(TAG, "current is nothing");
+            }
         }
     }
 
+    /**
+     * マップの中心点を移動します.
+     * 
+     * @param point
+     *            中心点のGeoPoint
+     */
+    private void moveToSearchResult(GeoPoint point) {
+        Activity target = getCurrentActivity();
+        if (target instanceof AedMapActivity) {
+            if (DEBUG) {
+                LogUtil.v(TAG, "current is AedMapActivity");
+            }
+            ((AedMapActivity) target).moveToSearchResult(point);
+        } else {
+            if (DEBUG) {
+                LogUtil.v(TAG, "current is nothing");
+            }
+        }
+    }
+
+    /**
+     * 住所候補のViewHolder
+     * 
+     * @author yamadaisao
+     * 
+     */
     static class ViewHolder {
         TextView address;
     }
 
+    /**
+     * 住所候補のデータ
+     * 
+     * @author yamadaisao
+     * 
+     */
     class AddressView {
         String address;
         double latitude;
         double longitude;
     }
 
+    /**
+     * 住所検索の結果が複数あった場合のリスト表示用Adapter
+     * 
+     * @author yamadaisao
+     * 
+     */
     private class AddressAdapter extends ArrayAdapter<AddressView> {
         private final LayoutInflater inflater;
         private final List<AddressView> list;

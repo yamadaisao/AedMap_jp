@@ -640,7 +640,7 @@ public class AedMapActivity extends MapActivity {
         }
     }
 
-    private void moveToCurrent(GeoPoint geoPoint) {
+    public void moveToCurrent(GeoPoint geoPoint) {
         if (geoPoint != null) {
             if (moveCurrent.isChecked() == true) {
                 mapController.animateTo(geoPoint);

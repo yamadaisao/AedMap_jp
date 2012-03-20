@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.tcf_corp.android.aed.http.MarkerItem;
@@ -57,6 +59,19 @@ public class AedListActivity extends Activity {
             // TextView の autoLinkがある場合は、
             // getApplicationContextではなくthisを渡さないといけない.
             listView.setAdapter(new AedAdapter(this, data.getLastResult().markers));
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    ListView listView = (ListView) parent;
+                    MarkerItem marker = (MarkerItem) listView.getItemAtPosition(position);
+                    Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_SHORT)
+                            .show();
+                    if (listener != null) {
+                        listener.OnItemClick(marker);
+                    }
+                }
+            });
         }
     }
 
@@ -148,5 +163,15 @@ public class AedListActivity extends Activity {
             }
             return view;
         }
+    }
+
+    OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void OnItemClick(MarkerItem markerItem);
     }
 }
