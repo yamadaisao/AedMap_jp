@@ -11,23 +11,24 @@ import android.util.Log;
 
 public class GeocodeManager {
     private static final String TAG = GeocodeManager.class.getSimpleName();
+    @SuppressWarnings("unused")
     private static final boolean DEBUG = true;
 
     // 座標から住所文字列へ変換
-    public static String point2address(double latitude, double longitude, Context context)
+    public static Address point2address(double latitude, double longitude, Context context)
             throws IOException {
-        String address_string = "";
 
         // 変換実行
         Geocoder coder = new Geocoder(context, Locale.getDefault());
         List<Address> list_address = coder.getFromLocation(latitude, longitude, 1);
-
+        Address address;
         if (!list_address.isEmpty()) {
             // 変換成功時は，最初の変換候補を取得
-            address_string = concatAddress(list_address.get(0));
+            address = list_address.get(0);
+        } else {
+            address = new Address(Locale.getDefault());
         }
-
-        return address_string;
+        return address;
     }
 
     public static List<Address> address2Point(String query, Context context) {

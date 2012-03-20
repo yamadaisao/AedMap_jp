@@ -6,10 +6,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Address;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -225,22 +225,23 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
             @Override
             public void run() {
                 // 場所名を文字列で取得する
-                String str_address = null;
+                String strAddress = null;
                 try {
                     // 住所を取得
                     double latitude = geoPoint.getLatitudeE6() / 1E6;
                     double longitude = geoPoint.getLongitudeE6() / 1E6;
 
-                    str_address = GeocodeManager.point2address(latitude, longitude, context);
+                    Address address = GeocodeManager.point2address(latitude, longitude, context);
+                    strAddress = GeocodeManager.concatAddress(address);
                 } catch (IOException e) {
-                    Log.w(TAG, "");
+                    strAddress = "";
                 }
 
                 // 住所をメッセージに持たせて
                 // ハンドラにUIを書き換えさせる
                 Message message = new Message();
                 Bundle bundle = new Bundle();
-                bundle.putString("str_address", str_address);
+                bundle.putString("str_address", strAddress);
                 message.setData(bundle);
                 addrhandler.sendMessage(message);
             }

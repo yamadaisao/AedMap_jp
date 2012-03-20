@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -753,22 +754,23 @@ public class AedMapActivity extends MapActivity {
             @Override
             public void run() {
                 // 場所名を文字列で取得する
-                String str_address = null;
+                String strAddress = null;
                 try {
                     // 住所を取得
                     double latitude = geoPoint.getLatitudeE6() / 1E6;
                     double longitude = geoPoint.getLongitudeE6() / 1E6;
 
-                    str_address = GeocodeManager.point2address(latitude, longitude, context);
+                    Address address = GeocodeManager.point2address(latitude, longitude, context);
+                    strAddress = GeocodeManager.concatAddress(address);
                 } catch (IOException e) {
-                    str_address = getString(R.string.msg_location_fail);
+                    strAddress = getString(R.string.msg_location_fail);
                 }
 
                 // 住所をメッセージに持たせて
                 // ハンドラにUIを書き換えさせる
                 Message message = new Message();
                 Bundle bundle = new Bundle();
-                bundle.putString("str_address", str_address);
+                bundle.putString("str_address", strAddress);
                 message.setData(bundle);
                 addrhandler.sendMessage(message);
             }
