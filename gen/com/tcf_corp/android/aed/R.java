@@ -37,21 +37,22 @@ public final class R {
         public static final int custombutton=0x7f02000b;
         public static final int help_border=0x7f02000c;
         public static final int ic_aed=0x7f02000d;
-        public static final int ic_close=0x7f02000e;
-        public static final int ic_edit_aed=0x7f02000f;
-        public static final int ic_launcher=0x7f020010;
-        public static final int ic_new_aed=0x7f020011;
-        public static final int ic_search=0x7f020012;
-        public static final int ic_wifi_off=0x7f020013;
-        public static final int ic_wifi_on=0x7f020014;
-        public static final int icon_pin=0x7f020015;
-        public static final int selector_tab=0x7f020016;
-        public static final int selector_tab_underbar=0x7f020017;
-        public static final int shape_border=0x7f020018;
-        public static final int shape_tab_item=0x7f020019;
-        public static final int shape_tab_item_active=0x7f02001a;
-        public static final int shape_tab_item_underbar=0x7f02001b;
-        public static final int shape_tab_item_underbar_active=0x7f02001c;
+        public static final int ic_center_cross=0x7f02000e;
+        public static final int ic_close=0x7f02000f;
+        public static final int ic_edit_aed=0x7f020010;
+        public static final int ic_launcher=0x7f020011;
+        public static final int ic_new_aed=0x7f020012;
+        public static final int ic_search=0x7f020013;
+        public static final int ic_wifi_off=0x7f020014;
+        public static final int ic_wifi_on=0x7f020015;
+        public static final int icon_pin=0x7f020016;
+        public static final int selector_tab=0x7f020017;
+        public static final int selector_tab_underbar=0x7f020018;
+        public static final int shape_border=0x7f020019;
+        public static final int shape_tab_item=0x7f02001a;
+        public static final int shape_tab_item_active=0x7f02001b;
+        public static final int shape_tab_item_underbar=0x7f02001c;
+        public static final int shape_tab_item_underbar_active=0x7f02001d;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f060007;
@@ -77,14 +78,15 @@ public final class R {
         public static final int dialog_message=0x7f060020;
         public static final int help_close=0x7f060025;
         public static final int help_frame=0x7f060023;
+        public static final int imageView1=0x7f06001b;
         public static final int linearLayout1=0x7f060003;
         public static final int linearLayout2=0x7f06000e;
         public static final int linearLayout3=0x7f060013;
         public static final int mapview=0x7f06000f;
-        public static final int menu_help_edit=0x7f060033;
-        public static final int menu_help_view=0x7f060032;
-        public static final int menu_to_edit=0x7f060031;
-        public static final int menu_to_view=0x7f060030;
+        public static final int menu_help_edit=0x7f060034;
+        public static final int menu_help_view=0x7f060033;
+        public static final int menu_to_edit=0x7f060032;
+        public static final int menu_to_view=0x7f060031;
         public static final int new_aed_holder=0x7f06001c;
         public static final int overwrap_view=0x7f060012;
         public static final int progress=0x7f060011;
@@ -102,9 +104,9 @@ public final class R {
         public static final int tab_item_text=0x7f06002d;
         public static final int textView1=0x7f060004;
         public static final int text_address=0x7f060014;
-        public static final int view1=0x7f06001b;
+        public static final int view1=0x7f06002f;
         public static final int view2=0x7f06002e;
-        public static final int view3=0x7f06002f;
+        public static final int view3=0x7f060030;
         public static final int webView=0x7f060024;
     }
     public static final class layout {
