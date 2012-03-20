@@ -13,6 +13,8 @@
     <string name="button_emergency">救命救急法</string>
     <string name="label_location">中心点：</string>
     <string name="text_location">住所を表示</string>
+    <string name="list_title">地図上の中心点からの距離順です.\nクリックした地点にマップが移動します.</string>
+        
     <string name="http_server_error">サーバーでエラーが発生しました</string>
     <string name="http_syntax_error">URLに誤りがあります</string>
     <string name="http_unknown_host">サーバが見つかりません</string>
