@@ -173,6 +173,11 @@ public final class R {
         public static final int msg_query_fail=0x7f090018;
         public static final int msg_result_zero=0x7f090019;
         public static final int msg_some_location=0x7f09001a;
+        /** 
+    <string name="search_label"></string>
+    <string name="search_label">住所検索</string>
+    
+         */
         public static final int search_hint=0x7f09001c;
         public static final int search_label=0x7f09001b;
         public static final int tab_edit=0x7f090005;

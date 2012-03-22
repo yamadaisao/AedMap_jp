@@ -30,6 +30,10 @@
     <string name="msg_result_zero">検索結果が0件でした</string>
     <string name="msg_some_location">複数の候補が見つかりました</string>
     <string name="search_label">住所検索</string>
+    <!--
+    <string name="search_label"></string>
+    <string name="search_label">住所検索</string>
+    -->
     <string name="search_hint">住所・施設名で検索</string>
 
     <string name="hint_title">場所名</string>
