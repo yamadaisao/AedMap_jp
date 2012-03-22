@@ -134,26 +134,28 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f090000;
-        public static final int button_abort=0x7f090023;
-        public static final int button_cancel=0x7f090027;
-        public static final int button_delete=0x7f090024;
+        public static final int button_abort=0x7f090025;
+        public static final int button_cancel=0x7f090029;
+        public static final int button_delete=0x7f090026;
         public static final int button_emergency=0x7f09000a;
         public static final int button_gps_setting=0x7f090009;
         public static final int button_my_location=0x7f090007;
-        public static final int button_no=0x7f090026;
-        public static final int button_save=0x7f090022;
+        public static final int button_no=0x7f090028;
+        public static final int button_save=0x7f090024;
         public static final int button_search_address=0x7f090008;
-        public static final int button_yes=0x7f090025;
+        public static final int button_yes=0x7f090027;
         public static final int current_location=0x7f090006;
-        public static final int dialog_cancel_message=0x7f09002a;
-        public static final int dialog_delete_message=0x7f090029;
-        public static final int dialog_save_message=0x7f090028;
+        public static final int dialog_cancel_message=0x7f09002c;
+        public static final int dialog_delete_message=0x7f09002b;
+        public static final int dialog_save_message=0x7f09002a;
         public static final int edit_mode_notification=0x7f09000e;
-        public static final int hint_able=0x7f09001f;
-        public static final int hint_snipet=0x7f09001e;
-        public static final int hint_spl=0x7f090021;
-        public static final int hint_src=0x7f090020;
-        public static final int hint_title=0x7f09001d;
+        public static final int header_spl=0x7f09001e;
+        public static final int header_src=0x7f09001d;
+        public static final int hint_able=0x7f090021;
+        public static final int hint_snipet=0x7f090020;
+        public static final int hint_spl=0x7f090023;
+        public static final int hint_src=0x7f090022;
+        public static final int hint_title=0x7f09001f;
         public static final int http_illegal_state=0x7f090014;
         public static final int http_io_error=0x7f090016;
         public static final int http_network_error=0x7f090012;
@@ -166,9 +168,9 @@ public final class R {
         public static final int list_title=0x7f09000d;
         public static final int map_api_key=0x7f090002;
         public static final int map_dev_key=0x7f090001;
-        public static final int menu_edit=0x7f09002c;
-        public static final int menu_help=0x7f09002d;
-        public static final int menu_view=0x7f09002b;
+        public static final int menu_edit=0x7f09002e;
+        public static final int menu_help=0x7f09002f;
+        public static final int menu_view=0x7f09002d;
         public static final int msg_location_fail=0x7f090017;
         public static final int msg_query_fail=0x7f090018;
         public static final int msg_result_zero=0x7f090019;
@@ -184,10 +186,10 @@ public final class R {
         public static final int tab_list=0x7f090004;
         public static final int tab_map=0x7f090003;
         public static final int text_location=0x7f09000c;
-        public static final int toggle_gps_off=0x7f09002f;
-        public static final int toggle_gps_on=0x7f09002e;
-        public static final int toggle_wifi_off=0x7f090031;
-        public static final int toggle_wifi_on=0x7f090030;
+        public static final int toggle_gps_off=0x7f090031;
+        public static final int toggle_gps_on=0x7f090030;
+        public static final int toggle_wifi_off=0x7f090033;
+        public static final int toggle_wifi_on=0x7f090032;
     }
     public static final class style {
         /**  カスタムダイアログのアニメーション 

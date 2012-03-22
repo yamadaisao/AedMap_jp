@@ -24,6 +24,9 @@ public class LocationDisplayBalloonOverlayView extends LocationBalloonOverlayVie
     private TextView src;
     private TextView spl;
 
+    private final String srcHeader;
+    private final String splHeader;
+
     /**
      * Create a new BalloonOverlayView.
      * 
@@ -35,6 +38,8 @@ public class LocationDisplayBalloonOverlayView extends LocationBalloonOverlayVie
      */
     public LocationDisplayBalloonOverlayView(Context context, int balloonBottomOffset) {
         super(context, balloonBottomOffset);
+        srcHeader = getResources().getString(R.string.header_src);
+        splHeader = getResources().getString(R.string.header_spl);
     }
 
     /**
@@ -86,30 +91,30 @@ public class LocationDisplayBalloonOverlayView extends LocationBalloonOverlayVie
             title.setText("");
             title.setVisibility(GONE);
         }
-        if (item.getSnippet() != null) {
+        if (item.getSnippet() != null && !"".equals(item.getSnippet())) {
             snippet.setVisibility(VISIBLE);
             snippet.setText(item.getSnippet());
         } else {
             snippet.setText("");
             snippet.setVisibility(GONE);
         }
-        if (item.able != null) {
+        if (item.able != null && !"".equals(item.able)) {
             able.setVisibility(VISIBLE);
             able.setText(item.able);
         } else {
             able.setText("");
             able.setVisibility(GONE);
         }
-        if (item.src != null) {
+        if (item.src != null && !"".equals(item.src)) {
             src.setVisibility(VISIBLE);
-            src.setText(item.src);
+            src.setText(String.format(srcHeader, item.src));
         } else {
             src.setText("");
             src.setVisibility(GONE);
         }
-        if (item.spl != null) {
+        if (item.spl != null && !"".equals(item.spl)) {
             spl.setVisibility(VISIBLE);
-            spl.setText(item.spl);
+            spl.setText(String.format(splHeader, item.spl));
         } else {
             spl.setText("");
             spl.setVisibility(GONE);

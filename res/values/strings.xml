@@ -35,7 +35,9 @@
     <string name="search_label">住所検索</string>
     -->
     <string name="search_hint">住所・施設名で検索</string>
-
+    <string name="header_src">情報源：%s</string>
+    <string name="header_spl">補足：%s</string>
+        
     <string name="hint_title">場所名</string>
     <string name="hint_snipet">住所</string>
     <string name="hint_able">利用可能時間帯</string>
