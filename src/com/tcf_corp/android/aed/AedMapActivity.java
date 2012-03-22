@@ -225,12 +225,13 @@ public class AedMapActivity extends MapActivity {
                 aedOverlay.setMarkerList(data.getLastResult().markers);
             }
         }
-        // Map取得サービスの起動.
+        // GPS or Wifi が起動している場合は、現在地へ移動する.
         String providers = Secure
                 .getString(getContentResolver(), Secure.LOCATION_PROVIDERS_ALLOWED);
-        if (providers.indexOf("gps", 0) > 0) {
+        if (providers.indexOf("gps", 0) > 0 || wifi.isWifiEnabled()) {
             moveCurrent.setChecked(true);
         }
+        // Map取得サービスの起動.
         registerReceivers();
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm.addGpsStatusListener(gpsStatusLitener);
