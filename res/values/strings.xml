@@ -30,7 +30,11 @@
     <string name="msg_result_zero">検索結果が0件でした</string>
     <string name="msg_some_location">複数の候補が見つかりました</string>
     <string name="search_label">住所検索</string>
-    <string name="search_hint">住所を入力してください</string>
+    <!--
+    <string name="search_label"></string>
+    <string name="search_label">住所検索</string>
+    -->
+    <string name="search_hint">住所・施設名で検索</string>
 
     <string name="hint_title">場所名</string>
     <string name="hint_snipet">住所</string>
@@ -38,10 +42,11 @@
     <string name="hint_src">情報源</string>
     <string name="hint_spl">補足事項、電話番号</string>
     <string name="button_save">保存</string>
-    <string name="button_cancel">編集を破棄</string>
+    <string name="button_abort">編集を破棄</string>
     <string name="button_delete">削除</string>
     <string name="button_yes">はい</string>
     <string name="button_no">いいえ</string>
+    <string name="button_cancel">キャンセル</string>
     <string name="dialog_save_message">サーバに編集結果を保存します\nよろしいですか</string>
     <string name="dialog_delete_message">AEDのマーカーを削除します\nよろしいですか</string>
     <string name="dialog_cancel_message">編集を破棄します\n新規に追加した場合はなくなります\n編集をした場合は元に戻ります</string>
