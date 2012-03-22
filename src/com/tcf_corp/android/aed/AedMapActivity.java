@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.provider.Settings.Secure;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -225,6 +226,11 @@ public class AedMapActivity extends MapActivity {
             }
         }
         // Map取得サービスの起動.
+        String providers = Secure
+                .getString(getContentResolver(), Secure.LOCATION_PROVIDERS_ALLOWED);
+        if (providers.indexOf("gps", 0) > 0) {
+            moveCurrent.setChecked(true);
+        }
         registerReceivers();
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm.addGpsStatusListener(gpsStatusLitener);
