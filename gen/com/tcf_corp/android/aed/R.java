@@ -49,18 +49,19 @@ public final class R {
         public static final int ic_wifi_off=0x7f020015;
         public static final int ic_wifi_on=0x7f020016;
         public static final int icon_pin=0x7f020017;
-        public static final int selector_tab=0x7f020018;
-        public static final int selector_tab_underbar=0x7f020019;
-        public static final int shape_border=0x7f02001a;
-        public static final int shape_tab_item=0x7f02001b;
-        public static final int shape_tab_item_active=0x7f02001c;
-        public static final int shape_tab_item_underbar=0x7f02001d;
-        public static final int shape_tab_item_underbar_active=0x7f02001e;
+        public static final int list_background=0x7f020018;
+        public static final int selector_tab=0x7f020019;
+        public static final int selector_tab_underbar=0x7f02001a;
+        public static final int shape_border=0x7f02001b;
+        public static final int shape_tab_item=0x7f02001c;
+        public static final int shape_tab_item_active=0x7f02001d;
+        public static final int shape_tab_item_underbar=0x7f02001e;
+        public static final int shape_tab_item_underbar_active=0x7f02001f;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f060007;
         public static final int address=0x7f060002;
-        public static final int aed_list_view=0x7f060005;
+        public static final int aed_list_view=0x7f060003;
         public static final int balloon_close=0x7f060001;
         public static final int balloon_inner_layout=0x7f060000;
         public static final int balloon_item_able=0x7f060028;
@@ -84,7 +85,7 @@ public final class R {
         public static final int help_close=0x7f060027;
         public static final int help_frame=0x7f060025;
         public static final int imageView1=0x7f06001d;
-        public static final int linearLayout1=0x7f060003;
+        public static final int linearLayout1=0x7f060004;
         public static final int linearLayout2=0x7f06000e;
         public static final int linearLayout3=0x7f060015;
         public static final int mapview=0x7f06000f;
@@ -107,7 +108,7 @@ public final class R {
         public static final int tab_item_icon=0x7f06002e;
         public static final int tab_item_separator=0x7f06002d;
         public static final int tab_item_text=0x7f06002f;
-        public static final int textView1=0x7f060004;
+        public static final int textView1=0x7f060005;
         public static final int text_address=0x7f060016;
         public static final int view1=0x7f060031;
         public static final int view2=0x7f060030;
@@ -172,11 +173,6 @@ public final class R {
         public static final int msg_query_fail=0x7f090018;
         public static final int msg_result_zero=0x7f090019;
         public static final int msg_some_location=0x7f09001a;
-        /** 
-    <string name="search_label"></string>
-    <string name="search_label">住所検索</string>
-    
-         */
         public static final int search_hint=0x7f09001c;
         public static final int search_label=0x7f09001b;
         public static final int tab_edit=0x7f090005;

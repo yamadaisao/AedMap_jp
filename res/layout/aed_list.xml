@@ -4,12 +4,23 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
+    <ListView
+        android:id="@+id/aed_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent" android:layout_weight="1">
+        <!-- Preview: listitem=@layout/aed_list_row -->
+
+    </ListView>
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" android:background="@drawable/address_background">
-
+        android:orientation="vertical"
+        android:background="@drawable/list_background">
+
+
         <TextView
             android:id="@+id/textView1"
             android:layout_width="fill_parent"
@@ -18,13 +29,4 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/aed_list_view"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:cacheColorHint="@android:color/transparent">
-        <!-- Preview: listitem=@layout/aed_list_row -->
-
-    </ListView>
-
 </LinearLayout>
