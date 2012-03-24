@@ -36,11 +36,17 @@ public class AedListActivity extends Activity {
     ListView listView;
     TabHostActivity parent;
 
+    private String srcHeader;
+    private String splHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.aed_list);
         listView = (ListView) findViewById(R.id.aed_list_view);
+
+        srcHeader = getResources().getString(R.string.header_src);
+        splHeader = getResources().getString(R.string.header_spl);
     }
 
     @Override
@@ -157,8 +163,8 @@ public class AedListActivity extends Activity {
                 holder.title.setText(item.getTitle());
                 holder.snippet.setText(item.getSnippet());
                 holder.able.setText(item.able);
-                holder.src.setText(item.src);
-                holder.spl.setText(item.spl);
+                holder.src.setText(String.format(srcHeader, item.src));
+                holder.spl.setText(String.format(splHeader, item.spl));
                 holder.dist.setText(item.dist.toString() + "m");
             }
             return view;
