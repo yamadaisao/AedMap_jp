@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -50,6 +51,9 @@ public class MarkerQueryAsyncTask extends
         String url = String.format("%s?lat=%s&lng=%s", param[0].getUrl(), param[0].getLatitude(),
                 param[0].getLongitude());
         SimpleDateFormat fomatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.MONTH, -1);
+        Date nowDate = now.getTime();
         try {
             HttpGet get = new HttpGet(url);
             Locale locale = Locale.getDefault();
@@ -107,6 +111,9 @@ public class MarkerQueryAsyncTask extends
                                 String time = parser.getAttributeValue(null, "time");
                                 try {
                                     marker.time = fomatter.parse(time);
+                                    if (nowDate.before(marker.time)) {
+                                        marker.type = MarkerItem.TYPE_HOT;
+                                    }
                                 } catch (ParseException e1) {
                                     Log.e(TAG, "time=" + time);
                                     e1.printStackTrace();

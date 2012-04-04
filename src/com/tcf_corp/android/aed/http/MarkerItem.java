@@ -20,6 +20,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
     public static final int TYPE_NEW = 1;
     public static final int TYPE_EDIT = 2;
     public static final int TYPE_DELETE = 3;
+    public static final int TYPE_HOT = 4;
 
     /** id */
     public Long id;
@@ -30,7 +31,7 @@ public class MarkerItem extends OverlayItem implements Parcelable {
     public String src;
     /** 特記事項 */
     public String spl;
-    /** parseできなかったりする */
+    /** 更新日時. */
     public Date time;
     /** 中心からの距離(m) */
     public Long dist = 0L;

@@ -292,7 +292,7 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
 
     private boolean isChanged() {
         boolean ret = false;
-        if (item.type == MarkerItem.TYPE_ORIGNAL) {
+        if (item.type == MarkerItem.TYPE_ORIGNAL || item.type == MarkerItem.TYPE_HOT) {
             if (item.getTitle() != null && title.getText().toString() != null) {
                 if (item.getTitle().equals(title.getText().toString()) == false) {
                     return true;

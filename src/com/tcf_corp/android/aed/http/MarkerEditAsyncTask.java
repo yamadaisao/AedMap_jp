@@ -28,8 +28,8 @@ public class MarkerEditAsyncTask extends
     private static final String TAG = MarkerEditAsyncTask.class.getSimpleName();
     private static final boolean DEBUG = true;
 
-    private static final String NEW_URL = "http://aedm.jp/post.php";
-    private static final String EDIT_URL = "http://aedm.jp/editdelete.php";
+    private static final String NEW_URL = "http://aedm.jp/posttest.php";
+    private static final String EDIT_URL = "http://aedm.jp/editdeletetest.php";
 
     private final AsyncTaskCallback<MarkerItemResult> callback;
 

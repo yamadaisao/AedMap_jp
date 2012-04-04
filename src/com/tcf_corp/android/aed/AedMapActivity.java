@@ -106,6 +106,7 @@ public class AedMapActivity extends MapActivity {
     private Drawable aedMarker;
     private Drawable aedEditMarker;
     private Drawable aedNewMarker;
+    private Drawable aedHotMarker;
 
     private View editModeNotificationView;
     private TextView editModeNotification;
@@ -163,6 +164,7 @@ public class AedMapActivity extends MapActivity {
         aedMarker = getResources().getDrawable(R.drawable.ic_aed);
         aedEditMarker = getResources().getDrawable(R.drawable.ic_edit_aed);
         aedNewMarker = getResources().getDrawable(R.drawable.ic_new_aed);
+        aedHotMarker = getResources().getDrawable(R.drawable.ic_hot_aed);
 
         editModeNotificationView = findViewById(R.id.edit_mode_notification_layout);
         editModeNotification = (TextView) findViewById(R.id.edit_mode_notification);
@@ -570,6 +572,7 @@ public class AedMapActivity extends MapActivity {
 
         aedEditMarker = aedOverlay.getBoundCenterBottom(aedEditMarker);
         aedNewMarker = aedOverlay.getBoundCenterBottom(aedNewMarker);
+        aedHotMarker = aedOverlay.getBoundCenterBottom(aedHotMarker);
 
         // overlayのlistにMyLocationOverlayを登録
         List<Overlay> overlays = mapView.getOverlays();
@@ -727,6 +730,11 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onSuccess(MarkerItemResult result) {
+                for (MarkerItem item : result.markers) {
+                    if (item.type == MarkerItem.TYPE_HOT) {
+                        item.setMarker(aedHotMarker);
+                    }
+                }
                 SharedData data = SharedData.getInstance();
                 data.setLastResult(result);
                 if (isEditMode == false) {
@@ -752,7 +760,7 @@ public class AedMapActivity extends MapActivity {
         progress.setVisibility(View.VISIBLE);
 
         MarkerItemQuery query = new MarkerItemQuery();
-        query.setUrl("http://aedm.jp/toxml.php");
+        query.setUrl("http://aedm.jp/toxmltest.php");
         query.setPoint(geoPoint);
         MarkerQueryAsyncTask task = new MarkerQueryAsyncTask(callback);
         task.execute(query);
