@@ -655,7 +655,7 @@ public class AedMapActivity extends MapActivity {
             GeoPoint geoPoint = new GeoPoint((int) (location.getLatitude() * 1E6),
                     (int) (location.getLongitude() * 1E6));
             moveToCurrent(geoPoint);
-            setZoomLevel(location.getAccuracy());
+            // setZoomLevel(location.getAccuracy());
         }
     }
 
@@ -687,6 +687,8 @@ public class AedMapActivity extends MapActivity {
      * 
      * @param accuracy
      */
+    @SuppressWarnings("unused")
+    @Deprecated
     private void setZoomLevel(float accuracy) {
         if (DEBUG) {
             LogUtil.d(TAG, "accuracy=" + accuracy + ",zoom=" + mapView.getZoomLevel());
