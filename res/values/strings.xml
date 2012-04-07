@@ -16,14 +16,14 @@
     <string name="list_title">※マップの中心点からの距離順</string>
     <string name="edit_mode_notification">編集モードです.マーカーの新規登録、修正、削除ができます.位置を変更する場合はマーカーを長押しして移動させてください.</string>
         
-    <string name="http_server_error">サーバーでエラーが発生しました</string>
+    <string name="http_server_error">サーバーに接続できません\nしばらく経ってからアクセスしてください</string>
     <string name="http_syntax_error">URLに誤りがあります</string>
     <string name="http_unknown_host">サーバが見つかりません</string>
     <string name="http_network_error">ネットワークエラーが発生しました</string>
     <string name="http_unkown_error">不明なエラーが発生しました</string>
     <string name="http_illegal_state">URLのサーバ記述がありません</string>
     <string name="http_parse_error">データの解析に失敗しました</string>
-    <string name="http_io_error">サーバーに接続できません\n電波ガ届く所に移動してください</string>
+    <string name="http_io_error">サーバーに接続できません\n電波が届く所に移動してください</string>
     <string name="http_parameter_error">パラメータに誤りがあります</string>
 
     <string name="msg_location_fail">住所が取得できませんでした</string>

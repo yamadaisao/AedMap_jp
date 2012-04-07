@@ -34,6 +34,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.maps.GeoPoint;
@@ -737,6 +738,7 @@ public class AedMapActivity extends MapActivity {
 
             @Override
             public void onFailed(int resId, String... args) {
+                Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
                 progress.setVisibility(View.INVISIBLE);
             }
 
@@ -1123,6 +1125,7 @@ public class AedMapActivity extends MapActivity {
 
         @Override
         public void onFailed(int resId, String... args) {
+            Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
             progress.setVisibility(View.INVISIBLE);
         }
 
