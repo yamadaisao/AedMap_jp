@@ -31,6 +31,7 @@ public class MarkerQueryAsyncTask extends
 
     private static final String TAG = MarkerQueryAsyncTask.class.getSimpleName();
     private static final boolean DEBUG = false;
+    private static final String QUERY_URL = "http://aedm.jp/toxmltest.php";
 
     private final AsyncTaskCallback<MarkerItemResult> callback;
 
@@ -48,7 +49,7 @@ public class MarkerQueryAsyncTask extends
         MarkerItemResult result = null;
 
         HttpResponse response = null;
-        String url = String.format("%s?lat=%s&lng=%s", param[0].getUrl(), param[0].getLatitude(),
+        String url = String.format("%s?lat=%s&lng=%s", QUERY_URL, param[0].getLatitude(),
                 param[0].getLongitude());
         SimpleDateFormat fomatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Calendar now = Calendar.getInstance();
@@ -60,7 +61,7 @@ public class MarkerQueryAsyncTask extends
             get.addHeader("accept-language", locale.getLanguage());
 
             if (DEBUG) {
-                LogUtil.v(TAG, "connect to '" + url + "'");
+                LogUtil.v(TAG, url);
             }
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpParams params = httpClient.getParams();
@@ -73,6 +74,7 @@ public class MarkerQueryAsyncTask extends
             int status = response.getStatusLine().getStatusCode();
             switch (status) {
             case HttpStatus.SC_OK:
+                result = new MarkerItemResult(param[0].getPoint());
                 InputStream is = response.getEntity().getContent();
                 XmlPullParser parser = Xml.newPullParser();
                 parser.setInput(is, "UTF-8");
@@ -81,7 +83,6 @@ public class MarkerQueryAsyncTask extends
                 // ・XmlPullParser.TEXT
                 // ・XmlPullParser.END_TAG
                 // ・XmlPullParser.END_DOCUMENT
-                result = new MarkerItemResult(param[0].getPoint());
                 for (int e = parser.getEventType(); e != XmlPullParser.END_DOCUMENT; e = parser
                         .next()) {
                     switch (e) {

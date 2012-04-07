@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -192,9 +193,17 @@ public class AedMapActivity extends MapActivity {
         if (DEBUG) {
             LogUtil.v(TAG, "onSaveInstanceState");
         }
+        // tab間の共有データの保存
+        SharedData data = SharedData.getInstance();
+        data.setGeoPoint(mapView.getMapCenter());
+        if (data.getLastResult() != null) {
+            data.getLastResult().markers = aedOverlay.getMarkerList();
+        }
+        data.setMoveCurrent(moveCurrent.isChecked());
+        data.setEditList(editOverlay.getMarkerList());
+
         outState.putInt(SAVE_ZOOM_LEVEL, zoomLevel);
         outState.putBoolean(IS_EDIT, isEditMode);
-        SharedData data = SharedData.getInstance();
         outState.putParcelable("data", data);
     }
 
@@ -213,19 +222,13 @@ public class AedMapActivity extends MapActivity {
         setMarkerOverlay();
 
         if (data.getLastResult() != null) {
-            if (isEditMode) {
-                // 編集中のOverlay
-                editOverlay.setMarkerList(data.getEditList());
-                // 編集モードの表示用Overlay
-                // マーカーリストから編集中のidを取り除いたもの
-                viewOverlay
-                        .setMarkerList(data.getLastResult().markers, editOverlay.getMarkerList());
-                // 表示モードのOverlay
-                aedOverlay.setMarkerList(data.getLastResult().markers);
-            } else {
-                // 表示モードのOverlay
-                aedOverlay.setMarkerList(data.getLastResult().markers);
-            }
+            // 編集中のOverlay
+            editOverlay.setMarkerList(data.getEditList());
+            // 編集モードの表示用Overlay
+            // マーカーリストから編集中のidを取り除いたもの
+            viewOverlay.setMarkerList(data.getLastResult().markers, editOverlay.getMarkerList());
+            // 表示モードのOverlay
+            aedOverlay.setMarkerList(data.getLastResult().markers);
         }
         // GPS or Wifi が起動している場合は、現在地へ移動する.
         String providers = Secure
@@ -280,15 +283,6 @@ public class AedMapActivity extends MapActivity {
             LogUtil.v(TAG, "onPause");
         }
 
-        // tab間の共有データの保存
-        SharedData data = SharedData.getInstance();
-        data.setGeoPoint(mapView.getMapCenter());
-        if (data.getLastResult() != null) {
-            data.getLastResult().markers = aedOverlay.getMarkerList();
-        }
-        data.setMoveCurrent(moveCurrent.isChecked());
-        data.setEditList(editOverlay.getMarkerList());
-
         resetOverlays();
         removeUpdates();
         unregisterReceivers();
@@ -296,13 +290,10 @@ public class AedMapActivity extends MapActivity {
 
     private void setEditMode() {
         List<Overlay> overlays = mapView.getOverlays();
-        SharedData data = SharedData.getInstance();
+        Log.i(TAG, "aed:" + aedOverlay.size() + ",view:" + viewOverlay.size() + ",edit:"
+                + editOverlay.size());
+
         if (isEditMode) {
-            if (data.getLastResult() != null) {
-                editOverlay.setMarkerList(data.getEditList());
-                viewOverlay
-                        .setMarkerList(data.getLastResult().markers, editOverlay.getMarkerList());
-            }
             aedOverlay.hideBalloon();
             overlays.remove(aedOverlay);
             overlays.add(viewOverlay);
@@ -313,9 +304,6 @@ public class AedMapActivity extends MapActivity {
             editModeNotificationView.setVisibility(View.VISIBLE);
             editModeNotification.requestFocus();
         } else {
-            if (data.getLastResult() != null) {
-                aedOverlay.setMarkerList(data.getLastResult().markers);
-            }
             overlays.add(aedOverlay);
             viewOverlay.hideBalloon();
             overlays.remove(viewOverlay);
@@ -570,9 +558,10 @@ public class AedMapActivity extends MapActivity {
         editOverlay.setGestureDetector(editGestureDetector);
         editOverlay.setOnItemStoreListener(storeListener);
 
-        aedEditMarker = aedOverlay.getBoundCenterBottom(aedEditMarker);
-        aedNewMarker = aedOverlay.getBoundCenterBottom(aedNewMarker);
-        aedHotMarker = aedOverlay.getBoundCenterBottom(aedHotMarker);
+        aedMarker = AedOverlay.getBoundCenterBottom(aedMarker);
+        aedEditMarker = AedOverlay.getBoundCenterBottom(aedEditMarker);
+        aedNewMarker = AedOverlay.getBoundCenterBottom(aedNewMarker);
+        aedHotMarker = AedOverlay.getBoundCenterBottom(aedHotMarker);
 
         // overlayのlistにMyLocationOverlayを登録
         List<Overlay> overlays = mapView.getOverlays();
@@ -587,7 +576,7 @@ public class AedMapActivity extends MapActivity {
         }
     }
 
-    protected void resetOverlays() {
+    private void resetOverlays() {
         // LocationManagerからのLocation update情報を取得をcancel
         myLocationOverlay.disableMyLocation();
 
@@ -739,12 +728,9 @@ public class AedMapActivity extends MapActivity {
                 }
                 SharedData data = SharedData.getInstance();
                 data.setLastResult(result);
-                if (isEditMode == false) {
-                    aedOverlay.setMarkerList(result.markers);
-                } else {
-                    viewOverlay.setMarkerList(result.markers, editOverlay.getMarkerList());
-                    aedOverlay.setMarkerList(result.markers);
-                }
+                viewOverlay.setMarkerList(result.markers, editOverlay.getMarkerList());
+                aedOverlay.setMarkerList(result.markers);
+                // }
                 mapView.invalidate();
                 progress.setVisibility(View.INVISIBLE);
             }
@@ -762,7 +748,6 @@ public class AedMapActivity extends MapActivity {
         progress.setVisibility(View.VISIBLE);
 
         MarkerItemQuery query = new MarkerItemQuery();
-        query.setUrl("http://aedm.jp/toxmltest.php");
         query.setPoint(geoPoint);
         MarkerQueryAsyncTask task = new MarkerQueryAsyncTask(callback);
         task.execute(query);
@@ -1035,7 +1020,7 @@ public class AedMapActivity extends MapActivity {
     };
 
     /**
-     * 編集ダイアログで保存/削除/破棄は実行された時のリスナ.
+     * 編集ダイアログで保存/削除/破棄を実行された時のリスナ.
      */
     private final LocationEditBalloonOverlayView.OnItemStoreListener storeListener = new LocationEditBalloonOverlayView.OnItemStoreListener() {
 
@@ -1102,9 +1087,38 @@ public class AedMapActivity extends MapActivity {
         @Override
         public void onSuccess(MarkerItemResult result) {
             // 編集対象は常にひとつ
-            editOverlay.remove(result.markers.get(0));
-            GeoPoint geoPoint = new GeoPoint(result.queryLatitude1E6, result.queryLongitude1E6);
-            getMarkers(geoPoint);
+            MarkerItem item = null;
+            if (result.markers.size() > 0) {
+                item = result.markers.get(0);
+            }
+            if (DEBUG) {
+                Log.i(TAG,
+                        "onSuccesss(before)-aed:" + aedOverlay.size() + ",view:"
+                                + viewOverlay.size() + ",edit:" + editOverlay.size());
+            }
+            if (item != null) {
+                if (item.type == MarkerItem.TYPE_HOT) {
+                    item.setMarker(aedHotMarker);
+                } else {
+                    item.setMarker(aedMarker);
+                }
+                editOverlay.remove(result.targetMarker);
+                viewOverlay.remove(result.targetMarker);
+                viewOverlay.addMarker(item);
+                aedOverlay.remove(result.targetMarker);
+                aedOverlay.addMarker(item);
+            } else if (result.targetMarker.type == MarkerItem.TYPE_DELETE) {
+                editOverlay.remove(result.targetMarker);
+                viewOverlay.remove(result.targetMarker);
+                aedOverlay.remove(result.targetMarker);
+            }
+            if (DEBUG) {
+                Log.i(TAG,
+                        "onSuccesss(after)-aed:" + aedOverlay.size() + ",view:"
+                                + viewOverlay.size() + ",edit:" + editOverlay.size());
+            }
+            mapView.invalidate();
+            progress.setVisibility(View.INVISIBLE);
         }
 
         @Override

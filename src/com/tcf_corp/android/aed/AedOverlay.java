@@ -27,7 +27,7 @@ import com.tcf_corp.android.util.LogUtil;
  */
 public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
     private static final String TAG = AedOverlay.class.getSimpleName();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final int DEFAULT_LIMIT = 100;
     private List<MarkerItem> markerList = new ArrayList<MarkerItem>(DEFAULT_LIMIT);
@@ -56,17 +56,31 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         this.isEdit = isEdit;
     }
 
+    /**
+     * マーカーをセットします. 全てのリストが置き換えられます.
+     * 
+     * @param list
+     *            マーカーのリスト
+     */
     public void setMarkerList(List<MarkerItem> list) {
-        this.markerList = list;
+        markerList = list;
         setLastFocusedIndex(-1);
         populate();
     }
 
+    /**
+     * マーカーリストを置き換えますが、ignoreに設定されているマーカーは追加されません.
+     * 
+     * @param list
+     *            セットするマーカー
+     * @param ignoreList
+     *            置き換えをしないリスト
+     */
     public void setMarkerList(List<MarkerItem> list, List<MarkerItem> ignoreList) {
-        this.markerList.clear();
+        markerList.clear();
         for (MarkerItem item : list) {
             if (!ignoreList.contains(item)) {
-                this.markerList.add(item);
+                markerList.add(item);
             }
         }
         setLastFocusedIndex(-1);
@@ -111,7 +125,7 @@ public class AedOverlay extends BalloonItemizedOverlay<MarkerItem> {
         return markerList.size();
     }
 
-    public Drawable getBoundCenterBottom(Drawable drawable) {
+    public static Drawable getBoundCenterBottom(Drawable drawable) {
         return boundCenterBottom(drawable);
     }
 

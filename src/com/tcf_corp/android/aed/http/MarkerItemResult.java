@@ -16,6 +16,7 @@ public class MarkerItemResult implements Parcelable {
     public long minLongitude1E6;
     public long maxLatitude1E6;
     public long maxLongitude1E6;
+    public MarkerItem targetMarker;
     public List<MarkerItem> markers = new ArrayList<MarkerItem>();
 
     public MarkerItemResult(GeoPoint geoPoint) {
@@ -34,6 +35,7 @@ public class MarkerItemResult implements Parcelable {
         minLongitude1E6 = in.readLong();
         maxLatitude1E6 = in.readLong();
         maxLongitude1E6 = in.readLong();
+        targetMarker = in.readParcelable(MarkerItem.class.getClassLoader());
         markers = in.createTypedArrayList(MarkerItem.CREATOR);
     }
 
@@ -50,6 +52,7 @@ public class MarkerItemResult implements Parcelable {
         dest.writeLong(minLongitude1E6);
         dest.writeLong(maxLatitude1E6);
         dest.writeLong(maxLongitude1E6);
+        dest.writeParcelable(targetMarker, flags);
         dest.writeTypedList(markers);
     }
 

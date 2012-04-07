@@ -20,7 +20,7 @@ import com.tcf_corp.android.util.LogUtil;
 public class SharedData implements Parcelable {
 
     private static final String TAG = SharedData.class.getSimpleName();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final SharedData instance = new SharedData();
 

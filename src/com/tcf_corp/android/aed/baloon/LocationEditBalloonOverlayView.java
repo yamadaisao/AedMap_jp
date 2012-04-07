@@ -33,7 +33,7 @@ import com.tcf_corp.android.util.LogUtil;
 public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
 
     private static final String TAG = LocationEditBalloonOverlayView.class.getSimpleName();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private final Context context;
 
@@ -43,6 +43,9 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
     private TextView able;
     private TextView src;
     private TextView spl;
+    private Button btnSave;
+    private Button btnDelete;
+    private Button btnCancel;
 
     public LocationEditBalloonOverlayView(Context context, int balloonBottomOffset) {
         super(context, balloonBottomOffset);
@@ -75,29 +78,34 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         });
 
         final Context ctx = context;
-        Button btnSave = (Button) v.findViewById(R.id.button_save);
-        Button btnDelete = (Button) v.findViewById(R.id.button_delete);
-        Button btnCancel = (Button) v.findViewById(R.id.button_cancel);
+        btnSave = (Button) v.findViewById(R.id.button_save);
+        btnDelete = (Button) v.findViewById(R.id.button_delete);
+        btnCancel = (Button) v.findViewById(R.id.button_cancel);
 
         // 保存ボタンのリスナーを設定
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(ctx, ctx.getString(R.string.dialog_save_message),
-                        new DialogInterface.OnClickListener() {
+                int msgId;
+                if (item.type == MarkerItem.TYPE_NEW) {
+                    msgId = R.string.dialog_save_new_message;
+                } else {
+                    msgId = R.string.dialog_save_message;
+                }
+                showDialog(ctx, ctx.getString(msgId), new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    if (storeListener != null) {
-                                        saveMarkerItem();
-                                        parent.setVisibility(GONE);
-                                        storeListener.onSave(item);
-                                    }
-                                }
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            if (storeListener != null) {
+                                saveMarkerItem();
+                                parent.setVisibility(GONE);
+                                storeListener.onSave(item);
                             }
-                        });
+                        }
+                    }
+                });
             }
         });
 
@@ -126,20 +134,25 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(ctx, ctx.getString(R.string.dialog_cancel_message),
-                        new DialogInterface.OnClickListener() {
+                int msgId;
+                if (item.type == MarkerItem.TYPE_NEW) {
+                    msgId = R.string.dialog_abort_new_message;
+                } else {
+                    msgId = R.string.dialog_abort_message;
+                }
+                showDialog(ctx, ctx.getString(msgId), new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    if (storeListener != null) {
-                                        parent.setVisibility(GONE);
-                                        storeListener.onRollback(item);
-                                    }
-                                }
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            if (storeListener != null) {
+                                parent.setVisibility(GONE);
+                                storeListener.onRollback(item);
                             }
-                        });
+                        }
+                    }
+                });
             }
         });
     }
@@ -218,6 +231,17 @@ public class LocationEditBalloonOverlayView extends LocationBalloonOverlayView {
         able.setText(item.able);
         src.setText(item.src);
         spl.setText(item.spl);
+
+        // 新規マーカーの場合は削除ボタンを非表示
+        if (item.type == MarkerItem.TYPE_NEW) {
+            btnDelete.setVisibility(View.GONE);
+            btnSave.setText(R.string.button_save_new);
+            btnCancel.setText(R.string.button_abort_new);
+        } else {
+            btnDelete.setVisibility(View.VISIBLE);
+            btnSave.setText(R.string.button_save);
+            btnCancel.setText(R.string.button_abort);
+        }
     }
 
     private void getAddress(final GeoPoint geoPoint) {

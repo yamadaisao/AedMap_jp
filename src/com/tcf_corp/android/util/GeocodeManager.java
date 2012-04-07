@@ -12,7 +12,7 @@ import android.util.Log;
 public class GeocodeManager {
     private static final String TAG = GeocodeManager.class.getSimpleName();
     @SuppressWarnings("unused")
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     // 座標から住所文字列へ変換
     public static Address point2address(double latitude, double longitude, Context context)
