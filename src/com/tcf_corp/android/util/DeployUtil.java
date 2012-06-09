@@ -10,7 +10,7 @@ public class DeployUtil {
     /**
      * マニフェストファイルを読んでデバッグモードかどうかを取得.
      * <p>
-     * allocation tag の android:debuggable 属性.
+     * application tag の android:debuggable 属性.
      * </p>
      */
     public static boolean isDebuggable(Context context) {

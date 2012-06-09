@@ -36,11 +36,6 @@ public class CustomMapView extends MapView {
     private boolean isTouched;
     private boolean isDuringAnimation;
 
-    private int touchState;
-    private final int TOUCH_STATE_NONE = 0;
-    private final int TOUCH_STATE_TAP = 1;
-    private final int TOUCH_STATE_MOVE = 2;
-
     /**
      * 拡張MapView.
      * <p>
@@ -136,7 +131,6 @@ public class CustomMapView extends MapView {
             if (DEBUG) {
                 LogUtil.v(TAG, "ACTION_DOWN");
             }
-            touchState = TOUCH_STATE_TAP;
             isTouched = true;
             isDuringAnimation = false;
             notifyTouch();
@@ -145,10 +139,7 @@ public class CustomMapView extends MapView {
             if (DEBUG) {
                 LogUtil.v(TAG, "ACTION_UP");
             }
-            if (touchState == TOUCH_STATE_TAP) {
-            }
             isTouched = false;
-            touchState = TOUCH_STATE_NONE;
             break;
         }
 
